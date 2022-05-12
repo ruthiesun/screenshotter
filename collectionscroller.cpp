@@ -17,8 +17,6 @@ void CollectionScroller::Add(const QPixmap* img, QStandardItem* parent) {
     model->Add(img, parent);
 }
 
-
-
 void CollectionScroller::Setup() {
     //delegate = new QAbstractItemDelegate(this);
     mainLayout = new QGridLayout(this);

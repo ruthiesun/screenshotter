@@ -16,28 +16,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setCentralWidget(centralWidget);
     mainLayout = new QHBoxLayout(centralWidget);
 
-    SetupScrollbar();
+    scroller = new CollectionScroller(this);
+    editor = new ScreenshotEditor(this);
+    SetupToolbar();
 
     editAreaLayout = new QGridLayout();
-    SetupToolbar();
     editAreaLayout->addWidget(toolbar);
-    SetupEditor();
     editAreaLayout->addWidget(editor);
 
     mainLayout->addWidget(scroller, 1);
     mainLayout->addLayout(editAreaLayout, 4);
-}
 
-MainWindow::~MainWindow() {
-    delete(scroller); //!!!
-}
-
-void MainWindow::AddScreenshot(QPixmap* img) {
-    //call scroller's add method
-}
-
-void MainWindow::SetupScrollbar() {
-    scroller = new CollectionScroller(this);
+    //mem leaks
     QPixmap* tempImg= new QPixmap(100,200);
     tempImg->fill(Qt::blue);
     scroller->Add(tempImg);
@@ -45,8 +35,31 @@ void MainWindow::SetupScrollbar() {
     QPixmap* tempImg2= new QPixmap(3,100);
     tempImg->fill(Qt::yellow);
     scroller->Add(tempImg);
+}
 
+MainWindow::~MainWindow() {
+    delete(scroller); //!!!
+}
 
+void MainWindow::AddScreenshot() {
+    QScreen *screen = QGuiApplication::primaryScreen();
+    if (screen) {
+        QPixmap* ss = new QPixmap(screen->grabWindow(0));
+        //editor = new ScreenshotEditor(ss);
+        scroller->Add(ss);
+        delete(ss);
+    }
+}
+
+void MainWindow::UpdateEditor(QPixmap* img) {
+    if (editor) {
+        delete(editor);
+    }
+    editor = new ScreenshotEditor(img);
+}
+
+void MainWindow::ParseToolbarSignal(QAction* action) {
+    std::cout << "action made" << std::endl;
 }
 
 void MainWindow::SetupToolbar() {
@@ -57,24 +70,17 @@ void MainWindow::SetupToolbar() {
     toolbar->addSeparator();
     toolbar->addAction("Save changes");
     toolbar->addAction("Save to file");
+
     toolbar->addAction("Edit");
+
+    QObject::connect(toolbar, &QToolBar::actionTriggered,
+                     this, &MainWindow::ParseToolbarSignal);
+
+
     toolbar->addAction("Delete");
 }
 
-void MainWindow::SetupEditor() {
-    QScreen *screen = QGuiApplication::primaryScreen();
-    /*if (screen) {
-        QPixmap originalPixmap = screen->grabWindow(0);
-        editor = new ScreenshotEditor(this, &originalPixmap);
-    } else {*/
-        QPixmap* tempImg = new QPixmap(500, 500);
-        tempImg->fill(Qt::green);
-        editor = new ScreenshotEditor(tempImg, this);
-    //}
 
-
-
-}
 
 
 

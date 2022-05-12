@@ -1,7 +1,6 @@
 #include "collectionmodel.h"
 
 CollectionModel::CollectionModel(QObject *parent) : QStandardItemModel{parent} {
-
 }
 
 void CollectionModel::Add(const QPixmap* img, QStandardItem* parent) {

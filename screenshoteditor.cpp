@@ -6,22 +6,27 @@
 #include <QGraphicsEllipseItem>
 #include <QSizePolicy>
 
-ScreenshotEditor::ScreenshotEditor(QPixmap* img, QWidget* parent) : QWidget(parent) {
-    currImg = img;
+ScreenshotEditor::ScreenshotEditor(QWidget* parent) : QWidget(parent) {
+    currImg = nullptr;
+    item = nullptr;
+
+    scene = new QGraphicsScene();
 
     Setup();
-    this->setBackgroundRole(QPalette::Dark);
-
-    mainLayout = new QVBoxLayout(this);
-    this->layout()->addWidget(viewer);
 }
 
-void ScreenshotEditor::Setup() {
-
+ScreenshotEditor::ScreenshotEditor(QPixmap* img, QWidget* parent) : QWidget(parent) {
+    currImg = img;
     item = new QGraphicsPixmapItem(*currImg);
+
     scene = new QGraphicsScene();
     scene->addItem(item);
 
-    viewer = new QGraphicsView(scene);
+    Setup();
+}
 
+void ScreenshotEditor::Setup() {
+    viewer = new QGraphicsView(scene);
+    mainLayout = new QVBoxLayout(this);
+    this->layout()->addWidget(viewer);
 }

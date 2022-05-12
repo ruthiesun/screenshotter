@@ -11,6 +11,11 @@ class ScreenshotEditor : public QWidget {
     Q_OBJECT
 public:
     /*
+     * EFFECTS: constructor (does not display an image)
+     */
+    explicit ScreenshotEditor(QWidget* parent = nullptr);
+
+    /*
      * EFFECTS: constructor
      */
     ScreenshotEditor(QPixmap* img, QWidget* parent = nullptr);

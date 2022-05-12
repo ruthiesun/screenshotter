@@ -28,7 +28,22 @@ public:
      */
     ~MainWindow();
 
+    /*
+     * EFFECTS: takes a screenshot and adds it to the user's collection
+     */
+    void AddScreenshot();
+
 public slots:
+    /*
+     * EFFECTS: updates the image displayed in the editor with img
+     */
+    void UpdateEditor(QPixmap* img);
+
+    /*
+     * REQUIRES: action was signalled from the toolbar
+     * EFFECTS: determines the source of the signal begins an appropriate response
+     */
+    void ParseToolbarSignal(QAction* action);
 
 signals:
 
@@ -41,26 +56,9 @@ private:
     QGridLayout* editAreaLayout;
 
     /*
-     * EFFECTS: sets up widget that displays a view of the user's collection of screenshots
-     *          called by constructor
-     */
-    void SetupScrollbar();
-
-    /*
      * EFFECTS: sets up toolbar that allows user to modify a screenshot
      *          called by constructor
      */
     void SetupToolbar();
-
-    /*
-     * EFFECTS: sets up widget that displays a view of one screenshot
-     *          called by constructor
-     */
-    void SetupEditor();
-
-    /*
-     * EFFECTS: adds img to the user's collection
-     */
-    void AddScreenshot(QPixmap* img);
 };
 #endif // MAINWINDOW_H

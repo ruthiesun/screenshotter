@@ -23,6 +23,7 @@ public:
      */
     ~CollectionScroller();
 
+public slots:
     /*
      * MODIFIES: this
      * EFFECTS: adds img to the scroller's model under the given parent
@@ -30,9 +31,11 @@ public:
      */
     void Add(const QPixmap* img, QStandardItem* parent = nullptr);
 
-public slots:
-
 signals:
+    /*
+     * EFFECTS: sends a signal with an image from the collection
+     */
+    void SelectedForView(QPixmap* img);
 
 private:
     QTreeView* treeView;

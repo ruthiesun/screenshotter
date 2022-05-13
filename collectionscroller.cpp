@@ -5,12 +5,17 @@
 #include <QPixmap>
 #include <QVariant>
 
-CollectionScroller::CollectionScroller(QWidget* parent) : QScrollArea(parent) {
+CollectionScroller::CollectionScroller(CollectionModel* m, QWidget* parent) : QScrollArea(parent) {
+    model = m;
     Setup();
 }
 
 CollectionScroller::~CollectionScroller() {
     //!!!
+}
+
+QTreeView* CollectionScroller::GetView() {
+    return treeView;
 }
 
 void CollectionScroller::Add(const QPixmap* img, QStandardItem* parent) {
@@ -27,7 +32,6 @@ void CollectionScroller::Setup() {
     //treeView->setUniformRowHeights(true);
 treeView->setIconSize(QSize(300,100));
     //treeView->setItemDelegate(delegate);
-    model = new CollectionModel(this);
     mainLayout->addWidget(treeView);
 
     treeView->setModel(model);

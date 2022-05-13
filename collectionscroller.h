@@ -16,12 +16,14 @@ public:
     /*
      * EFFECTS: constructor; sets up display
      */
-    explicit CollectionScroller(QWidget* parent = nullptr);
+    explicit CollectionScroller(CollectionModel* m, QWidget* parent = nullptr);
 
     /*
      * EFFECTS: destructor
      */
     ~CollectionScroller();
+
+    QTreeView* GetView();
 
 public slots:
     /*

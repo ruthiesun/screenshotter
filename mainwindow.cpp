@@ -12,12 +12,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setWindowState(Qt::WindowMaximized);
     this->setToolButtonStyle(Qt::ToolButtonFollowStyle);
 
+    model = new CollectionModel(this);
+
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
     mainLayout = new QHBoxLayout(centralWidget);
 
-    scroller = new CollectionScroller(this);
-    editor = new ScreenshotEditor(this);
+    scroller = new CollectionScroller(model, this);
+    editor = new ScreenshotEditor(model, this);
+
+    QObject::connect(scroller->GetView(), &QTreeView::currentChanged, //!!!
+                     editor, &ScreenshotEditor::ChangeView);
+
     SetupToolbar();
 
     editAreaLayout = new QGridLayout();
@@ -45,39 +51,51 @@ void MainWindow::AddScreenshot() {
     QScreen *screen = QGuiApplication::primaryScreen();
     if (screen) {
         QPixmap* ss = new QPixmap(screen->grabWindow(0));
-        //editor = new ScreenshotEditor(ss);
         scroller->Add(ss);
         delete(ss);
     }
 }
 
-void MainWindow::UpdateEditor(QPixmap* img) {
-    if (editor) {
-        delete(editor);
-    }
-    editor = new ScreenshotEditor(img);
-}
-
 void MainWindow::ParseToolbarSignal(QAction* action) {
-    std::cout << "action made" << std::endl;
+    //std::cout << action->iconText().toStdString() << std::endl;
+    QString text = action->iconText();
+    if (text == DRAW) {
+        std::cout << "active drawing tool" << std::endl;
+    } else if (text == ERASE) {
+        std::cout << "activate eraser tool" << std::endl;
+    } else if (text == CROP) {
+        std::cout << "activate cropping tool" << std::endl;
+    } else if (text == SAVE_CHANGES) {
+        std::cout << "save changes to current pic" << std::endl;
+    } else if (text == SAVE_TO_FILE) {
+        std::cout << "save to disk (let user choose file location" << std::endl;
+    } else if (text == NEW_COPY) {
+        //UNTESTED
+        std::cout << "duplicate screenshot and open it" << std::endl;
+        QPixmap* ss = editor->GetCurrImg()->data(Qt::UserRole).value<QPixmap*>();
+        QStandardItem* parent = editor->GetCurrImg()->parent();
+        scroller->Add(ss, parent);
+    } else if (text == DELETE) {
+        std::cout << "delete the child image or the whole set of images if the parent was selected" << std::endl;
+    }
 }
 
 void MainWindow::SetupToolbar() {
     toolbar = new QToolBar(this);
-    toolbar->addAction("Draw");
-    toolbar->addAction("Erase");
-    toolbar->addAction("Crop");
+    toolbar->addAction(DRAW);
+    toolbar->addAction(ERASE);
+    toolbar->addAction(CROP);
     toolbar->addSeparator();
-    toolbar->addAction("Save changes");
-    toolbar->addAction("Save to file");
-
-    toolbar->addAction("Edit");
+    toolbar->addAction(SAVE_CHANGES);
+    toolbar->addAction(SAVE_TO_FILE);
+    toolbar->addAction(NEW_COPY);
+    toolbar->addAction(DELETE);
 
     QObject::connect(toolbar, &QToolBar::actionTriggered,
                      this, &MainWindow::ParseToolbarSignal);
 
 
-    toolbar->addAction("Delete");
+
 }
 
 

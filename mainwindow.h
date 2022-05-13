@@ -8,6 +8,8 @@
 #include <QToolButton>
 #include "collectionscroller.h"
 #include "screenshoteditor.h"
+#include <QStandardItem>
+#include "collectionmodel.h"
 
 /*
  * class representing the application's window
@@ -16,7 +18,13 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    int scrollbarWidth;
+    const QString DRAW = "Draw";
+    const QString ERASE = "Erase";
+    const QString CROP = "Crop";
+    const QString SAVE_CHANGES = "Save changes";
+    const QString SAVE_TO_FILE = "Save to file";
+    const QString NEW_COPY = "New copy";
+    const QString DELETE = "Delete";
 
     /*
      * EFFECTS: constructor
@@ -34,10 +42,6 @@ public:
     void AddScreenshot();
 
 public slots:
-    /*
-     * EFFECTS: updates the image displayed in the editor with img
-     */
-    void UpdateEditor(QPixmap* img);
 
     /*
      * REQUIRES: action was signalled from the toolbar
@@ -54,6 +58,8 @@ private:
     ScreenshotEditor* editor;
     QHBoxLayout* mainLayout;
     QGridLayout* editAreaLayout;
+    CollectionModel* model;
+
 
     /*
      * EFFECTS: sets up toolbar that allows user to modify a screenshot

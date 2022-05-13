@@ -3,6 +3,8 @@
 
 #include <QGraphicsView>
 #include <QHBoxLayout>
+#include <QStandardItem>
+#include <QStandardItemModel>
 
 /*
  * a widget that displays a single screenshot and allows the user to manipulate it
@@ -13,19 +15,18 @@ public:
     /*
      * EFFECTS: constructor (does not display an image)
      */
-    explicit ScreenshotEditor(QWidget* parent = nullptr);
+    explicit ScreenshotEditor(QStandardItemModel* m, QWidget* parent = nullptr);
 
-    /*
-     * EFFECTS: constructor
-     */
-    ScreenshotEditor(QPixmap* img, QWidget* parent = nullptr);
+    QStandardItem* GetCurrImg();
 
 public slots:
+    void ChangeView(const QModelIndex &current, const QModelIndex &previous);
 
 signals:
 
 private:
-    QPixmap* currImg;
+    QStandardItem* currImg;
+    QStandardItemModel* model;
     QGraphicsPixmapItem* item;
     QGraphicsScene* scene;
     QGraphicsView* viewer;

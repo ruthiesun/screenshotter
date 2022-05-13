@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     scroller = new CollectionScroller(model, this);
     editor = new ScreenshotEditor(model, this);
 
-    QObject::connect(scroller->GetView(), &QTreeView::currentChanged, //!!!
+    QObject::connect(scroller->GetView()->selectionModel(), &QItemSelectionModel::currentChanged, //!!!
                      editor, &ScreenshotEditor::ChangeView);
 
     SetupToolbar();
@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     mainLayout->addLayout(editAreaLayout, 4);
 
     //mem leaks
-    QPixmap* tempImg= new QPixmap(100,200);
+    QPixmap* tempImg= new QPixmap(100,20);
     tempImg->fill(Qt::blue);
     scroller->Add(tempImg);
 

@@ -10,9 +10,10 @@ void CollectionModel::Add(const QPixmap* img, QStandardItem* parent) {
     } else {
         rootNode = parent;
     }
+    //!!! figure out how to store full image data in QStandardItem
     QStandardItem *newImg = new QStandardItem();
     QVariant* var = new QVariant(img);
-    newImg->setData(*var, Qt::UserRole);
+    newImg->setData(*img, Qt::UserRole);
     newImg->setData(*img, Qt::DecorationRole);
 
     rootNode->appendRow(newImg);

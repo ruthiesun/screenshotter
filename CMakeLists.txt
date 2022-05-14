@@ -23,6 +23,7 @@ set(PROJECT_SOURCES
         collectionviewer.h collectionviewer.cpp
         screenshoteditor.h screenshoteditor.cpp
         collectionmodel.h collectionmodel.cpp
+        treeviewdelegate.h treeviewdelegate.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

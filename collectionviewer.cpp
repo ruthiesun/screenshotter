@@ -5,6 +5,7 @@
 #include <QPixmap>
 #include <QVariant>
 #include <QHeaderView>
+#include "treeviewdelegate.h"
 
 CollectionViewer::CollectionViewer(CollectionModel* m, QWidget* parent) : QTreeView(parent) {
     model = m;
@@ -24,14 +25,12 @@ void CollectionViewer::Add(const QPixmap* img, QStandardItem* parent) {
 }
 
 void CollectionViewer::Setup() {
-
     this->setHeaderHidden(true);
     this->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    QHeaderView *verticalHeader = this->header();
-
-    verticalHeader->setSectionResizeMode(QHeaderView::Fixed);
-    verticalHeader->setMaximumSectionSize(1);
+    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    //this->setUniformRowHeights(true);
+    delete(this->itemDelegate());
+    this->setItemDelegate(new TreeViewDelegate());
 
     this->setModel(model);
     this->expandAll();

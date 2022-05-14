@@ -20,15 +20,10 @@ ScreenshotEditor::ScreenshotEditor(QStandardItemModel* m, QWidget* parent) : QWi
 }
 
 void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex &previous) {
-    if (currImg) {
-        this->layout()->removeWidget(viewer);
-        delete(viewer);
-    }
+    this->layout()->removeWidget(viewer);
+    delete(viewer);
+
     currImg = model->itemFromIndex(current);
-/*
-    if (currImg->data(Qt::UserRole).canConvert<QPixmap>())
-        std::cout << "convert ok" << std::endl;
-    std::cout << "convert not ok" << std::endl;*/
 
     item = new QGraphicsPixmapItem(currImg->data(Qt::DecorationRole).value<QPixmap>());
 

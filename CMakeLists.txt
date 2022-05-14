@@ -20,7 +20,7 @@ set(PROJECT_SOURCES
         mainwindow.h
         mainwindow.ui
 
-        collectionscroller.h collectionscroller.cpp
+        collectionviewer.h collectionviewer.cpp
         screenshoteditor.h screenshoteditor.cpp
         collectionmodel.h collectionmodel.cpp
 )

@@ -6,7 +6,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QToolButton>
-#include "collectionscroller.h"
+#include "collectionviewer.h"
 #include "screenshoteditor.h"
 #include <QStandardItem>
 #include "collectionmodel.h"
@@ -53,7 +53,7 @@ signals:
 
 private:
     QWidget* centralWidget;
-    CollectionScroller* scroller;
+    CollectionViewer* scroller;
     QToolBar* toolbar;
     ScreenshotEditor* editor;
     QHBoxLayout* mainLayout;

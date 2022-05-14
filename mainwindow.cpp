@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "collectionscroller.h"
+#include "collectionviewer.h"
 #include <QGuiApplication>
 #include <QScreen>
 #include <QHBoxLayout>
@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setCentralWidget(centralWidget);
     mainLayout = new QHBoxLayout(centralWidget);
 
-    scroller = new CollectionScroller(model, this);
+    scroller = new CollectionViewer(model, this);
     editor = new ScreenshotEditor(model, this);
 
     QObject::connect(scroller->GetView()->selectionModel(), &QItemSelectionModel::currentChanged, //!!!
@@ -32,15 +32,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     mainLayout->addWidget(scroller, 1);
     mainLayout->addLayout(editAreaLayout, 4);
-
-    //mem leaks
-    QPixmap* tempImg= new QPixmap(100,20);
-    tempImg->fill(Qt::blue);
-    scroller->Add(tempImg);
-
-    QPixmap* tempImg2= new QPixmap(3,100);
-    tempImg->fill(Qt::yellow);
-    scroller->Add(tempImg);
 }
 
 MainWindow::~MainWindow() {
@@ -60,7 +51,8 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
     //std::cout << action->iconText().toStdString() << std::endl;
     QString text = action->iconText();
     if (text == DRAW) {
-        std::cout << "active drawing tool" << std::endl;
+        std::cout << "active drawing tool - TEMP SS" << std::endl;
+        AddScreenshot();
     } else if (text == ERASE) {
         std::cout << "activate eraser tool" << std::endl;
     } else if (text == CROP) {

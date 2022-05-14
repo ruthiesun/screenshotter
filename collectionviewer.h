@@ -1,5 +1,5 @@
-#ifndef COLLECTIONSCROLLER_H
-#define COLLECTIONSCROLLER_H
+#ifndef COLLECTIONVIEWER_H
+#define COLLECTIONVIEWER_H
 
 #include <QScrollArea>
 #include <QTreeView>
@@ -10,18 +10,18 @@
 /*
  * widget for displaying a view of the user's collection of screenshots for the current session
  */
-class CollectionScroller : public QScrollArea {
+class CollectionViewer : public QTreeView {
     Q_OBJECT
 public:
     /*
      * EFFECTS: constructor; sets up display
      */
-    explicit CollectionScroller(CollectionModel* m, QWidget* parent = nullptr);
+    explicit CollectionViewer(CollectionModel* m, QWidget* parent = nullptr);
 
     /*
      * EFFECTS: destructor
      */
-    ~CollectionScroller();
+    ~CollectionViewer();
 
     QTreeView* GetView();
 
@@ -40,10 +40,7 @@ signals:
     void SelectedForView(QPixmap* img);
 
 private:
-    QTreeView* treeView;
     CollectionModel* model;
-    QAbstractItemDelegate* delegate;
-    QGridLayout* mainLayout;
 
     /*
      * EFFECTS: sets up the display; called by constructor
@@ -52,4 +49,4 @@ private:
 
 };
 
-#endif // COLLECTIONSCROLLER_H
+#endif // COLLECTIONVIEWER_H

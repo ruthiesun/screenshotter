@@ -22,6 +22,12 @@ public:
      */
     void Add(const QPixmap* img, QStandardItem* parent = nullptr);
 
+    /*
+     * REQURIES: item is in this model
+     * EFFECTS: returns pointer to lowest level QStandardItem in the tree that contains item
+     */
+    QStandardItem* FindParent(QStandardItem* item);
+
 public slots:
 
 signals:

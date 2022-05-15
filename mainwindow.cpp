@@ -42,7 +42,7 @@ void MainWindow::AddScreenshot() {
     QScreen *screen = QGuiApplication::primaryScreen();
     if (screen) {
         QPixmap* ss = new QPixmap(screen->grabWindow(0));
-        scroller->Add(ss);
+        model->Add(ss);
         delete(ss);
     }
 }
@@ -64,9 +64,14 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
     } else if (text == NEW_COPY) {
         //UNTESTED
         std::cout << "duplicate screenshot and open it" << std::endl;
-        QPixmap* ss = editor->GetCurrImg()->data(Qt::DecorationRole).value<QPixmap*>();
-        QStandardItem* parent = editor->GetCurrImg()->parent();
-        scroller->Add(ss, parent);
+        QPixmap* img;
+        if (editor->GetCurrImg()->data(Qt::DecorationRole).canConvert<QPixmap>()) {
+            img = new QPixmap(editor->GetCurrImg()->data(Qt::DecorationRole).value<QPixmap>());
+        } else {
+            std::cout << "ERROR: delegate failed to convert qvariant to qpixmap" << std::endl; //!!! replace with exception handling
+        }
+        QStandardItem* parent = model->FindParent(editor->GetCurrImg());
+        model->Add(img, parent);
     } else if (text == DELETE) {
         std::cout << "delete the child image or the whole set of images if the parent was selected" << std::endl;
     }

@@ -64,7 +64,7 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
     } else if (text == NEW_COPY) {
         //UNTESTED
         std::cout << "duplicate screenshot and open it" << std::endl;
-        QPixmap* ss = editor->GetCurrImg()->data(Qt::UserRole).value<QPixmap*>();
+        QPixmap* ss = editor->GetCurrImg()->data(Qt::DecorationRole).value<QPixmap*>();
         QStandardItem* parent = editor->GetCurrImg()->parent();
         scroller->Add(ss, parent);
     } else if (text == DELETE) {

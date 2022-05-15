@@ -26,8 +26,9 @@ void CollectionViewer::Add(const QPixmap* img, QStandardItem* parent) {
 
 void CollectionViewer::Setup() {
     this->setHeaderHidden(true);
+    this->header()->resizeSections(QHeaderView::ResizeToContents);
     this->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     //this->setUniformRowHeights(true);
     delete(this->itemDelegate());
     this->setItemDelegate(new TreeViewDelegate());

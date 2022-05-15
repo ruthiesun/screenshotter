@@ -20,9 +20,9 @@ QTreeView* CollectionViewer::GetView() {
     return this;
 }
 
-void CollectionViewer::Add(const QPixmap* img, QStandardItem* parent) {
-    model->Add(img, parent);
-}
+//void CollectionViewer::Add(const QPixmap* img, QStandardItem* parent) {
+    //model->Add(img, parent);
+//}
 
 void CollectionViewer::Setup() {
     this->setHeaderHidden(true);

@@ -31,7 +31,7 @@ public slots:
      * EFFECTS: adds img to the scroller's model under the given parent
      *          img is added to a new row if parent == nullptr
      */
-    void Add(const QPixmap* img, QStandardItem* parent = nullptr);
+    //void Add(const QPixmap* img, QStandardItem* parent = nullptr);
 
 signals:
     /*

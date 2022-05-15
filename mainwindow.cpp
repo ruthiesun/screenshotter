@@ -69,6 +69,7 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
         scroller->Add(ss, parent);
     } else if (text == DELETE) {
         std::cout << "delete the child image or the whole set of images if the parent was selected" << std::endl;
+//temp comment
     }
 }
 

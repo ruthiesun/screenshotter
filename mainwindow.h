@@ -25,6 +25,7 @@ public:
     const QString SAVE_TO_FILE = "Save to file";
     const QString NEW_COPY = "New copy";
     const QString DELETE = "Delete";
+    const QString NEW_SCREENSHOT = "Take new screenshot";
 
     /*
      * EFFECTS: constructor

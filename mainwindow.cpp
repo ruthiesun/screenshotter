@@ -39,7 +39,9 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::AddScreenshot() {
+    this->setWindowState(Qt::WindowMinimized);
     QScreen *screen = QGuiApplication::primaryScreen();
+    this->setWindowState(Qt::WindowMaximized);
     if (screen) {
         QPixmap* ss = new QPixmap(screen->grabWindow(0));
         model->Add(ss);
@@ -51,8 +53,7 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
     //std::cout << action->iconText().toStdString() << std::endl;
     QString text = action->iconText();
     if (text == DRAW) {
-        std::cout << "active drawing tool - TEMP SS" << std::endl;
-        AddScreenshot();
+        std::cout << "activate drawing tool" << std::endl;
     } else if (text == ERASE) {
         std::cout << "activate eraser tool" << std::endl;
     } else if (text == CROP) {
@@ -62,8 +63,6 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
     } else if (text == SAVE_TO_FILE) {
         std::cout << "save to disk (let user choose file location" << std::endl;
     } else if (text == NEW_COPY) {
-        //UNTESTED
-        std::cout << "duplicate screenshot and open it" << std::endl;
         QPixmap* img;
         if (editor->GetCurrImg()->data(Qt::DecorationRole).canConvert<QPixmap>()) {
             img = new QPixmap(editor->GetCurrImg()->data(Qt::DecorationRole).value<QPixmap>());
@@ -74,6 +73,8 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
         model->Add(img, parent);
     } else if (text == DELETE) {
         std::cout << "delete the child image or the whole set of images if the parent was selected" << std::endl;
+    } else if (text == NEW_SCREENSHOT) {
+        AddScreenshot();
     }
 }
 
@@ -87,6 +88,8 @@ void MainWindow::SetupToolbar() {
     toolbar->addAction(SAVE_TO_FILE);
     toolbar->addAction(NEW_COPY);
     toolbar->addAction(DELETE);
+    toolbar->addSeparator();
+    toolbar->addAction(NEW_SCREENSHOT);
 
     QObject::connect(toolbar, &QToolBar::actionTriggered,
                      this, &MainWindow::ParseToolbarSignal);

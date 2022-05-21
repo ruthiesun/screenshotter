@@ -17,7 +17,6 @@ signals:
 
 
 protected:
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
     void drawBackground(QPainter *painter, const QRectF &rect) override;
 
 private:

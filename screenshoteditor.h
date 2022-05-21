@@ -5,6 +5,8 @@
 #include <QHBoxLayout>
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include "canvas.h"
+#include "canvasviewer.h"
 
 /*
  * a widget that displays a single screenshot and allows the user to manipulate it
@@ -17,6 +19,7 @@ public:
      */
     explicit ScreenshotEditor(QStandardItemModel* m, QWidget* parent = nullptr);
 
+
     QStandardItem* GetCurrImg();
 
 public slots:
@@ -24,16 +27,20 @@ public slots:
 
 signals:
 
+protected:
+
 private:
     QStandardItem* currImg;
     QStandardItemModel* model;
-    QGraphicsPixmapItem* item;
-    QGraphicsScene* scene;
-    QGraphicsView* viewer;
+    //QGraphicsPixmapItem* item;
+    Canvas* scene;
+    CanvasViewer* viewer;
+    //QGraphicsView* viewer;
     QLayout* mainLayout;
 
+
     /*
-     * EFFECTS: sets up graphics viewing fields; called by cosntructor
+     * EFFECTS: sets up connections
      */
     void Setup();
 };

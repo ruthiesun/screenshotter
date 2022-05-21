@@ -24,6 +24,8 @@ set(PROJECT_SOURCES
         screenshoteditor.h screenshoteditor.cpp
         collectionmodel.h collectionmodel.cpp
         treeviewdelegate.h treeviewdelegate.cpp
+        canvas.h canvas.cpp
+        canvasviewer.h canvasviewer.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

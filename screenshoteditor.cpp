@@ -9,14 +9,21 @@
 
 ScreenshotEditor::ScreenshotEditor(QStandardItemModel* m, QWidget* parent) : QWidget(parent) {
     currImg = nullptr;
-    item = nullptr;
+    //item = nullptr;
 
     model = m;
-    scene = new QGraphicsScene();
+    scene = new Canvas();
     mainLayout = new QVBoxLayout(this);
-    viewer = new QGraphicsView(scene);
+    viewer = new CanvasViewer(scene);
+    //viewer = new QGraphicsView(scene);
     this->layout()->addWidget(viewer);
 
+    QObject::connect(viewer, &CanvasViewer::PaintEvent, //!!!
+                     scene, &Canvas::AddDrawing);
+}
+
+QStandardItem* ScreenshotEditor::GetCurrImg() {
+    return currImg;
 }
 
 void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex &previous) {
@@ -24,18 +31,17 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
     delete(viewer);
 
     currImg = model->itemFromIndex(current);
+    QPixmap* img = new QPixmap(currImg->data(Qt::DecorationRole).value<QPixmap>());
 
-    item = new QGraphicsPixmapItem(currImg->data(Qt::DecorationRole).value<QPixmap>());
+    scene = new Canvas(img, this);
+    viewer = new CanvasViewer(scene);
 
-    scene = new QGraphicsScene();
-    scene->addItem(item);
-    viewer = new QGraphicsView(scene);
+    QObject::connect(viewer, &CanvasViewer::PaintEvent, //!!!
+                     scene, &Canvas::AddDrawing);
+
     this->layout()->addWidget(viewer);
 }
 
-QStandardItem* ScreenshotEditor::GetCurrImg() {
-    return currImg;
-}
 
 void ScreenshotEditor::Setup() {
 

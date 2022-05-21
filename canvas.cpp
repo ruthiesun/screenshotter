@@ -27,15 +27,17 @@ Canvas::Canvas(QPixmap* img, QObject *parent)
 
 void Canvas::AddDrawing(QPoint point) {
     this->setSceneRect(0, 0, img->width(), img->height());
-    //QGraphicsEllipseItem *item = new QGraphicsEllipseItem(point.x(), point.y(), diameter, diameter);
+    QGraphicsEllipseItem *item = new QGraphicsEllipseItem(point.x(), point.y(), diameter, diameter);
+    /*
     QPixmap square = QPixmap(5,5);
     square.fill(Qt::blue);
     QGraphicsPixmapItem *item = new QGraphicsPixmapItem(square);
+    */
     //addEllipse(point.x(), point.y(), diameter, diameter);
     //addItem(item);
-    item->setPos(point.x(), point.y());
+    //item->setPos(point.x(), point.y());
     item->setVisible(true);
-    item->setEnabled(false);
+    item->setSelected(false);
     addItem(item);
 }
 
@@ -43,5 +45,5 @@ void Canvas::AddDrawing(QPoint point) {
 //https://forum.qt.io/topic/6313/qgraphicsview-with-qpixmap-background/4
 void Canvas::drawBackground(QPainter *painter, const QRectF &rect) {
     const QRectF bgRect = QRect(0, 0, img->width(), img->height());
-    painter->drawPixmap(bgRect, *img, bgRect);
+    painter->drawPixmap(rect, *img, bgRect);
 }

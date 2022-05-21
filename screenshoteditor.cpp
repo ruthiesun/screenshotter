@@ -15,10 +15,9 @@ ScreenshotEditor::ScreenshotEditor(QStandardItemModel* m, QWidget* parent) : QWi
     scene = new Canvas();
     mainLayout = new QVBoxLayout(this);
     viewer = new CanvasViewer(scene);
-    //viewer = new QGraphicsView(scene);
     this->layout()->addWidget(viewer);
 
-    QObject::connect(viewer, &CanvasViewer::PaintEvent, //!!!
+    QObject::connect(viewer, &CanvasViewer::PaintEvent,
                      scene, &Canvas::AddDrawing);
 }
 
@@ -36,9 +35,10 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
     scene = new Canvas(img, this);
     viewer = new CanvasViewer(scene);
 
-    QObject::connect(viewer, &CanvasViewer::PaintEvent, //!!!
+    QObject::connect(viewer, &CanvasViewer::PaintEvent,
                      scene, &Canvas::AddDrawing);
 
+    viewer->fitInView(scene->sceneRect());
     this->layout()->addWidget(viewer);
 }
 

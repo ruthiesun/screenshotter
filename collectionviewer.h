@@ -14,29 +14,15 @@ class CollectionViewer : public QTreeView {
     Q_OBJECT
 public:
     /*
-     * EFFECTS: constructor; sets up display
+     * EFFECTS: initializes the model to m
      */
     explicit CollectionViewer(CollectionModel* m, QWidget* parent = nullptr);
-
-    /*
-     * EFFECTS: destructor
-     */
-    ~CollectionViewer();
 
     QTreeView* GetView();
 
 public slots:
-    /*
-     * MODIFIES: this
-     * EFFECTS: adds img to the scroller's model under the given parent
-     *          img is added to a new row if parent == nullptr
-     */
-    //void Add(const QPixmap* img, QStandardItem* parent = nullptr);
 
 signals:
-    /*
-     * EFFECTS: sends a signal with an image from the collection
-     */
     void SelectedForView(QPixmap* img);
 
 private:

@@ -4,7 +4,6 @@
 
 TreeViewDelegate::TreeViewDelegate(QObject *parent) : QStyledItemDelegate{parent} {}
 
-
 QSize TreeViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
     try {
         QSize size = index.data(Qt::DecorationRole).value<QPixmap>().size();

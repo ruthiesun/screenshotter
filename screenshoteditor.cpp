@@ -15,11 +15,17 @@ ScreenshotEditor::ScreenshotEditor(QStandardItemModel* m, QWidget* parent) : QWi
     this->layout()->addWidget(viewer);
 }
 
+ScreenshotEditor::~ScreenshotEditor() {
+    delete(scene);
+    delete(viewer);
+    delete(mainLayout);
+}
+
 QStandardItem* ScreenshotEditor::GetCurrImg() {
     return currImg;
 }
 
-void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex &previous) {
+void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex &previous) { //!!!temp implementation (does not presenve scene states between switches)
     this->layout()->removeWidget(viewer);
     delete(viewer);
 
@@ -39,8 +45,3 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
     this->layout()->addWidget(viewer);
 }
 
-
-void ScreenshotEditor::Setup() {
-
-
-}

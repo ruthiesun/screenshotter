@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     scroller = new CollectionViewer(model, this);
     editor = new ScreenshotEditor(model, this);
 
-    QObject::connect(scroller->GetView()->selectionModel(), &QItemSelectionModel::currentChanged, //!!!
+    QObject::connect(scroller->GetView()->selectionModel(), &QItemSelectionModel::currentChanged,
                      editor, &ScreenshotEditor::ChangeView);
 
     SetupToolbar();
@@ -35,13 +35,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 }
 
 MainWindow::~MainWindow() {
-    delete(scroller); //!!!
+    delete(scroller);
+    delete(toolbar);
+    delete(editor);
+    delete(mainLayout);
+    delete(editAreaLayout);
+    delete(centralWidget);
+    delete(model);
 }
 
-void MainWindow::AddScreenshot() {
-    this->setWindowState(Qt::WindowMinimized);
-    QScreen *screen = QGuiApplication::primaryScreen(); //may not work on iOS
-    this->setWindowState(Qt::WindowMaximized);
+void MainWindow::AddScreenshot() { //!!! temp implementation
+    this->setVisible(false);
+    QScreen *screen = QGuiApplication::primaryScreen(); //may not work on iOS(?)
+    this->setVisible(true);
     if (screen) {
         QPixmap* ss = new QPixmap(screen->grabWindow(0));
         model->Add(ss);
@@ -92,10 +98,9 @@ void MainWindow::SetupToolbar() {
 
     QObject::connect(toolbar, &QToolBar::actionTriggered,
                      this, &MainWindow::ParseToolbarSignal);
-
-
-
 }
+
+
 
 
 

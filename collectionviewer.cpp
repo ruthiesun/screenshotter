@@ -12,10 +12,6 @@ CollectionViewer::CollectionViewer(CollectionModel* m, QWidget* parent) : QTreeV
     Setup();
 }
 
-CollectionViewer::~CollectionViewer() {
-    //!!!
-}
-
 QTreeView* CollectionViewer::GetView() {
     return this;
 }

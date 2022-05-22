@@ -9,20 +9,23 @@
 #include "canvasviewer.h"
 
 /*
- * a widget that displays a single screenshot and allows the user to manipulate it
+ * displays a single screenshot and allows the user to manipulate it
  */
 class ScreenshotEditor : public QWidget {
     Q_OBJECT
 public:
     /*
-     * EFFECTS: constructor (does not display an image)
+     * EFFECTS: initializes the model to m
      */
     explicit ScreenshotEditor(QStandardItemModel* m, QWidget* parent = nullptr);
-
+    ~ScreenshotEditor();
 
     QStandardItem* GetCurrImg();
 
 public slots:
+    /*
+     * EFFECTS: switches display to the image at given index in the model (current)
+     */
     void ChangeView(const QModelIndex &current, const QModelIndex &previous);
 
 signals:
@@ -32,17 +35,10 @@ protected:
 private:
     QStandardItem* currImg;
     QStandardItemModel* model;
-    //QGraphicsPixmapItem* item;
     Canvas* scene;
     CanvasViewer* viewer;
-    //QGraphicsView* viewer;
     QLayout* mainLayout;
 
-
-    /*
-     * EFFECTS: sets up connections
-     */
-    void Setup();
 };
 
 #endif // SCREENSHOTEDITOR_H

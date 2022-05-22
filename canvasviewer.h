@@ -3,8 +3,10 @@
 
 #include <QGraphicsView>
 
-class CanvasViewer : public QGraphicsView
-{
+/*
+ * viewport for a screenshot
+ */
+class CanvasViewer : public QGraphicsView {
     Q_OBJECT
 public:
     using QGraphicsView::QGraphicsView;
@@ -16,9 +18,24 @@ signals:
     void DoneStroke();
 
 protected:
+    /*
+     * EFFECTS: signals to the scene where the mouse was pressed
+     */
     void mousePressEvent(QMouseEvent *mouseEvent) override;
+
+    /*
+     * EFFECTS: signals to the scene that the mouse was released
+     */
     void mouseReleaseEvent(QMouseEvent *mouseEvent) override;
+
+    /*
+     * EFFECTS: signals to the scene where the mouse was last after the move
+     */
     void mouseMoveEvent(QMouseEvent *mouseEvent) override;
+
+    /*
+     * !!!
+     */
     void resizeEvent(QResizeEvent *event) override;
 };
 

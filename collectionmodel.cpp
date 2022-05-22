@@ -2,8 +2,7 @@
 #include <iostream>
 #include <exception>
 
-CollectionModel::CollectionModel(QObject *parent) : QStandardItemModel{parent} {
-}
+CollectionModel::CollectionModel(QObject *parent) : QStandardItemModel{parent} {}
 
 void CollectionModel::Add(const QPixmap* img, QStandardItem* parent) {
     QStandardItem *rootNode;

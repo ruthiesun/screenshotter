@@ -6,13 +6,9 @@
 /*
  * model for the user's collection of screenshots for the current session
  */
-class CollectionModel : public QStandardItemModel
-{
+class CollectionModel : public QStandardItemModel {
     Q_OBJECT
 public:
-    /*
-     * EFFECTS: default QStandardItemModel constructor
-     */
     explicit CollectionModel(QObject *parent = nullptr);
 
     /*
@@ -23,8 +19,8 @@ public:
     void Add(const QPixmap* img, QStandardItem* parent = nullptr);
 
     /*
-     * REQURIES: item is in this model
-     * EFFECTS: returns pointer to lowest level QStandardItem in the tree that contains item
+     * REQUIRES: item is in the model
+     * EFFECTS: returns pointer to lowest level QStandardItem that is a parent of item
      */
     QStandardItem* FindParent(QStandardItem* item);
 

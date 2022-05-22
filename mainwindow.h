@@ -18,6 +18,24 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+
+    /*
+     * EFFECTS: takes a screenshot and adds it to the user's collection
+     */
+    void AddScreenshot();
+
+public slots:
+    /*
+     * REQUIRES: action was signalled from the toolbar
+     * EFFECTS: responds to the button pressed on the toolbar
+     */
+    void ParseToolbarSignal(QAction* action);
+
+signals:
+
+private:
     const QString DRAW = "Draw";
     const QString ERASE = "Erase";
     const QString CROP = "Crop";
@@ -27,32 +45,6 @@ public:
     const QString DELETE = "Delete";
     const QString NEW_SCREENSHOT = "Take new screenshot";
 
-    /*
-     * EFFECTS: constructor
-     */
-    MainWindow(QWidget *parent = nullptr);
-
-    /*
-     * EFFECTS: destructor
-     */
-    ~MainWindow();
-
-    /*
-     * EFFECTS: takes a screenshot and adds it to the user's collection
-     */
-    void AddScreenshot();
-
-public slots:
-
-    /*
-     * REQUIRES: action was signalled from the toolbar
-     * EFFECTS: determines the source of the signal begins an appropriate response
-     */
-    void ParseToolbarSignal(QAction* action);
-
-signals:
-
-private:
     QWidget* centralWidget;
     CollectionViewer* scroller;
     QToolBar* toolbar;
@@ -63,8 +55,7 @@ private:
 
 
     /*
-     * EFFECTS: sets up toolbar that allows user to modify a screenshot
-     *          called by constructor
+     * EFFECTS: sets up toolbar; called by constructor
      */
     void SetupToolbar();
 };

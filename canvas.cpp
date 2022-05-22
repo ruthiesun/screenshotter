@@ -4,18 +4,11 @@
 #include <QGraphicsRectItem>
 #include <QPainter>
 
-Canvas::Canvas(QObject *parent)
-    : QGraphicsScene{parent}
-{
-    Setup();
-
-    this->img = nullptr;
-}
-
 Canvas::Canvas(QPixmap* img, QObject *parent)
     : QGraphicsScene{parent}
 {
-    Setup();
+    diameter = 10;
+    currMode = penMode;
 
     this->img = img;
     this->setSceneRect(0, 0, img->width(), img->height());
@@ -50,11 +43,6 @@ void Canvas::Draw(QPoint point) {
 
 void Canvas::Erase(QPoint point) {
     //!!!
-}
-
-void Canvas::Setup() {
-    diameter = 10;
-    currMode = penMode;
 }
 
 void Canvas::drawBackground(QPainter *painter, const QRectF &rect) {

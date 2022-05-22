@@ -6,22 +6,20 @@ TreeViewDelegate::TreeViewDelegate(QObject *parent) : QStyledItemDelegate{parent
 
 
 QSize TreeViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
-    QSize size;
-    if (index.data(Qt::DecorationRole).canConvert<QPixmap>()) {
-        size = index.data(Qt::DecorationRole).value<QPixmap>().size();
-    } else {
-        std::cout << "ERROR: delegate failed to convert qvariant to qpixmap" << std::endl; //!!! replace with exception handling
+    try {
+        QSize size = index.data(Qt::DecorationRole).value<QPixmap>().size();
+        return size.scaled(200,200,Qt::KeepAspectRatio);
+    } catch (_exception& e) {
+        throw std::domain_error("TreeViewDelegate::sizeHint - QVariant conversion failure");
     }
-
-    return size.scaled(200,200,Qt::KeepAspectRatio);
 }
 
 void TreeViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QPixmap img;
-    if (index.data(Qt::DecorationRole).canConvert<QPixmap>()) {
+    try {
         img = index.data(Qt::DecorationRole).value<QPixmap>();
-    } else {
-        std::cout << "ERROR: delegate failed to convert qvariant to qpixmap" << std::endl; //!!! replace with exception handling
+    } catch (_exception& e) {
+        throw std::domain_error("TreeViewDelegate::paint - QVariant conversion failure");
     }
 
     QStyleOptionViewItem styleOption = QStyleOptionViewItem(option);

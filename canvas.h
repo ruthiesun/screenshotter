@@ -11,7 +11,8 @@ public:
     Canvas(QPixmap* img, QObject *parent = nullptr);
 
 public slots:
-    void AddDrawing(QPoint point);
+    void ParseMouse(QPoint point);
+    void MouseRelease();
 
 signals:
 
@@ -22,11 +23,13 @@ protected:
 private:
     const QPen pen;
     qreal diameter;
-    bool mouseButtonDown;
     const QPixmap* img;
+    enum Mode { penMode, eraseMode };
+    Mode currMode;
 
-    void DrawDot(const QPointF point);
-
+    void Draw(QPoint point);
+    void Erase(QPoint point);
+    void Setup();
 };
 
 #endif // CANVAS_H

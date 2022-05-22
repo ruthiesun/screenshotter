@@ -40,7 +40,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::AddScreenshot() {
     this->setWindowState(Qt::WindowMinimized);
-    QScreen *screen = QGuiApplication::primaryScreen();
+    QScreen *screen = QGuiApplication::primaryScreen(); //may not work on iOS
     this->setWindowState(Qt::WindowMaximized);
     if (screen) {
         QPixmap* ss = new QPixmap(screen->grabWindow(0));
@@ -50,7 +50,6 @@ void MainWindow::AddScreenshot() {
 }
 
 void MainWindow::ParseToolbarSignal(QAction* action) {
-    //std::cout << action->iconText().toStdString() << std::endl;
     QString text = action->iconText();
     if (text == DRAW) {
         std::cout << "activate drawing tool" << std::endl;
@@ -64,10 +63,10 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
         std::cout << "save to disk (let user choose file location" << std::endl;
     } else if (text == NEW_COPY) {
         QPixmap* img;
-        if (editor->GetCurrImg()->data(Qt::DecorationRole).canConvert<QPixmap>()) {
+        try {
             img = new QPixmap(editor->GetCurrImg()->data(Qt::DecorationRole).value<QPixmap>());
-        } else {
-            std::cout << "ERROR: delegate failed to convert qvariant to qpixmap" << std::endl; //!!! replace with exception handling
+        } catch (_exception& e) {
+            throw std::domain_error("MainWindow::ParseToolbarSignal - QVariant conversion failure");
         }
         QStandardItem* parent = model->FindParent(editor->GetCurrImg());
         model->Add(img, parent);

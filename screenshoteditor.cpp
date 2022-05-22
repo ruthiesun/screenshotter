@@ -9,16 +9,10 @@
 
 ScreenshotEditor::ScreenshotEditor(QStandardItemModel* m, QWidget* parent) : QWidget(parent) {
     currImg = nullptr;
-    //item = nullptr;
-
     model = m;
-    scene = new Canvas();
     mainLayout = new QVBoxLayout(this);
-    viewer = new CanvasViewer(scene);
+    viewer = new CanvasViewer();
     this->layout()->addWidget(viewer);
-
-    QObject::connect(viewer, &CanvasViewer::PaintEvent,
-                     scene, &Canvas::AddDrawing);
 }
 
 QStandardItem* ScreenshotEditor::GetCurrImg() {
@@ -35,10 +29,13 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
     scene = new Canvas(img, this);
     viewer = new CanvasViewer(scene);
 
-    QObject::connect(viewer, &CanvasViewer::PaintEvent,
-                     scene, &Canvas::AddDrawing);
+    QObject::connect(viewer, &CanvasViewer::Stroke,
+                     scene, &Canvas::ParseMouse);
+    QObject::connect(viewer, &CanvasViewer::DoneStroke,
+                     scene, &Canvas::MouseRelease);
 
-    viewer->fitInView(scene->sceneRect());
+    //viewer->fitInView(viewer->mapToScene(img->rect()).boundingRect());//, Qt::KeepAspectRatioByExpanding);
+    viewer->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     this->layout()->addWidget(viewer);
 }
 

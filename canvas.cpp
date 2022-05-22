@@ -7,42 +7,56 @@
 Canvas::Canvas(QObject *parent)
     : QGraphicsScene{parent}
 {
-    diameter = 5;
+    Setup();
 
-    mouseButtonDown = false;
-
-    this->img = new QPixmap();
+    this->img = nullptr;
 }
 
 Canvas::Canvas(QPixmap* img, QObject *parent)
     : QGraphicsScene{parent}
 {
-    diameter = 5;
-
-    mouseButtonDown = false;
+    Setup();
 
     this->img = img;
     this->setSceneRect(0, 0, img->width(), img->height());
 }
 
-void Canvas::AddDrawing(QPoint point) {
+void Canvas::ParseMouse(QPoint point) {
+    if (img) {
+        switch(currMode)
+        {
+            case penMode: Draw(point); break;
+            case eraseMode: Erase(point); break;
+        }
+    }
+
+
+}
+
+void Canvas::MouseRelease() {
+    //!!!
+}
+
+void Canvas::Draw(QPoint point) {
     this->setSceneRect(0, 0, img->width(), img->height());
     QGraphicsEllipseItem *item = new QGraphicsEllipseItem(point.x(), point.y(), diameter, diameter);
-    /*
-    QPixmap square = QPixmap(5,5);
-    square.fill(Qt::blue);
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(square);
-    */
-    //addEllipse(point.x(), point.y(), diameter, diameter);
-    //addItem(item);
-    //item->setPos(point.x(), point.y());
+    item->setPen(Qt::NoPen);
+    item->setBrush(QBrush(Qt::blue));
+
     item->setVisible(true);
-    item->setSelected(false);
+
     addItem(item);
 }
 
+void Canvas::Erase(QPoint point) {
+    //!!!
+}
 
-//https://forum.qt.io/topic/6313/qgraphicsview-with-qpixmap-background/4
+void Canvas::Setup() {
+    diameter = 10;
+    currMode = penMode;
+}
+
 void Canvas::drawBackground(QPainter *painter, const QRectF &rect) {
     const QRectF bgRect = QRect(0, 0, img->width(), img->height());
     painter->drawPixmap(rect, *img, bgRect);

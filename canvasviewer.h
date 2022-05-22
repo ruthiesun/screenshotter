@@ -12,11 +12,14 @@ public:
 public slots:
 
 signals:
-    void PaintEvent(QPoint point);
+    void Stroke(QPoint point);
+    void DoneStroke();
 
 protected:
     void mousePressEvent(QMouseEvent *mouseEvent) override;
+    void mouseReleaseEvent(QMouseEvent *mouseEvent) override;
     void mouseMoveEvent(QMouseEvent *mouseEvent) override;
+    void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif // CANVASVIEWER_H

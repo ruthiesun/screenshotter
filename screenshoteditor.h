@@ -25,6 +25,7 @@ public:
 public slots:
     /*
      * EFFECTS: switches display to the image at given index in the model (current)
+     *          scenes are preserved between switches
      */
     void ChangeView(const QModelIndex &current, const QModelIndex &previous);
 

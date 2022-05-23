@@ -6,6 +6,7 @@
 #include <QGraphicsEllipseItem>
 #include <QSizePolicy>
 #include <iostream>
+#include <QHash>
 
 ScreenshotEditor::ScreenshotEditor(QStandardItemModel* m, QWidget* parent) : QWidget(parent) {
     currImg = nullptr;
@@ -20,6 +21,7 @@ ScreenshotEditor::~ScreenshotEditor() {
     delete(scene);
     delete(viewer);
     delete(mainLayout);
+    //free QHash and all the values (scenes) !!!
 }
 
 QStandardItem* ScreenshotEditor::GetCurrImg() {

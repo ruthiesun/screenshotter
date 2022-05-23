@@ -38,6 +38,7 @@ private:
     Canvas* scene;
     CanvasViewer* viewer;
     QLayout* mainLayout;
+    QHash<QStandardItem*, CanvasViewer*> *itemToView;
 
 };
 

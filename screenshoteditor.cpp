@@ -10,7 +10,7 @@
 ScreenshotEditor::ScreenshotEditor(QStandardItemModel* m, QWidget* parent) : QWidget(parent) {
     currImg = nullptr;
     model = m;
-    itemToView = new QHash<QStandardItem*,CanvasViewer*>();
+    itemToScene = new QHash<QStandardItem*,Canvas*>();
     mainLayout = new QVBoxLayout(this);
     viewer = new CanvasViewer();
     this->layout()->addWidget(viewer);
@@ -27,34 +27,30 @@ QStandardItem* ScreenshotEditor::GetCurrImg() {
 }
 
 void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex &previous) { //!!!temp implementation (does not presenve scene states between switches)
-
-    this->layout()->removeWidget(viewer);
+    delete(viewer);
+    viewer = new CanvasViewer();
     currImg = model->itemFromIndex(current);
-    if (itemToView->contains(currImg)) {
-        viewer = itemToView->value(currImg);
 
-        viewer->scene()->update();
-        viewer->update();
+    if (itemToScene->contains(currImg)) {
+        scene = itemToScene->value(currImg);
+        viewer->setScene(scene);
     } else {
-
-        currImg = model->itemFromIndex(current);
         QPixmap* img = new QPixmap(currImg->data(Qt::DecorationRole).value<QPixmap>());
-
         scene = new Canvas(img, this);
-        viewer = new CanvasViewer(scene);
-
-        QObject::connect(viewer, &CanvasViewer::Stroke,
-                         scene, &Canvas::ParseMouse);
-        QObject::connect(viewer, &CanvasViewer::DoneStroke,
-                         scene, &Canvas::MouseRelease);
-
-        viewer->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-
-        itemToView->insert(currImg, viewer);
-
+        itemToScene->insert(currImg, scene);
     }
+
+    viewer->setScene(scene);
+    QObject::connect(viewer, &CanvasViewer::Stroke,
+                     scene, &Canvas::ParseMouse);
+    QObject::connect(viewer, &CanvasViewer::DoneStroke,
+                     scene, &Canvas::MouseRelease);
+
+    viewer->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     this->layout()->addWidget(viewer);
 
+
+    //https://stackoverflow.com/questions/7451183/how-to-create-image-file-from-qgraphicsscene-qgraphicsview !!! todo
 
     //---------
 /*

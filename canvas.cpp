@@ -27,7 +27,7 @@ void Canvas::ParseMouse(QPoint point) {
 }
 
 void Canvas::MouseRelease() {
-    //!!!
+
 }
 
 void Canvas::Draw(QPoint point) {

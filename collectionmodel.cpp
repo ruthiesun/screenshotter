@@ -14,6 +14,7 @@ void CollectionModel::Add(const QPixmap* img, QStandardItem* parent) {
 
     QStandardItem *newImg = new QStandardItem();
     newImg->setData(*img, Qt::DecorationRole);
+    newImg->setData(*img, Qt::UserRole);
     rootNode->appendRow(newImg);
 }
 
@@ -26,4 +27,8 @@ QStandardItem* CollectionModel::FindParent(QStandardItem* item) {
         throw std::invalid_argument("CollectionModel::FindParent - nullptr arg");
     }
     return FindParent(item->parent());
+}
+
+void CollectionModel::ChangeDecoration(const QPixmap* img, QStandardItem* item) {
+    item->setData(*img, Qt::DecorationRole);
 }

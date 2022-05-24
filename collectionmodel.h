@@ -25,6 +25,11 @@ public:
     QStandardItem* FindParent(QStandardItem* item);
 
 public slots:
+    /*
+     * MODIFIES: this
+     * EFFECTS: changes item's DecorationRole image to img
+     */
+    void ChangeDecoration(const QPixmap* img, QStandardItem* item);
 
 signals:
 

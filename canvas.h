@@ -2,6 +2,7 @@
 #define CANVAS_H
 
 #include <QGraphicsScene>
+#include <QStandardItem>
 
 /*
  * scene that displays a screenshot

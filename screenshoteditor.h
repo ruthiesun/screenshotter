@@ -7,6 +7,7 @@
 #include <QStandardItemModel>
 #include "canvas.h"
 #include "canvasviewer.h"
+#include "collectionmodel.h"
 
 /*
  * displays a single screenshot and allows the user to manipulate it
@@ -17,7 +18,7 @@ public:
     /*
      * EFFECTS: initializes the model to m
      */
-    explicit ScreenshotEditor(QStandardItemModel* m, QWidget* parent = nullptr);
+    explicit ScreenshotEditor(CollectionModel* m, QWidget* parent = nullptr);
     ~ScreenshotEditor();
 
     QStandardItem* GetCurrImg();
@@ -30,16 +31,20 @@ public slots:
     void ChangeView(const QModelIndex &current, const QModelIndex &previous);
 
 signals:
+    //!!!
+    void ImgChanged(QPixmap* img, QStandardItem* item);
 
 protected:
 
 private:
     QStandardItem* currImg;
-    QStandardItemModel* model;
+    CollectionModel* model;
     Canvas* scene;
     CanvasViewer* viewer;
     QLayout* mainLayout;
     QHash<QStandardItem*, Canvas*> *itemToScene;
+
+    void UpdateView(QStandardItem* item);
 
 };
 

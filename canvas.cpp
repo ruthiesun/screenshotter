@@ -47,5 +47,6 @@ void Canvas::Erase(QPoint point) {
 
 void Canvas::drawBackground(QPainter *painter, const QRectF &rect) {
     const QRectF bgRect = QRect(0, 0, img->width(), img->height());
-    painter->drawPixmap(rect, *img, bgRect);
+    painter->setBackgroundMode(Qt::TransparentMode);
+    painter->drawPixmap(bgRect, *img, bgRect);
 }

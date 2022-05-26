@@ -9,6 +9,7 @@
 #include <iostream>
 #include <QHash>
 #include <QFile>
+#include <QSizePolicy>
 
 
 ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidget(parent) {
@@ -59,8 +60,31 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
                      scene, &Canvas::MouseRelease);
 
 
-    viewer->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    //viewer->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    viewer->setRenderHint(QPainter::Antialiasing);
+    //viewer->setFixedHeight(scene->sceneRect().height());
+    //viewer->setFixedHeight(scene->sceneRect().width());
+    //viewer->setSizePolicy(QSizePolicy::Fixed);
+
+    //TEMP from https://www.bogotobogo.com/Qt/Qt5_QGraphicsView_animation.php
     this->layout()->addWidget(viewer);
+
+    QLineF topLine(scene->sceneRect().topLeft(),
+                       scene->sceneRect().topRight());
+        QLineF leftLine(scene->sceneRect().topLeft(),
+                       scene->sceneRect().bottomLeft());
+        QLineF rightLine(scene->sceneRect().topRight(),
+                       scene->sceneRect().bottomRight());
+        QLineF bottomLine(scene->sceneRect().bottomLeft(),
+                       scene->sceneRect().bottomRight());
+
+        QPen myPen = QPen(Qt::red);
+
+        scene->addLine(topLine, myPen);
+        scene->addLine(leftLine, myPen);
+        scene->addLine(rightLine, myPen);
+        scene->addLine(bottomLine, myPen);
+        //END TEMP
 }
 
 //modified from https://stackoverflow.com/questions/7451183/how-to-create-image-file-from-qgraphicsscene-qgraphicsview
@@ -75,7 +99,7 @@ void ScreenshotEditor::UpdateView(QStandardItem* item) {
     QFile file("test.png");
     file.open(QIODevice::WriteOnly);
     if (img->save(&file, "PNG")) {
-        std::cout << "success" << std::endl;
+        std::cout << "saved test img" << std::endl;
     }
     file.close();
 }

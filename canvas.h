@@ -30,10 +30,12 @@ signals:
 
 
 protected:
+
     /*
      * EFFECTS: sets background to the screenshot at hand
      */
     void drawBackground(QPainter *painter, const QRectF &rect) override;
+
 
 private:
     const QPen pen;

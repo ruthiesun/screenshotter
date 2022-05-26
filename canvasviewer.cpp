@@ -1,6 +1,7 @@
 #include "canvasviewer.h"
 #include <QMouseEvent>
-
+#include <iostream>
+#include <QGraphicsView>
 
 void CanvasViewer::mouseMoveEvent(QMouseEvent *mouseEvent) {
     QPoint screenPos = this->mapToScene(mouseEvent->pos()).toPoint();
@@ -17,6 +18,9 @@ void CanvasViewer::mouseReleaseEvent(QMouseEvent *mouseEvent) {
 }
 
 void CanvasViewer::resizeEvent(QResizeEvent *event) {
-    //!!!
+    std::cout << "resize" << std::endl;
+    if (scene()) {
+        this->fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+    }
 }
 

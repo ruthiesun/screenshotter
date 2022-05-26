@@ -2,6 +2,7 @@
 #define CANVASVIEWER_H
 
 #include <QGraphicsView>
+#include "canvas.h"
 
 /*
  * viewport for a screenshot
@@ -37,6 +38,11 @@ protected:
      * !!!
      */
     void resizeEvent(QResizeEvent *event) override;
+
+private:
+
 };
+
+
 
 #endif // CANVASVIEWER_H

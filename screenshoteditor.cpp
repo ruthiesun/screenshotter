@@ -8,6 +8,7 @@
 #include <QSizePolicy>
 #include <iostream>
 #include <QHash>
+#include <QFile>
 
 
 ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidget(parent) {
@@ -64,22 +65,17 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
 
 //modified from https://stackoverflow.com/questions/7451183/how-to-create-image-file-from-qgraphicsscene-qgraphicsview
 void ScreenshotEditor::UpdateView(QStandardItem* item) {
-
-    scene->clearSelection();                                                  // Selections would also render to the file
-/*
-    QPixmap originalImg = currImg->data(Qt::UserRole).value<QPixmap>();
-    QRectF itemsRect = scene->itemsBoundingRect();
-    int imgWidth = originalImg.width();
-    int imgHeight = originalImg.height();
-    int itemsWidth = itemsRect.width();
-    int itemsHeight = itemsRect.height();
-    scene->setSceneRect(QRectF(0,0,std::max(imgWidth,itemsWidth), std::max(imgHeight,itemsHeight)));                          // Re-shrink the scene to it's bounding contents
-
-*/
-    QPixmap *img = new QPixmap(scene->sceneRect().size().toSize());  // Create the image with the exact size of the shrunk scene
-    img->fill(Qt::blue);   //!!!!                                           // Start all pixels transparent
-
+    scene->clearSelection();
+    QPixmap *img = new QPixmap(scene->sceneRect().size().toSize());
+    //QPixmap *img = new QPixmap(item->data(Qt::UserRole).value<QPixmap>().size());
     QPainter painter(img);
-    scene->render(&painter);
+    viewer->render(&painter);//, item->data(Qt::UserRole).value<QPixmap>().rect(), scene->sceneRect().toRect());//, scene->sceneRect(), scene->sceneRect());
+    //render(QPainter *painter, const QRectF &target = QRectF());//, const QRectF &source = QRectF());
     emit ImgChanged(img, item);
+    QFile file("test.png");
+    file.open(QIODevice::WriteOnly);
+    if (img->save(&file, "PNG")) {
+        std::cout << "success" << std::endl;
+    }
+    file.close();
 }

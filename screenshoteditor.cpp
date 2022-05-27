@@ -59,44 +59,32 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
     QObject::connect(viewer, &CanvasViewer::DoneStroke,
                      scene, &Canvas::MouseRelease);
 
-
-    //viewer->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-    //viewer->setFixedHeight(scene->sceneRect().height());
-    //viewer->setFixedHeight(scene->sceneRect().width());
-    //viewer->setSizePolicy(QSizePolicy::Fixed);
-
-    //TEMP from https://www.bogotobogo.com/Qt/Qt5_QGraphicsView_animation.php
     this->layout()->addWidget(viewer);
-
-    QLineF topLine(scene->sceneRect().topLeft(),
-                       scene->sceneRect().topRight());
-        QLineF leftLine(scene->sceneRect().topLeft(),
-                       scene->sceneRect().bottomLeft());
-        QLineF rightLine(scene->sceneRect().topRight(),
-                       scene->sceneRect().bottomRight());
-        QLineF bottomLine(scene->sceneRect().bottomLeft(),
-                       scene->sceneRect().bottomRight());
-
-        QPen myPen = QPen(Qt::red);
-
-        scene->addLine(topLine, myPen);
-        scene->addLine(leftLine, myPen);
-        scene->addLine(rightLine, myPen);
-        scene->addLine(bottomLine, myPen);
-        //END TEMP
 }
 
-//modified from https://stackoverflow.com/questions/7451183/how-to-create-image-file-from-qgraphicsscene-qgraphicsview
 void ScreenshotEditor::UpdateView(QStandardItem* item) {
+    QPixmap* img = GetCurrScreenImg();
+    emit ImgChanged(img, item);
+    delete(img);
+}
+
+void ScreenshotEditor::Save() {
+    if (currImg) {
+        QFile file("test.png");
+        QPixmap* img = GetCurrScreenImg();
+        file.open(QIODevice::WriteOnly);
+        if (!img->save(&file, "PNG")) {
+            throw std::domain_error("ScreenshotEditor::UpdateView - failed to save image");
+        }
+        file.close();
+        delete(img);
+    }
+}
+
+QPixmap* ScreenshotEditor::GetCurrScreenImg() {
     scene->clearSelection();
     QPixmap *img = new QPixmap(scene->sceneRect().size().toSize());
     QPainter painter(img);
     scene->render(&painter, img->rect(), img->rect());
-    emit ImgChanged(img, item);
-    QFile file("test.png");
-    file.open(QIODevice::WriteOnly);
-    if (img->save(&file, "PNG")) {
-        std::cout << "saved test img" << std::endl;
-    }
-    file.close();
+    return img;
 }

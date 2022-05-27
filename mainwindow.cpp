@@ -63,10 +63,6 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
         std::cout << "activate eraser tool" << std::endl;
     } else if (text == CROP) {
         std::cout << "activate cropping tool" << std::endl;
-    } else if (text == SAVE_CHANGES) {
-        std::cout << "save changes to current pic" << std::endl;
-    } else if (text == SAVE_TO_FILE) {
-        std::cout << "save to disk (let user choose file location" << std::endl;
     } else if (text == NEW_COPY) {
         QPixmap* img;
         try {
@@ -89,8 +85,7 @@ void MainWindow::SetupToolbar() {
     toolbar->addAction(ERASE);
     toolbar->addAction(CROP);
     toolbar->addSeparator();
-    toolbar->addAction(SAVE_CHANGES);
-    toolbar->addAction(SAVE_TO_FILE);
+    toolbar->addAction(SAVE_TO_FILE, editor, &ScreenshotEditor::Save);
     toolbar->addAction(NEW_COPY);
     toolbar->addAction(DELETE);
     toolbar->addSeparator();

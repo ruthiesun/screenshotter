@@ -39,7 +39,6 @@ private:
     const QString DRAW = "Draw";
     const QString ERASE = "Erase";
     const QString CROP = "Crop";
-    const QString SAVE_CHANGES = "Save changes";
     const QString SAVE_TO_FILE = "Save to file";
     const QString NEW_COPY = "New copy";
     const QString DELETE = "Delete";

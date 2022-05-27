@@ -61,7 +61,6 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
 
 
     //viewer->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-    viewer->setRenderHint(QPainter::Antialiasing);
     //viewer->setFixedHeight(scene->sceneRect().height());
     //viewer->setFixedHeight(scene->sceneRect().width());
     //viewer->setSizePolicy(QSizePolicy::Fixed);
@@ -91,10 +90,8 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
 void ScreenshotEditor::UpdateView(QStandardItem* item) {
     scene->clearSelection();
     QPixmap *img = new QPixmap(scene->sceneRect().size().toSize());
-    //QPixmap *img = new QPixmap(item->data(Qt::UserRole).value<QPixmap>().size());
     QPainter painter(img);
-    viewer->render(&painter);//, item->data(Qt::UserRole).value<QPixmap>().rect(), scene->sceneRect().toRect());//, scene->sceneRect(), scene->sceneRect());
-    //render(QPainter *painter, const QRectF &target = QRectF());//, const QRectF &source = QRectF());
+    scene->render(&painter, img->rect(), img->rect());
     emit ImgChanged(img, item);
     QFile file("test.png");
     file.open(QIODevice::WriteOnly);

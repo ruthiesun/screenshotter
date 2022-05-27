@@ -18,7 +18,6 @@ void CanvasViewer::mouseReleaseEvent(QMouseEvent *mouseEvent) {
 }
 
 void CanvasViewer::resizeEvent(QResizeEvent *event) {
-    std::cout << "resize" << std::endl;
     if (scene()) {
         this->fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
     }

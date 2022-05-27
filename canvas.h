@@ -30,7 +30,6 @@ signals:
 
 
 protected:
-
     /*
      * EFFECTS: sets background to the screenshot at hand
      */

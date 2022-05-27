@@ -9,6 +9,7 @@
 #include "collectionviewer.h"
 #include "screenshoteditor.h"
 #include <QStandardItem>
+#include "camera.h"
 #include "collectionmodel.h"
 
 /*
@@ -21,17 +22,18 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    /*
-     * EFFECTS: takes a screenshot and adds it to the user's collection
-     */
-    void AddScreenshot();
-
 public slots:
     /*
      * REQUIRES: action was signalled from the toolbar
      * EFFECTS: responds to the button pressed on the toolbar
      */
     void ParseToolbarSignal(QAction* action);
+
+    /*
+     * REQUIRES: img non-null
+     * EFFECTS: takes a screenshot and adds it to the user's collection
+     */
+    void AddScreenshot(QPixmap* img);
 
 signals:
 
@@ -51,6 +53,7 @@ private:
     QHBoxLayout* mainLayout;
     QGridLayout* editAreaLayout;
     CollectionModel* model;
+    Camera *camera;
 
 
     /*

@@ -7,12 +7,14 @@
 #include <QToolBar>
 #include <QTreeWidget>
 #include <iostream>
+#include "camera.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setWindowState(Qt::WindowMaximized);
     this->setToolButtonStyle(Qt::ToolButtonFollowStyle);
 
     model = new CollectionModel(this);
+    camera = new Camera(this, Qt::FramelessWindowHint);
 
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
@@ -35,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 }
 
 MainWindow::~MainWindow() {
+    delete(camera);
     delete(scroller);
     delete(toolbar);
     delete(editor);
@@ -44,7 +47,8 @@ MainWindow::~MainWindow() {
     delete(model);
 }
 
-void MainWindow::AddScreenshot() { //!!! temp implementation
+void MainWindow::AddScreenshot(QPixmap* img) {
+    /*
     this->setVisible(false);
     QScreen *screen = QGuiApplication::primaryScreen(); //may not work on iOS(?)
     this->setVisible(true);
@@ -52,7 +56,7 @@ void MainWindow::AddScreenshot() { //!!! temp implementation
         QPixmap* ss = new QPixmap(screen->grabWindow(0));
         model->Add(ss);
         delete(ss);
-    }
+    }*/
 }
 
 void MainWindow::ParseToolbarSignal(QAction* action) {
@@ -75,7 +79,7 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
     } else if (text == DELETE) {
         std::cout << "delete the child image or the whole set of images if the parent was selected" << std::endl;
     } else if (text == NEW_SCREENSHOT) {
-        AddScreenshot();
+        camera->setVisible(true);
     }
 }
 

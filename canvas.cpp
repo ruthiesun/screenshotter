@@ -4,9 +4,7 @@
 #include <QGraphicsRectItem>
 #include <QPainter>
 
-Canvas::Canvas(QPixmap* img, QObject *parent)
-    : QGraphicsScene{parent}
-{
+Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
     diameter = 10;
     currMode = penMode;
 

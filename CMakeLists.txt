@@ -26,6 +26,7 @@ set(PROJECT_SOURCES
         treeviewdelegate.h treeviewdelegate.cpp
         canvas.h canvas.cpp
         canvasviewer.h canvasviewer.cpp
+        camera.h camera.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

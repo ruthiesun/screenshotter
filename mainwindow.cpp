@@ -14,7 +14,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setToolButtonStyle(Qt::ToolButtonFollowStyle);
 
     model = new CollectionModel(this);
-    camera = new Camera(this, Qt::FramelessWindowHint);
+    camera = new Camera();
+    QObject::connect(camera, &Camera::Snapped,
+                     this, &MainWindow::AddScreenshot);
 
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
@@ -57,6 +59,8 @@ void MainWindow::AddScreenshot(QPixmap* img) {
         model->Add(ss);
         delete(ss);
     }*/
+    model->Add(img);
+    delete(img);
 }
 
 void MainWindow::ParseToolbarSignal(QAction* action) {
@@ -70,7 +74,7 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
     } else if (text == NEW_COPY) {
         QPixmap* img;
         try {
-            img = new QPixmap(editor->GetCurrImg()->data(Qt::DecorationRole).value<QPixmap>());
+            img = new QPixmap(editor->GetCurrImg()->data(Qt::UserRole).value<QPixmap>());
         } catch (_exception& e) {
             throw std::domain_error("MainWindow::ParseToolbarSignal - QVariant conversion failure");
         }
@@ -79,7 +83,8 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
     } else if (text == DELETE) {
         std::cout << "delete the child image or the whole set of images if the parent was selected" << std::endl;
     } else if (text == NEW_SCREENSHOT) {
-        camera->setVisible(true);
+        camera->show();
+        this->setWindowState(Qt::WindowMinimized);
     }
 }
 

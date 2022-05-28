@@ -30,6 +30,11 @@ public slots:
      */
     void MouseRelease();
 
+    /*
+     * !!!
+     */
+    void MouseDown(QPoint point);
+
 signals:
 
 
@@ -46,7 +51,6 @@ private:
     const QPixmap* img;
     Mode currMode;
     QPoint lastPoint;
-    bool lastPointExists;
 
     /*
      * EFFECTS: draws a dot at the given point

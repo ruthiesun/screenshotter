@@ -23,32 +23,46 @@ void Canvas::ParseMouse(QPoint point) {
         {
             case penMode:
             Draw(point);
-            std::cout << "drawing" << std::endl;
             break;
 
             case eraseMode:
             Erase(point);
-            std::cout << "erasing" << std::endl;
             break;
         }
     }
-
-
 }
 
 void Canvas::MouseRelease() {
 
 }
 
+void Canvas::MouseDown(QPoint point) {
+    if (img) {
+        switch(currMode)
+        {
+            case penMode:
+            lastPoint = point;
+            addLine(point.x(), point.y(), point.x(), point.y(), *pen);
+            break;
+
+            case eraseMode:
+            Erase(point);
+            break;
+        }
+    }
+}
+
 void Canvas::Draw(QPoint point) {
     this->setSceneRect(0, 0, img->width(), img->height());
-    QGraphicsEllipseItem *item = new QGraphicsEllipseItem(point.x(), point.y(), diameter, diameter);
-    item->setPen(Qt::NoPen);
-    item->setBrush(QBrush(Qt::blue));
+    //QGraphicsEllipseItem *item = new QGraphicsEllipseItem(point.x(), point.y(), diameter, diameter);
+    //item->setPen(Qt::NoPen);
+    //item->setBrush(QBrush(Qt::blue));
 
-    item->setVisible(true);
+    //item->setVisible(true);
 
-    addItem(item);
+    //addItem(item);
+    addLine(lastPoint.x(), lastPoint.y(), point.x(), point.y(), *pen);
+    lastPoint = point;
 }
 
 void Canvas::Erase(QPoint point) {

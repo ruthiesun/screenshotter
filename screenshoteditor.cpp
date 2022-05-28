@@ -60,6 +60,8 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
     viewer->setScene(scene);
     QObject::connect(viewer, &CanvasViewer::Stroke,
                      scene, &Canvas::ParseMouse);
+    QObject::connect(viewer, &CanvasViewer::StartStroke,
+                     scene, &Canvas::MouseDown);
     QObject::connect(viewer, &CanvasViewer::DoneStroke,
                      scene, &Canvas::MouseRelease);
 

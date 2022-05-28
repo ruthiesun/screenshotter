@@ -15,6 +15,7 @@ public:
 public slots:
 
 signals:
+    void StartStroke(QPoint point);
     void Stroke(QPoint point);
     void DoneStroke();
 

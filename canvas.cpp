@@ -5,12 +5,12 @@
 #include <QPainter>
 
 Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
-    diameter = 10;
+    diameter = 5;
     currMode = penMode;
 
     this->img = img;
     this->setSceneRect(0, 0, img->width(), img->height());
-    pen = new QPen(QBrush(Qt::blue),diameter);
+    pen = new QPen(QBrush(Qt::blue),diameter,Qt::SolidLine,Qt::RoundCap);
 }
 
 void Canvas::ChangeMode(Canvas::Mode mode) {
@@ -42,7 +42,8 @@ void Canvas::MouseDown(QPoint point) {
         {
             case penMode:
             lastPoint = point;
-            addLine(point.x(), point.y(), point.x(), point.y(), *pen);
+            addEllipse(point.x(), point.y(), diameter, diameter, *pen);
+            std::cout << "added point" <<std::endl;
             break;
 
             case eraseMode:
@@ -54,19 +55,16 @@ void Canvas::MouseDown(QPoint point) {
 
 void Canvas::Draw(QPoint point) {
     this->setSceneRect(0, 0, img->width(), img->height());
-    //QGraphicsEllipseItem *item = new QGraphicsEllipseItem(point.x(), point.y(), diameter, diameter);
-    //item->setPen(Qt::NoPen);
-    //item->setBrush(QBrush(Qt::blue));
-
-    //item->setVisible(true);
-
-    //addItem(item);
     addLine(lastPoint.x(), lastPoint.y(), point.x(), point.y(), *pen);
     lastPoint = point;
 }
 
 void Canvas::Erase(QPoint point) {
-    //!!!
+    QGraphicsItem* item = itemAt(point, QTransform());
+    if (item) {
+        removeItem(item);
+        delete(item);
+    }
 }
 
 void Canvas::drawBackground(QPainter *painter, const QRectF &rect) {

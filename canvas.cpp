@@ -10,14 +10,26 @@ Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
 
     this->img = img;
     this->setSceneRect(0, 0, img->width(), img->height());
+    pen = new QPen(QBrush(Qt::blue),diameter);
+}
+
+void Canvas::ChangeMode(Canvas::Mode mode) {
+    currMode = mode;
 }
 
 void Canvas::ParseMouse(QPoint point) {
     if (img) {
         switch(currMode)
         {
-            case penMode: Draw(point); break;
-            case eraseMode: Erase(point); break;
+            case penMode:
+            Draw(point);
+            std::cout << "drawing" << std::endl;
+            break;
+
+            case eraseMode:
+            Erase(point);
+            std::cout << "erasing" << std::endl;
+            break;
         }
     }
 

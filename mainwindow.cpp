@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     scroller = new CollectionViewer(model, this);
     editor = new ScreenshotEditor(model, this);
-
     QObject::connect(scroller->GetView()->selectionModel(), &QItemSelectionModel::currentChanged,
                      editor, &ScreenshotEditor::ChangeView);
 
@@ -66,9 +65,9 @@ void MainWindow::AddScreenshot(QPixmap* img) {
 void MainWindow::ParseToolbarSignal(QAction* action) {
     QString text = action->iconText();
     if (text == DRAW) {
-        std::cout << "activate drawing tool" << std::endl;
+        emit CanvasModeChanged(Canvas::penMode);
     } else if (text == ERASE) {
-        std::cout << "activate eraser tool" << std::endl;
+        emit CanvasModeChanged(Canvas::eraseMode);
     } else if (text == CROP) {
         std::cout << "activate cropping tool" << std::endl;
     } else if (text == NEW_COPY) {

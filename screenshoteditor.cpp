@@ -10,6 +10,7 @@
 #include <QHash>
 #include <QFile>
 #include <QSizePolicy>
+#include "mainwindow.h"
 
 
 ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidget(parent) {
@@ -22,6 +23,7 @@ ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidge
 
     QObject::connect(this, &ScreenshotEditor::ImgChanged,
                      model, &CollectionModel::ChangeDecoration);
+
 }
 
 ScreenshotEditor::~ScreenshotEditor() {
@@ -51,6 +53,8 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
         QPixmap* img = new QPixmap(currImg->data(Qt::UserRole).value<QPixmap>());
         scene = new Canvas(img, this);
         itemToScene->insert(currImg, scene);
+        QObject::connect((MainWindow*) this->nativeParentWidget(), &MainWindow::CanvasModeChanged,
+                         scene, &Canvas::ChangeMode);
     }
 
     viewer->setScene(scene);

@@ -10,12 +10,16 @@
 class Canvas : public QGraphicsScene {
         Q_OBJECT
 public:
+    enum Mode { penMode, eraseMode };
+
     /*
      * EFFECTS: initializes the screenshot to display to img
      */
     explicit Canvas(QPixmap* img, QObject *parent = nullptr);
 
 public slots:
+    void ChangeMode(Canvas::Mode mode);
+
     /*
      * EFFECTS: executes modification to the screenshot at given the point based on the current mode
      */
@@ -37,11 +41,12 @@ protected:
 
 
 private:
-    const QPen pen;
+    const QPen *pen;
     qreal diameter;
     const QPixmap* img;
-    enum Mode { penMode, eraseMode };
     Mode currMode;
+    QPoint lastPoint;
+    bool lastPointExists;
 
     /*
      * EFFECTS: draws a dot at the given point

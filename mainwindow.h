@@ -11,6 +11,7 @@
 #include <QStandardItem>
 #include "camera.h"
 #include "collectionmodel.h"
+#include "canvas.h"
 
 /*
  * class representing the application's window
@@ -36,6 +37,7 @@ public slots:
     void AddScreenshot(QPixmap* img);
 
 signals:
+    void CanvasModeChanged(Canvas::Mode mode);
 
 private:
     const QString DRAW = "Draw";

@@ -23,7 +23,6 @@ public:
 
     QStandardItem* GetCurrImg();
 
-
 public slots:
     /*
      * EFFECTS: switches display to the image at given index in the model (current)

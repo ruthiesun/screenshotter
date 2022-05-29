@@ -51,7 +51,7 @@ protected:
 
 
 private:
-    const QPen *pen;
+    QPen pen;
     const QPixmap* img;
     qreal diameter;
     Mode currMode;

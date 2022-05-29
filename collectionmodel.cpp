@@ -1,5 +1,6 @@
 #include "collectionmodel.h"
 #include <exception>
+#include <iostream>
 
 void CollectionModel::Add(const QPixmap* img, QStandardItem* parent) {
     QStandardItem *rootNode;
@@ -16,7 +17,6 @@ void CollectionModel::Add(const QPixmap* img, QStandardItem* parent) {
 }
 
 void CollectionModel::Delete(QStandardItem *item) {
-    emitCleared(item);
     QStandardItem* parent = this->FindParent(item);
     if (item == parent) {
         clearItemData(item->index());
@@ -28,6 +28,7 @@ void CollectionModel::Delete(QStandardItem *item) {
     } else {
         removeRow(item->row(), parent->index());
     }
+    emitCleared(item);
 }
 
 void CollectionModel::emitCleared(QStandardItem* item) {

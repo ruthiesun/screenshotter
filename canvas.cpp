@@ -9,11 +9,11 @@ Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
 
     this->img = img;
     this->setSceneRect(0, 0, img->width(), img->height());
-    pen = new QPen(QBrush(Qt::blue),diameter,Qt::SolidLine,Qt::RoundCap);
+    pen = QPen(QBrush(Qt::blue),diameter,Qt::SolidLine,Qt::RoundCap);
 }
 
 Canvas::~Canvas() {
-    //!!!
+    delete img;
 }
 
 void Canvas::ChangeMode(Canvas::Mode mode) {
@@ -41,7 +41,7 @@ void Canvas::MouseDown(QPoint point) {
         {
             case penMode:
             lastPoint = point;
-            addEllipse(point.x(), point.y(), diameter, diameter, *pen);
+            addEllipse(point.x()-diameter/2, point.y()-diameter/2, diameter, diameter, pen);
             break;
 
             case eraseMode:
@@ -58,7 +58,7 @@ void Canvas::drawBackground(QPainter *painter, const QRectF &rect) {
 
 void Canvas::Draw(QPoint point) {
     this->setSceneRect(0, 0, img->width(), img->height());
-    addLine(lastPoint.x(), lastPoint.y(), point.x(), point.y(), *pen);
+    addLine(lastPoint.x(), lastPoint.y(), point.x(), point.y(), pen);
     lastPoint = point;
 }
 

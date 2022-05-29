@@ -52,8 +52,15 @@ signals:
 protected:
 
 private:
+    /*
+     * NOTE:        currImg is not deallocated with the ScreenshotEditor object
+     */
     QStandardItem* currImg;
+    /*
+     * NOTE:        model is not deallocated with the ScreenshotEditor object
+     */
     CollectionModel* model;
+
     Canvas* scene;
     CanvasViewer* viewer;
     QLayout* mainLayout;

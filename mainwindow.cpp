@@ -31,14 +31,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 }
 
 MainWindow::~MainWindow() {
-    delete(camera);
-    delete(scroller);
-    delete(toolbar);
-    delete(editor);
-    delete(mainLayout);
-    delete(editAreaLayout);
-    delete(centralWidget);
-    delete(model);
+    delete camera;
+    delete scroller;
+    delete toolbar;
+    delete editor;
+    delete mainLayout;
+    delete editAreaLayout;
+    delete centralWidget;
+    delete model;
 }
 
 QSize MainWindow::sizeHint() const {

@@ -21,10 +21,12 @@ ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidge
 }
 
 ScreenshotEditor::~ScreenshotEditor() {
-    delete(scene);
-    delete(viewer);
-    delete(mainLayout);
-    //free QHash and all the values (scenes) !!!
+    delete viewer;
+    delete mainLayout;
+    for (Canvas* scene : itemToScene->values()) {
+        delete scene;
+    }
+    delete itemToScene;
 }
 
 QStandardItem* ScreenshotEditor::GetCurrImg() {
@@ -32,19 +34,13 @@ QStandardItem* ScreenshotEditor::GetCurrImg() {
 }
 
 void ScreenshotEditor::DeletedItem(QStandardItem* item) {
-    /*std::cout << "deleting" << std::endl;
-
     if (itemToScene->contains(item)) {
-        std::cout << "deleting1" << std::endl;
-        delete itemToScene->take(item);
-        std::cout << "deleting2" << std::endl;
+        Canvas* currthing = itemToScene->take(item);
+        delete currthing;
     }
-    */
-    //!!! must free scene memory
-    itemToScene->remove(item);
 
     if (itemToScene->empty()) {
-        delete(viewer);
+        delete viewer;
         viewer = new CanvasViewer();
         this->layout()->addWidget(viewer);
     }
@@ -55,7 +51,7 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
         UpdateView(model->itemFromIndex(previous));
     }
 
-    delete(viewer);
+    delete viewer;
     viewer = new CanvasViewer();
     currImg = model->itemFromIndex(current);
 
@@ -82,7 +78,7 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
 void ScreenshotEditor::UpdateView(QStandardItem* item) {
     QPixmap* img = GetCurrScreenImg();
     emit ImgChanged(img, item);
-    delete(img);
+    delete img;
 }
 
 void ScreenshotEditor::Save() {
@@ -94,7 +90,7 @@ void ScreenshotEditor::Save() {
             throw std::domain_error("ScreenshotEditor::UpdateView - failed to save image");
         }
         file.close();
-        delete(img);
+        delete img;
     }
 }
 

@@ -25,6 +25,9 @@ signals:
     void SelectedForView(QPixmap* img);
 
 private:
+    /*
+     * NOTE:        model is not deallocated with the CollectionViewer object
+     */
     CollectionModel* model;
 
     /*

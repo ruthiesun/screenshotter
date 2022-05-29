@@ -20,19 +20,37 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
+    /*
+     * EFFECTS:     constructor
+     */
     MainWindow(QWidget *parent = nullptr);
+
+    /*
+     * EFFECTS:     destructor
+     */
     ~MainWindow();
+
+    /*
+     * EFFECTS:     sets default size to full screen
+     */
+    QSize sizeHint() const override;
 
 public slots:
     /*
-     * REQUIRES: action was signalled from the toolbar
-     * EFFECTS: responds to the button pressed on the toolbar
+     * REQUIRES:    action was signalled from the toolbar
+     * EFFECTS:     responds to the button pressed on the toolbar:
+     *              if draw, switches editor mode to drawing
+     *              if erase, switches editor mode to erasing
+     *              if save to file, opens a dialog that prompts user to save the image that is currently displayed
+     *              if new copy, duplicates original version of the image that is currently displayed and stores the duplicate as a child
+     *              if delete, deletes the image that is currently displayed and any children
+     *              if new screenshot, opens camera dialog that allows user to take a screenshot
      */
     void ParseToolbarSignal(QAction* action);
 
     /*
-     * REQUIRES: img non-null
-     * EFFECTS: takes a screenshot and adds it to the user's collection
+     * REQUIRES:    img is not null
+     * EFFECTS:     adds img to the user's collection
      */
     void AddScreenshot(QPixmap* img);
 
@@ -57,10 +75,16 @@ private:
     CollectionModel* model;
     Camera *camera;
 
-
     /*
-     * EFFECTS: sets up toolbar; called by constructor
+     * EFFECTS:     sets up toolbar
+     *              called by constructor
      */
     void SetupToolbar();
+
+    /*
+     * EFFECTS:     sets up the ui
+     *              called by the constructor
+     */
+    void Setup();
 };
 #endif // MAINWINDOW_H

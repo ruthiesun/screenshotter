@@ -1,8 +1,5 @@
 #include "treeviewdelegate.h"
-#include <iostream>
 #include <QPainter>
-
-TreeViewDelegate::TreeViewDelegate(QObject *parent) : QStyledItemDelegate{parent} {}
 
 QSize TreeViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
     try {

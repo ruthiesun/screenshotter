@@ -5,10 +5,16 @@
 #include <QObject>
 #include <QPushButton>
 
-class Camera : public QDialog
-{
+/*
+ * translucent window in which users can take screenshots
+ */
+class Camera : public QDialog {
     Q_OBJECT
 public:
+    /*
+     * EFFECTS:     constructor
+     *              also sets up widget appearance
+     */
     explicit Camera(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
 public slots:
@@ -22,9 +28,17 @@ private:
     QPushButton *button;
 
     /*
-     * EFFECTS: takes a picture of contents underneath entire dialog screen
+     * REQUIRES:    dialog is in focus
+     * EFFECTS:     takes a picture of contents underneath dialog screen
+     *              emits a Snapped signal with that picture
      */
     void TakePic();
+
+    /*
+     * EFFECTS:     sets up the ui
+     *              called by the constructor
+     */
+    void Setup();
 };
 
 #endif // CAMERA_H

@@ -5,7 +5,7 @@
 #include <QStandardItem>
 
 /*
- * scene that displays a screenshot
+ * displays a screenshot in a background layer as well as the user's drawings in an upper layer
  */
 class Canvas : public QGraphicsScene {
         Q_OBJECT
@@ -13,52 +13,57 @@ public:
     enum Mode { penMode, eraseMode };
 
     /*
-     * EFFECTS: initializes the screenshot to display to img
+     * EFFECTS:     constructor
      */
-    explicit Canvas(QPixmap* img, QObject *parent = nullptr);
+    explicit Canvas(QPixmap* img = nullptr, QObject *parent = nullptr);
+
+    /*
+     * EFFECTS:     destructor
+     */
+    ~Canvas();
 
 public slots:
+    /*
+     * EFFECTS:     changes current mode to the given mode
+     */
     void ChangeMode(Canvas::Mode mode);
 
     /*
-     * EFFECTS: executes modification to the screenshot at given the point based on the current mode
+     * EFFECTS:     if current mode is penMode, draws a line from previous point to given point with the pen
+     *              if current mode is eraseMode, erases the top level item at the given point
      */
     void ParseMouse(QPoint point);
 
     /*
-     * !!!
-     */
-    void MouseRelease();
-
-    /*
-     * !!!
+     * EFFECTS:     if current mode is penMode, draws a dot at the given point
+     *              if current mode is eraseMode, erases the top level item at the given point
      */
     void MouseDown(QPoint point);
 
 signals:
 
-
 protected:
     /*
-     * EFFECTS: sets background to the screenshot at hand
+     * REQUIRES:    img is not null
+     * EFFECTS:     sets background layer to img
      */
     void drawBackground(QPainter *painter, const QRectF &rect) override;
 
 
 private:
     const QPen *pen;
-    qreal diameter;
     const QPixmap* img;
+    qreal diameter;
     Mode currMode;
     QPoint lastPoint;
 
     /*
-     * EFFECTS: draws a dot at the given point
+     * EFFECTS: draws a line from previous point to given point with the pen
      */
     void Draw(QPoint point);
 
     /*
-     * EFFECTS: if there is an item at the given point or within the radius of the eraser, erases it
+     * EFFECTS: erases the top level item at the given point
      */
     void Erase(QPoint point);
 };

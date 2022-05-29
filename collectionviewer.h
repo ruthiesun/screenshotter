@@ -14,11 +14,10 @@ class CollectionViewer : public QTreeView {
     Q_OBJECT
 public:
     /*
-     * EFFECTS: initializes the model to m
+     * EFFECTS:     constructor
+     *              initializes model to m
      */
     explicit CollectionViewer(CollectionModel* m, QWidget* parent = nullptr);
-
-    QTreeView* GetView();
 
 public slots:
 
@@ -29,7 +28,8 @@ private:
     CollectionModel* model;
 
     /*
-     * EFFECTS: sets up the display; called by constructor
+     * EFFECTS:     sets up the ui
+     *              called by the constructor
      */
     void Setup();
 

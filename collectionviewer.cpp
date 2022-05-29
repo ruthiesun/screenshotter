@@ -12,10 +12,6 @@ CollectionViewer::CollectionViewer(CollectionModel* m, QWidget* parent) : QTreeV
     Setup();
 }
 
-QTreeView* CollectionViewer::GetView() {
-    return this;
-}
-
 void CollectionViewer::Setup() {
     this->setHeaderHidden(true);
     this->header()->resizeSections(QHeaderView::ResizeToContents);
@@ -23,7 +19,6 @@ void CollectionViewer::Setup() {
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     delete(this->itemDelegate());
     this->setItemDelegate(new TreeViewDelegate());
-
     this->setModel(model);
     this->expandAll();
 }

@@ -1,8 +1,7 @@
 #include "canvas.h"
-#include <QGraphicsSceneMouseEvent>
-#include <iostream>
-#include <QGraphicsRectItem>
 #include <QPainter>
+#include <QGraphicsItem>
+#include <iostream>
 
 Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
     diameter = 5;
@@ -11,6 +10,10 @@ Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
     this->img = img;
     this->setSceneRect(0, 0, img->width(), img->height());
     pen = new QPen(QBrush(Qt::blue),diameter,Qt::SolidLine,Qt::RoundCap);
+}
+
+Canvas::~Canvas() {
+    //!!!
 }
 
 void Canvas::ChangeMode(Canvas::Mode mode) {
@@ -32,10 +35,6 @@ void Canvas::ParseMouse(QPoint point) {
     }
 }
 
-void Canvas::MouseRelease() {
-
-}
-
 void Canvas::MouseDown(QPoint point) {
     if (img) {
         switch(currMode)
@@ -43,7 +42,6 @@ void Canvas::MouseDown(QPoint point) {
             case penMode:
             lastPoint = point;
             addEllipse(point.x(), point.y(), diameter, diameter, *pen);
-            std::cout << "added point" <<std::endl;
             break;
 
             case eraseMode:
@@ -51,6 +49,11 @@ void Canvas::MouseDown(QPoint point) {
             break;
         }
     }
+}
+
+void Canvas::drawBackground(QPainter *painter, const QRectF &rect) {
+    const QRectF bgRect = QRect(0, 0, img->width(), img->height());
+    painter->drawPixmap(bgRect, *img, bgRect);
 }
 
 void Canvas::Draw(QPoint point) {
@@ -67,8 +70,4 @@ void Canvas::Erase(QPoint point) {
     }
 }
 
-void Canvas::drawBackground(QPainter *painter, const QRectF &rect) {
-    const QRectF bgRect = QRect(0, 0, img->width(), img->height());
-    painter->setBackgroundMode(Qt::TransparentMode);
-    painter->drawPixmap(bgRect, *img, bgRect);
-}
+

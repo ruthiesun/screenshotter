@@ -1,8 +1,5 @@
 #include "collectionmodel.h"
-#include <iostream>
 #include <exception>
-
-CollectionModel::CollectionModel(QObject *parent) : QStandardItemModel{parent} {}
 
 void CollectionModel::Add(const QPixmap* img, QStandardItem* parent) {
     QStandardItem *rootNode;
@@ -36,7 +33,6 @@ void CollectionModel::Delete(QStandardItem *item) {
 void CollectionModel::emitCleared(QStandardItem* item) {
     emit Cleared(item);
     for (int i=0; i<item->rowCount(); i++) {
-        std::cout << i << std::endl;
         emitCleared(item->child(i));
     }
 }

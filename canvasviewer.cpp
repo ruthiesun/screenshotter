@@ -1,6 +1,5 @@
 #include "canvasviewer.h"
 #include <QMouseEvent>
-#include <iostream>
 #include <QGraphicsView>
 
 void CanvasViewer::mouseMoveEvent(QMouseEvent *mouseEvent) {
@@ -11,10 +10,6 @@ void CanvasViewer::mouseMoveEvent(QMouseEvent *mouseEvent) {
 void CanvasViewer::mousePressEvent(QMouseEvent *mouseEvent) {
     QPoint screenPos = this->mapToScene(mouseEvent->pos()).toPoint();
     emit StartStroke(screenPos);
-}
-
-void CanvasViewer::mouseReleaseEvent(QMouseEvent *mouseEvent) {
-    emit DoneStroke();
 }
 
 void CanvasViewer::resizeEvent(QResizeEvent *event) {

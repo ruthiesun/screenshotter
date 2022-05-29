@@ -5,7 +5,7 @@
 #include "canvas.h"
 
 /*
- * viewport for a screenshot
+ * viewport for a screenshot (represented by a canvas)
  */
 class CanvasViewer : public QGraphicsView {
     Q_OBJECT
@@ -21,22 +21,17 @@ signals:
 
 protected:
     /*
-     * EFFECTS: signals to the scene where the mouse was pressed
+     * EFFECTS:     signals where the mouse was pressed
      */
     void mousePressEvent(QMouseEvent *mouseEvent) override;
 
     /*
-     * EFFECTS: signals to the scene that the mouse was released
-     */
-    void mouseReleaseEvent(QMouseEvent *mouseEvent) override;
-
-    /*
-     * EFFECTS: signals to the scene where the mouse was last after the move
+     * EFFECTS:     signals where the mouse was last after the move
      */
     void mouseMoveEvent(QMouseEvent *mouseEvent) override;
 
     /*
-     * !!!
+     * EFFECTS:     if there is a screenshot being displayed while the viewport is beign resized, scales the screenshot while keeping the aspect ratio
      */
     void resizeEvent(QResizeEvent *event) override;
 
@@ -44,7 +39,5 @@ protected:
 private:
 
 };
-
-
 
 #endif // CANVASVIEWER_H

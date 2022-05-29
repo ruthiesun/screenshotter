@@ -2,7 +2,6 @@
 #define SCREENSHOTEDITOR_H
 
 #include <QGraphicsView>
-#include <QHBoxLayout>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include "canvas.h"
@@ -10,30 +9,44 @@
 #include "collectionmodel.h"
 
 /*
- * displays a single screenshot and allows the user to manipulate it
+ * displays a single screenshot in a viewport and allows the user to manipulate it
  */
 class ScreenshotEditor : public QWidget {
     Q_OBJECT
 public:
     /*
-     * EFFECTS: initializes the model to m
+     * EFFECTS:     constructor
+     *              initializes the model to m
      */
     explicit ScreenshotEditor(CollectionModel* m, QWidget* parent = nullptr);
+
+    /*
+     * EFFECTS:     destructor
+     */
     ~ScreenshotEditor();
 
+    /*
+     * EFFECTS:     returns model item of image that is currently displayed
+     */
     QStandardItem* GetCurrImg();
 
 public slots:
     /*
-     * EFFECTS: switches display to the image at given index in the model (current)
-     *          scenes are preserved between switches
+     * EFFECTS:     switches display to the image at given index in the model
      */
     void ChangeView(const QModelIndex &current, const QModelIndex &previous);
+
+    /*
+     * EFFECTS:     removes references to item and deletes its associated canvas, if one exists
+     */
     void DeletedItem(QStandardItem* item);
+
+    /*
+     * EFFECTS:     opens dialog that allows user to save image that is currently displayed
+     */
     void Save();
 
 signals:
-    //!!!
     void ImgChanged(QPixmap* img, QStandardItem* item);
 
 protected:
@@ -46,9 +59,15 @@ private:
     QLayout* mainLayout;
     QHash<QStandardItem*, Canvas*> *itemToScene;
 
+    /*
+     * EFFECTS:     emits ImgChanged signal with image that is currently displayed
+     */
     void UpdateView(QStandardItem* item);
-    QPixmap* GetCurrScreenImg();
 
+    /*
+     * EFFECTS:     returns image that is currently displayed
+     */
+    QPixmap* GetCurrScreenImg();
 };
 
 #endif // SCREENSHOTEDITOR_H

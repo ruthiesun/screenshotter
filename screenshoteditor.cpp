@@ -1,16 +1,10 @@
 #include "screenshoteditor.h"
 #include "collectionmodel.h"
-#include <QGridLayout>
-#include <QLayout>
-#include <QGraphicsView>
-#include <QGraphicsPixmapItem>
-#include <QGraphicsEllipseItem>
-#include <QSizePolicy>
-#include <iostream>
+#include <QVBoxLayout>
 #include <QHash>
 #include <QFile>
-#include <QSizePolicy>
 #include "mainwindow.h"
+#include <iostream>
 
 
 ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidget(parent) {
@@ -38,9 +32,17 @@ QStandardItem* ScreenshotEditor::GetCurrImg() {
 }
 
 void ScreenshotEditor::DeletedItem(QStandardItem* item) {
-    //remove from map
-    //if no more items in map after, clear view
+    /*std::cout << "deleting" << std::endl;
+
+    if (itemToScene->contains(item)) {
+        std::cout << "deleting1" << std::endl;
+        delete itemToScene->take(item);
+        std::cout << "deleting2" << std::endl;
+    }
+    */
+    //!!! must free scene memory
     itemToScene->remove(item);
+
     if (itemToScene->empty()) {
         delete(viewer);
         viewer = new CanvasViewer();
@@ -73,8 +75,6 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
                      scene, &Canvas::ParseMouse);
     QObject::connect(viewer, &CanvasViewer::StartStroke,
                      scene, &Canvas::MouseDown);
-    QObject::connect(viewer, &CanvasViewer::DoneStroke,
-                     scene, &Canvas::MouseRelease);
 
     this->layout()->addWidget(viewer);
 }

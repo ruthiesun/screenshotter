@@ -21,7 +21,6 @@ void CollectionViewer::Setup() {
     this->header()->resizeSections(QHeaderView::ResizeToContents);
     this->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    //this->setUniformRowHeights(true);
     delete(this->itemDelegate());
     this->setItemDelegate(new TreeViewDelegate());
 

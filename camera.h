@@ -35,6 +35,7 @@ private:
     void TakePic();
 
     /*
+     * MODIFIES:    this
      * EFFECTS:     sets up the ui
      *              called by the constructor
      */

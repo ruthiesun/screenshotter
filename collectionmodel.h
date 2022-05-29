@@ -12,7 +12,7 @@ public:
     using QStandardItemModel::QStandardItemModel;
 
     /*
-     * MODIFIES:    this
+     * MODIFIES:    this, parent
      * EFFECTS:     adds img to the model under the given parent
      *              img is added to a new row if parent == nullptr
      */
@@ -21,7 +21,7 @@ public:
     /*
      * REQUIRES:    item is in the model
      *              item is not null
-     * MODIFIES:    this
+     * MODIFIES:    this, item
      * EFFECTS:     deletes item from the model and all its children
      *              emits a Cleared signal for each deleted item/child
      */
@@ -36,7 +36,7 @@ public:
 
 public slots:
     /*
-     * MODIFIES:    this
+     * MODIFIES:    this, item
      * EFFECTS:     changes item's DecorationRole image to img
      */
     void ChangeDecoration(const QPixmap* img, QStandardItem* item);

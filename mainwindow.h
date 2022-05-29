@@ -50,6 +50,7 @@ public slots:
 
     /*
      * REQUIRES:    img is not null
+     * MODIFIES:    this
      * EFFECTS:     adds img to the user's collection
      */
     void AddScreenshot(QPixmap* img);
@@ -76,12 +77,14 @@ private:
     Camera *camera;
 
     /*
+     * MODIFIES:    this
      * EFFECTS:     sets up toolbar
      *              called by constructor
      */
     void SetupToolbar();
 
     /*
+     * MODIFIES:    this
      * EFFECTS:     sets up the ui
      *              called by the constructor
      */

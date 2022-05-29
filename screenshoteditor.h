@@ -32,11 +32,15 @@ public:
 
 public slots:
     /*
+     * MODIFIES:    this
      * EFFECTS:     switches display to the image at given index in the model
+     *              if given index is invalid, displays a blank viewport
+     *              if previous index is valid, updates the tree view icon of the previous image to display any modifications that the user has made
      */
     void ChangeView(const QModelIndex &current, const QModelIndex &previous);
 
     /*
+     * MODIFIES:    this
      * EFFECTS:     removes references to item and deletes its associated canvas, if one exists
      */
     void DeletedItem(QStandardItem* item);
@@ -67,7 +71,7 @@ private:
     QHash<QStandardItem*, Canvas*> *itemToScene;
 
     /*
-     * EFFECTS:     emits ImgChanged signal with image that is currently displayed
+     * EFFECTS:     emits ImgChanged signal with image that is currently displayed, with its modifications
      */
     void UpdateView(QStandardItem* item);
 

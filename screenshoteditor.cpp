@@ -35,14 +35,8 @@ QStandardItem* ScreenshotEditor::GetCurrImg() {
 
 void ScreenshotEditor::DeletedItem(QStandardItem* item) {
     if (itemToScene->contains(item)) {
-        Canvas* currthing = itemToScene->take(item);
-        delete currthing;
-    }
-
-    if (itemToScene->empty()) {
-        delete viewer;
-        viewer = new CanvasViewer();
-        this->layout()->addWidget(viewer);
+        delete itemToScene->take(item);
+        currImg = nullptr;
     }
 }
 
@@ -50,29 +44,32 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
     if (currImg) {
         UpdateView(model->itemFromIndex(previous));
     }
-
-    delete viewer;
-    viewer = new CanvasViewer();
-    currImg = model->itemFromIndex(current);
-
-    if (itemToScene->contains(currImg)) {
-        scene = itemToScene->value(currImg);
-        viewer->setScene(scene);
+    if (!current.isValid()) {
+        viewer->setScene(nullptr);
     } else {
-        QPixmap* img = new QPixmap(currImg->data(Qt::UserRole).value<QPixmap>());
-        scene = new Canvas(img, this);
-        itemToScene->insert(currImg, scene);
-        QObject::connect((MainWindow*) this->nativeParentWidget(), &MainWindow::CanvasModeChanged,
-                         scene, &Canvas::ChangeMode);
+        delete viewer;
+        viewer = new CanvasViewer();
+        currImg = model->itemFromIndex(current);
+
+        if (itemToScene->contains(currImg)) {
+            scene = itemToScene->value(currImg);
+            viewer->setScene(scene);
+        } else {
+            QPixmap* img = new QPixmap(currImg->data(Qt::UserRole).value<QPixmap>()); //dealloced with Canvas destructor
+            scene = new Canvas(img, this);
+            itemToScene->insert(currImg, scene);
+            QObject::connect((MainWindow*) this->nativeParentWidget(), &MainWindow::CanvasModeChanged,
+                             scene, &Canvas::ChangeMode);
+        }
+
+        viewer->setScene(scene);
+        QObject::connect(viewer, &CanvasViewer::Stroke,
+                         scene, &Canvas::ParseMouse);
+        QObject::connect(viewer, &CanvasViewer::StartStroke,
+                         scene, &Canvas::MouseDown);
+
+        this->layout()->addWidget(viewer);
     }
-
-    viewer->setScene(scene);
-    QObject::connect(viewer, &CanvasViewer::Stroke,
-                     scene, &Canvas::ParseMouse);
-    QObject::connect(viewer, &CanvasViewer::StartStroke,
-                     scene, &Canvas::MouseDown);
-
-    this->layout()->addWidget(viewer);
 }
 
 void ScreenshotEditor::UpdateView(QStandardItem* item) {

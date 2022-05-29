@@ -17,18 +17,25 @@ void CollectionModel::Add(const QPixmap* img, QStandardItem* parent) {
 }
 
 void CollectionModel::Delete(QStandardItem *item) {
-    QStandardItem* parent = this->FindParent(item);
-    if (item == parent) {
-        clearItemData(item->index());
-        if (invisibleRootItem()->rowCount() == 1) {
-            clear();
-        } else {
-            invisibleRootItem()->removeRow(item->row());
-        }
-    } else {
-        removeRow(item->row(), parent->index());
-    }
     emitCleared(item);
+
+    QStandardItem* parent = this->FindParent(item);
+
+    if (item == parent) {
+        for (int i=0; i<item->rowCount(); i++) {
+            delete item->child(i);
+            item->removeRow(i);
+        }
+        int row = item->row();
+        delete item;
+        invisibleRootItem()->removeRow(row);
+
+    } else {
+        int row = item->row();
+        delete(item);
+        removeRow(row, parent->index());
+    }
+
 }
 
 void CollectionModel::emitCleared(QStandardItem* item) {

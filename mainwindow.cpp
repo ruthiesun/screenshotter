@@ -57,14 +57,18 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
     } else if (text == ERASE) {
         emit CanvasModeChanged(Canvas::eraseMode);
     } else if (text == NEW_COPY) {
-        QPixmap* img;
-        try {
-            img = new QPixmap(editor->GetCurrImg()->data(Qt::UserRole).value<QPixmap>());
-        } catch (_exception& e) {
-            throw std::domain_error("MainWindow::ParseToolbarSignal - QVariant conversion failure");
+        QStandardItem* item = editor->GetCurrImg();
+        if (item) {
+            QPixmap* img;
+            try {
+                img = new QPixmap(item->data(Qt::UserRole).value<QPixmap>());
+            } catch (_exception& e) {
+                throw std::domain_error("MainWindow::ParseToolbarSignal - QVariant conversion failure");
+            }
+            QStandardItem* parent = model->FindParent(editor->GetCurrImg());
+            model->Add(img, parent);
+            delete img;
         }
-        QStandardItem* parent = model->FindParent(editor->GetCurrImg());
-        model->Add(img, parent);
     } else if (text == DELETE) {
         QStandardItem* item = editor->GetCurrImg();
         if (item != nullptr) {

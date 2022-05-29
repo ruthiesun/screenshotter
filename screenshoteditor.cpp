@@ -37,6 +37,17 @@ QStandardItem* ScreenshotEditor::GetCurrImg() {
     return currImg;
 }
 
+void ScreenshotEditor::DeletedItem(QStandardItem* item) {
+    //remove from map
+    //if no more items in map after, clear view
+    itemToScene->remove(item);
+    if (itemToScene->empty()) {
+        delete(viewer);
+        viewer = new CanvasViewer();
+        this->layout()->addWidget(viewer);
+    }
+}
+
 void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex &previous) {
     if (currImg) {
         UpdateView(model->itemFromIndex(previous));

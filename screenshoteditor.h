@@ -29,6 +29,7 @@ public slots:
      *          scenes are preserved between switches
      */
     void ChangeView(const QModelIndex &current, const QModelIndex &previous);
+    void DeletedItem(QStandardItem* item);
     void Save();
 
 signals:

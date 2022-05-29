@@ -26,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     editor = new ScreenshotEditor(model, this);
     QObject::connect(scroller->GetView()->selectionModel(), &QItemSelectionModel::currentChanged,
                      editor, &ScreenshotEditor::ChangeView);
+    QObject::connect(model, &CollectionModel::Cleared,
+                     editor, &ScreenshotEditor::DeletedItem);
 
     SetupToolbar();
 
@@ -81,6 +83,11 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
         model->Add(img, parent);
     } else if (text == DELETE) {
         std::cout << "delete the child image or the whole set of images if the parent was selected" << std::endl;
+        QStandardItem* item = editor->GetCurrImg();
+        if (item != nullptr) {
+            model->Delete(item);
+        }
+
     } else if (text == NEW_SCREENSHOT) {
         camera->show();
         this->setWindowState(Qt::WindowMinimized);

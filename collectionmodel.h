@@ -19,6 +19,11 @@ public:
     void Add(const QPixmap* img, QStandardItem* parent = nullptr);
 
     /*
+     * !!!
+     */
+    void Delete(QStandardItem* parent = nullptr);
+
+    /*
      * REQUIRES: item is in the model
      * EFFECTS: returns pointer to lowest level QStandardItem that is a parent of item
      */
@@ -32,9 +37,10 @@ public slots:
     void ChangeDecoration(const QPixmap* img, QStandardItem* item);
 
 signals:
+    void Cleared(QStandardItem* item);
 
 private:
-
+    void emitCleared(QStandardItem* item);
 };
 
 #endif // COLLECTIONMODEL_H

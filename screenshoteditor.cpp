@@ -5,6 +5,7 @@
 #include <QFile>
 #include "mainwindow.h"
 #include <iostream>
+#include <QFileDialog>
 
 
 ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidget(parent) {
@@ -80,10 +81,14 @@ void ScreenshotEditor::UpdateView(QStandardItem* item) {
 
 void ScreenshotEditor::Save() {
     if (currImg) {
-        QFile file("test.png");
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+                                   "/home/BeautifulNewScreenshot.png",
+                                   tr("Images (*.png *.bmp *.jpg *.jpeg"));
+
+        QFile file(fileName);
         QPixmap* img = GetCurrScreenImg();
         file.open(QIODevice::WriteOnly);
-        if (!img->save(&file, "PNG")) {
+        if (!img->save(&file)) {
             throw std::domain_error("ScreenshotEditor::UpdateView - failed to save image");
         }
         file.close();

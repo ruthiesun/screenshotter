@@ -12,6 +12,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     model = new CollectionModel(this);
     camera = new Camera();
+    camera->setAttribute(Qt::WA_QuitOnClose, false);
     QObject::connect(camera, &Camera::snapped,
                      this, &MainWindow::addScreenshot);
 

@@ -2,7 +2,7 @@
 #include <exception>
 #include <iostream>
 
-void CollectionModel::Add(const QPixmap* img, QStandardItem* parent) {
+void CollectionModel::addImg(const QPixmap* img, QStandardItem* parent) {
     QStandardItem *rootNode;
     if (parent == nullptr) {
         rootNode = invisibleRootItem();
@@ -16,10 +16,10 @@ void CollectionModel::Add(const QPixmap* img, QStandardItem* parent) {
     rootNode->appendRow(newImg);
 }
 
-void CollectionModel::Delete(QStandardItem *item) {
-    emitCleared(item);
+void CollectionModel::deleteImg(QStandardItem *item) {
+    signalDeleted(item);
 
-    QStandardItem* parent = this->FindParent(item);
+    QStandardItem* parent = this->findParent(item);
 
     if (item == parent) {
         for (int i=0; i<item->rowCount(); i++) {
@@ -32,20 +32,20 @@ void CollectionModel::Delete(QStandardItem *item) {
 
     } else {
         int row = item->row();
-        delete(item);
+        delete item;
         removeRow(row, parent->index());
     }
 
 }
 
-void CollectionModel::emitCleared(QStandardItem* item) {
-    emit Cleared(item);
+void CollectionModel::signalDeleted(QStandardItem* item) {
+    emit deleted(item);
     for (int i=0; i<item->rowCount(); i++) {
-        emitCleared(item->child(i));
+        signalDeleted(item->child(i));
     }
 }
 
-QStandardItem* CollectionModel::FindParent(QStandardItem* item) {
+QStandardItem* CollectionModel::findParent(QStandardItem* item) {
     try {
         if (item->parent() == nullptr) {
             return item;
@@ -53,9 +53,9 @@ QStandardItem* CollectionModel::FindParent(QStandardItem* item) {
     } catch (_exception& e) {
         throw std::invalid_argument("CollectionModel::FindParent - nullptr arg");
     }
-    return FindParent(item->parent());
+    return findParent(item->parent());
 }
 
-void CollectionModel::ChangeDecoration(const QPixmap* img, QStandardItem* item) {
+void CollectionModel::changeDecoration(const QPixmap* img, QStandardItem* item) {
     item->setData(*img, Qt::DecorationRole);
 }

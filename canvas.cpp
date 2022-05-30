@@ -16,26 +16,26 @@ Canvas::~Canvas() {
     delete img;
 }
 
-void Canvas::ChangeMode(Canvas::Mode mode) {
+void Canvas::changeMode(Canvas::Mode mode) {
     currMode = mode;
 }
 
-void Canvas::ParseMouse(QPoint point) {
+void Canvas::mouseDrag(QPoint point) {
     if (img) {
         switch(currMode)
         {
             case penMode:
-            Draw(point);
+            draw(point);
             break;
 
             case eraseMode:
-            Erase(point);
+            erase(point);
             break;
         }
     }
 }
 
-void Canvas::MouseDown(QPoint point) {
+void Canvas::mouseDown(QPoint point) {
     if (img) {
         switch(currMode)
         {
@@ -45,7 +45,7 @@ void Canvas::MouseDown(QPoint point) {
             break;
 
             case eraseMode:
-            Erase(point);
+            erase(point);
             break;
         }
     }
@@ -56,13 +56,13 @@ void Canvas::drawBackground(QPainter *painter, const QRectF &rect) {
     painter->drawPixmap(bgRect, *img, bgRect);
 }
 
-void Canvas::Draw(QPoint point) {
+void Canvas::draw(QPoint point) {
     this->setSceneRect(0, 0, img->width(), img->height());
     addLine(lastPoint.x(), lastPoint.y(), point.x(), point.y(), pen);
     lastPoint = point;
 }
 
-void Canvas::Erase(QPoint point) {
+void Canvas::erase(QPoint point) {
     QGraphicsItem* item = itemAt(point, QTransform());
     if (item) {
         removeItem(item);

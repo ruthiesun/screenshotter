@@ -22,7 +22,6 @@ public:
 public slots:
 
 signals:
-    void SelectedForView(QPixmap* img);
 
 private:
     /*
@@ -35,7 +34,7 @@ private:
      * EFFECTS:     sets up the ui
      *              called by the constructor
      */
-    void Setup();
+    void setup();
 
 };
 

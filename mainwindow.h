@@ -46,17 +46,17 @@ public slots:
      *              if delete, deletes the image that is currently displayed and any children
      *              if new screenshot, opens camera dialog that allows user to take a screenshot
      */
-    void ParseToolbarSignal(QAction* action);
+    void parseToolbarSignal(QAction* action);
 
     /*
      * REQUIRES:    img is not null
      * MODIFIES:    this
      * EFFECTS:     adds img to the user's collection
      */
-    void AddScreenshot(QPixmap* img);
+    void addScreenshot(QPixmap* img);
 
 signals:
-    void CanvasModeChanged(Canvas::Mode mode);
+    void canvasModeChanged(Canvas::Mode mode);
 
 private:
     const QString DRAW = "Draw";
@@ -81,13 +81,13 @@ private:
      * EFFECTS:     sets up toolbar
      *              called by constructor
      */
-    void SetupToolbar();
+    void setupToolbar();
 
     /*
      * MODIFIES:    this
      * EFFECTS:     sets up the ui
      *              called by the constructor
      */
-    void Setup();
+    void setup();
 };
 #endif // MAINWINDOW_H

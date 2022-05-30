@@ -5,10 +5,10 @@
 
 Camera::Camera(QWidget *parent, Qt::WindowFlags f) :  QDialog(parent) {
     button = new QPushButton("CAPTURE");
-    Setup();
+    setup();
 }
 
-void Camera::TakePic() {
+void Camera::takePic() {
     QRect dialogSize = this->grab().rect();
     QPoint topLeftGlobal = QWidget::mapToGlobal(this->geometry().topLeft());
 
@@ -16,14 +16,14 @@ void Camera::TakePic() {
     QScreen *screen = QGuiApplication::primaryScreen();
     if (screen) {
         QPixmap ss = QPixmap(screen->grabWindow(0));
-        emit Snapped(new QPixmap(ss.copy(topLeftGlobal.x(), topLeftGlobal.y(), dialogSize.width(), dialogSize.height())));
+        emit snapped(new QPixmap(ss.copy(topLeftGlobal.x(), topLeftGlobal.y(), dialogSize.width(), dialogSize.height())));
     }
     this->show();
 }
 
-void Camera::Setup() {
+void Camera::setup() {
     QObject::connect(button, &QPushButton::clicked,
-                     this, &Camera::TakePic);
+                     this, &Camera::takePic);
 
     QSize fullSize = QGuiApplication::primaryScreen()->size();
     this->resize(fullSize.width()*0.8, fullSize.height()*0.8);

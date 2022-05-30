@@ -16,8 +16,8 @@ ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidge
     viewer = new CanvasViewer();
     this->layout()->addWidget(viewer);
 
-    QObject::connect(this, &ScreenshotEditor::ImgChanged,
-                     model, &CollectionModel::ChangeDecoration);
+    QObject::connect(this, &ScreenshotEditor::imgModified,
+                     model, &CollectionModel::changeDecoration);
 
 }
 
@@ -30,20 +30,20 @@ ScreenshotEditor::~ScreenshotEditor() {
     delete itemToScene;
 }
 
-QStandardItem* ScreenshotEditor::GetCurrImg() {
+QStandardItem* ScreenshotEditor::getCurrItem() {
     return currImg;
 }
 
-void ScreenshotEditor::DeletedItem(QStandardItem* item) {
+void ScreenshotEditor::itemWasDeleted(QStandardItem* item) {
     if (itemToScene->contains(item)) {
         delete itemToScene->take(item);
         currImg = nullptr;
     }
 }
 
-void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex &previous) {
+void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex &previous) {
     if (currImg) {
-        UpdateView(model->itemFromIndex(previous));
+        signalImgModified(model->itemFromIndex(previous));
     }
     if (!current.isValid()) {
         viewer->setScene(nullptr);
@@ -59,34 +59,36 @@ void ScreenshotEditor::ChangeView(const QModelIndex &current, const QModelIndex 
             QPixmap* img = new QPixmap(currImg->data(Qt::UserRole).value<QPixmap>()); //dealloced with Canvas destructor
             scene = new Canvas(img, this);
             itemToScene->insert(currImg, scene);
-            QObject::connect((MainWindow*) this->nativeParentWidget(), &MainWindow::CanvasModeChanged,
-                             scene, &Canvas::ChangeMode);
+            QObject::connect((MainWindow*) this->nativeParentWidget(), &MainWindow::canvasModeChanged,
+                             scene, &Canvas::changeMode);
         }
 
         viewer->setScene(scene);
-        QObject::connect(viewer, &CanvasViewer::Stroke,
-                         scene, &Canvas::ParseMouse);
-        QObject::connect(viewer, &CanvasViewer::StartStroke,
-                         scene, &Canvas::MouseDown);
+        QObject::connect(viewer, &CanvasViewer::stroke,
+                         scene, &Canvas::mouseDrag);
+        QObject::connect(viewer, &CanvasViewer::startStroke,
+                         scene, &Canvas::mouseDown);
 
         this->layout()->addWidget(viewer);
     }
 }
 
-void ScreenshotEditor::UpdateView(QStandardItem* item) {
-    QPixmap* img = GetCurrScreenImg();
-    emit ImgChanged(img, item);
+void ScreenshotEditor::signalImgModified(QStandardItem* item) {
+    QPixmap* img = getCurrScreenImg();
+    emit imgModified(img, item);
     delete img;
 }
 
-void ScreenshotEditor::Save() {
+void ScreenshotEditor::save() {
     if (currImg) {
         QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                                    "/home/BeautifulNewScreenshot.png",
                                    tr("Images (*.png *.bmp *.jpg *.jpeg"));
-
+        if (fileName.isEmpty()) {
+            return;
+        }
         QFile file(fileName);
-        QPixmap* img = GetCurrScreenImg();
+        QPixmap* img = getCurrScreenImg();
         file.open(QIODevice::WriteOnly);
         if (!img->save(&file)) {
             throw std::domain_error("ScreenshotEditor::UpdateView - failed to save image");
@@ -96,7 +98,7 @@ void ScreenshotEditor::Save() {
     }
 }
 
-QPixmap* ScreenshotEditor::GetCurrScreenImg() {
+QPixmap* ScreenshotEditor::getCurrScreenImg() {
     scene->clearSelection();
     QPixmap *img = new QPixmap(scene->sceneRect().size().toSize());
     QPainter painter(img);

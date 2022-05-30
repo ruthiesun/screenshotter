@@ -28,7 +28,7 @@ public:
     /*
      * EFFECTS:     returns model item of image that is currently displayed
      */
-    QStandardItem* GetCurrImg();
+    QStandardItem* getCurrItem();
 
 public slots:
     /*
@@ -37,21 +37,21 @@ public slots:
      *              if given index is invalid, displays a blank viewport
      *              if previous index is valid, updates the tree view icon of the previous image to display any modifications that the user has made
      */
-    void ChangeView(const QModelIndex &current, const QModelIndex &previous);
+    void changeView(const QModelIndex &current, const QModelIndex &previous);
 
     /*
      * MODIFIES:    this
      * EFFECTS:     removes references to item and deletes its associated canvas, if one exists
      */
-    void DeletedItem(QStandardItem* item);
+    void itemWasDeleted(QStandardItem* item);
 
     /*
      * EFFECTS:     opens dialog that allows user to save image that is currently displayed
      */
-    void Save();
+    void save();
 
 signals:
-    void ImgChanged(QPixmap* img, QStandardItem* item);
+    void imgModified(QPixmap* img, QStandardItem* item);
 
 protected:
 
@@ -71,14 +71,14 @@ private:
     QHash<QStandardItem*, Canvas*> *itemToScene;
 
     /*
-     * EFFECTS:     emits ImgChanged signal with image that is currently displayed, with its modifications
+     * EFFECTS:     emits imgModified signal with image that is currently displayed, with its modifications
      */
-    void UpdateView(QStandardItem* item);
+    void signalImgModified(QStandardItem* item);
 
     /*
      * EFFECTS:     returns image that is currently displayed
      */
-    QPixmap* GetCurrScreenImg();
+    QPixmap* getCurrScreenImg();
 };
 
 #endif // SCREENSHOTEDITOR_H

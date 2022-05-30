@@ -4,12 +4,12 @@
 
 void CanvasViewer::mouseMoveEvent(QMouseEvent *mouseEvent) {
     QPoint screenPos = this->mapToScene(mouseEvent->pos()).toPoint();
-    emit Stroke(screenPos);
+    emit stroke(screenPos);
 }
 
 void CanvasViewer::mousePressEvent(QMouseEvent *mouseEvent) {
     QPoint screenPos = this->mapToScene(mouseEvent->pos()).toPoint();
-    emit StartStroke(screenPos);
+    emit startStroke(screenPos);
 }
 
 void CanvasViewer::resizeEvent(QResizeEvent *event) {

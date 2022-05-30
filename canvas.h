@@ -27,21 +27,21 @@ public slots:
      * MODIFIES:    this
      * EFFECTS:     changes current mode to the given mode
      */
-    void ChangeMode(Canvas::Mode mode);
+    void changeMode(Canvas::Mode mode);
 
     /*
      * MODIFIES:    this
      * EFFECTS:     if current mode is penMode, draws a line from previous point to given point with the pen
      *              if current mode is eraseMode, erases the top level item at the given point
      */
-    void ParseMouse(QPoint point);
+    void mouseDrag(QPoint point);
 
     /*
      * MODIFIES:    this
      * EFFECTS:     if current mode is penMode, draws a dot at the given point
      *              if current mode is eraseMode, erases the top level item at the given point
      */
-    void MouseDown(QPoint point);
+    void mouseDown(QPoint point);
 
 signals:
 
@@ -66,14 +66,14 @@ private:
      * MODIFIES:    this
      * EFFECTS:     draws a line from previous point to given point with the pen
      */
-    void Draw(QPoint point);
+    void draw(QPoint point);
 
     /*
      * REQUIRES:    point is valid
      * MODIFIES:    this
      * EFFECTS:     erases the top level item at the given point
      */
-    void Erase(QPoint point);
+    void erase(QPoint point);
 };
 
 #endif // CANVAS_H

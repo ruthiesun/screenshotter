@@ -20,7 +20,7 @@ public:
 public slots:
 
 signals:
-    void Snapped(QPixmap* img);
+    void snapped(QPixmap* img);
 
 protected:
 
@@ -32,14 +32,14 @@ private:
      * EFFECTS:     takes a picture of contents underneath dialog screen
      *              emits a Snapped signal with that picture
      */
-    void TakePic();
+    void takePic();
 
     /*
      * MODIFIES:    this
      * EFFECTS:     sets up the ui
      *              called by the constructor
      */
-    void Setup();
+    void setup();
 };
 
 #endif // CAMERA_H

@@ -9,10 +9,10 @@
 
 CollectionViewer::CollectionViewer(CollectionModel* m, QWidget* parent) : QTreeView(parent) {
     model = m;
-    Setup();
+    setup();
 }
 
-void CollectionViewer::Setup() {
+void CollectionViewer::setup() {
     this->setHeaderHidden(true);
     this->header()->resizeSections(QHeaderView::ResizeToContents);
     this->setEditTriggers(QAbstractItemView::NoEditTriggers);

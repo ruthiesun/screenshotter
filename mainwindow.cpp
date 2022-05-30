@@ -12,8 +12,8 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     model = new CollectionModel(this);
     camera = new Camera();
-    QObject::connect(camera, &Camera::Snapped,
-                     this, &MainWindow::AddScreenshot);
+    QObject::connect(camera, &Camera::snapped,
+                     this, &MainWindow::addScreenshot);
 
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
@@ -22,12 +22,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     scroller = new CollectionViewer(model, this);
     editor = new ScreenshotEditor(model, this);
     QObject::connect(scroller->selectionModel(), &QItemSelectionModel::currentChanged,
-                     editor, &ScreenshotEditor::ChangeView);
-    QObject::connect(model, &CollectionModel::Cleared,
-                     editor, &ScreenshotEditor::DeletedItem);
+                     editor, &ScreenshotEditor::changeView);
+    QObject::connect(model, &CollectionModel::deleted,
+                     editor, &ScreenshotEditor::itemWasDeleted);
 
-    SetupToolbar();
-    Setup();
+    setupToolbar();
+    setup();
 }
 
 MainWindow::~MainWindow() {
@@ -45,19 +45,19 @@ QSize MainWindow::sizeHint() const {
     return this->maximumSize(); //!!! currently doesnt return fullscreen size
 }
 
-void MainWindow::AddScreenshot(QPixmap* img) {
-    model->Add(img);
-    delete(img);
+void MainWindow::addScreenshot(QPixmap* img) {
+    model->addImg(img);
+    delete img;
 }
 
-void MainWindow::ParseToolbarSignal(QAction* action) {
+void MainWindow::parseToolbarSignal(QAction* action) {
     QString text = action->iconText();
     if (text == DRAW) {
-        emit CanvasModeChanged(Canvas::penMode);
+        emit canvasModeChanged(Canvas::penMode);
     } else if (text == ERASE) {
-        emit CanvasModeChanged(Canvas::eraseMode);
+        emit canvasModeChanged(Canvas::eraseMode);
     } else if (text == NEW_COPY) {
-        QStandardItem* item = editor->GetCurrImg();
+        QStandardItem* item = editor->getCurrItem();
         if (item) {
             QPixmap* img;
             try {
@@ -65,14 +65,14 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
             } catch (_exception& e) {
                 throw std::domain_error("MainWindow::ParseToolbarSignal - QVariant conversion failure");
             }
-            QStandardItem* parent = model->FindParent(editor->GetCurrImg());
-            model->Add(img, parent);
+            QStandardItem* parent = model->findParent(editor->getCurrItem());
+            model->addImg(img, parent);
             delete img;
         }
     } else if (text == DELETE) {
-        QStandardItem* item = editor->GetCurrImg();
+        QStandardItem* item = editor->getCurrItem();
         if (item != nullptr) {
-            model->Delete(item);
+            model->deleteImg(item);
         }
     } else if (text == NEW_SCREENSHOT) {
         camera->show();
@@ -80,22 +80,22 @@ void MainWindow::ParseToolbarSignal(QAction* action) {
     }
 }
 
-void MainWindow::SetupToolbar() {
+void MainWindow::setupToolbar() {
     toolbar = new QToolBar(this);
     toolbar->addAction(DRAW);
     toolbar->addAction(ERASE);
     toolbar->addSeparator();
-    toolbar->addAction(SAVE_TO_FILE, editor, &ScreenshotEditor::Save);
+    toolbar->addAction(SAVE_TO_FILE, editor, &ScreenshotEditor::save);
     toolbar->addAction(NEW_COPY);
     toolbar->addAction(DELETE);
     toolbar->addSeparator();
     toolbar->addAction(NEW_SCREENSHOT);
 
     QObject::connect(toolbar, &QToolBar::actionTriggered,
-                     this, &MainWindow::ParseToolbarSignal);
+                     this, &MainWindow::parseToolbarSignal);
 }
 
-void MainWindow::Setup() {
+void MainWindow::setup() {
     this->setWindowState(Qt::WindowMaximized);
     this->setToolButtonStyle(Qt::ToolButtonFollowStyle);
 

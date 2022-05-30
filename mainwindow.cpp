@@ -36,8 +36,8 @@ MainWindow::~MainWindow() {
     delete scroller;
     delete toolbar;
     delete editor;
-    delete mainLayout;
     delete editAreaLayout;
+    delete mainLayout;
     delete centralWidget;
     delete model;
 }

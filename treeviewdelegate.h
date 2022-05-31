@@ -9,7 +9,8 @@
 class TreeViewDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
-    using QStyledItemDelegate::QStyledItemDelegate;
+    //using QStyledItemDelegate::QStyledItemDelegate;
+    explicit TreeViewDelegate(int viewWidth, QObject * parent = 0);
 
     /*
      * EFFECTS:     scales the size of the image at the given index such that any dimension is at most 200 pixels and returns this size
@@ -20,6 +21,9 @@ public:
      * EFFECTS:     displays each tree node as its DecorationRole image, with a size dictated by sizeHint
      */
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+
+private:
+    int viewWidth;
 };
 
 #endif // TREEVIEWDELEGATE_H

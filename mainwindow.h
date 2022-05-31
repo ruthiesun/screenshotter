@@ -20,6 +20,9 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
+    static const int scrollerRatioValue = 1;
+    static const int editorRatioValue = 5;
+
     /*
      * EFFECTS:     constructor
      */
@@ -57,6 +60,12 @@ public slots:
 
 signals:
     void canvasModeChanged(Canvas::Mode mode);
+
+protected:
+    /*
+     * EFFECTS:     sets size to full screen when screen is restored
+     */
+    //void changeEvent(QEvent *event) override;
 
 private:
     const QString DRAW = "Draw";

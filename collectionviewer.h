@@ -19,6 +19,8 @@ public:
      */
     explicit CollectionViewer(CollectionModel* m, QWidget* parent = nullptr);
 
+    void initDelegate();
+
 public slots:
 
 signals:

@@ -8,6 +8,7 @@
 #include <QTreeWidget>
 #include <iostream>
 #include "camera.h"
+#include <QSizePolicy>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     model = new CollectionModel(this);
@@ -29,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     setupToolbar();
     setup();
+    scroller->initDelegate();
 }
 
 MainWindow::~MainWindow() {
@@ -40,10 +42,6 @@ MainWindow::~MainWindow() {
     delete mainLayout;
     delete centralWidget;
     delete model;
-}
-
-QSize MainWindow::sizeHint() const {
-    return this->maximumSize(); //!!! currently doesnt return fullscreen size
 }
 
 void MainWindow::addScreenshot(QPixmap* img) {
@@ -97,17 +95,34 @@ void MainWindow::setupToolbar() {
 }
 
 void MainWindow::setup() {
-    this->setWindowState(Qt::WindowMaximized);
     this->setToolButtonStyle(Qt::ToolButtonFollowStyle);
 
     editAreaLayout = new QGridLayout();
     editAreaLayout->addWidget(toolbar);
     editAreaLayout->addWidget(editor);
 
-    mainLayout->addWidget(scroller, 1);
-    mainLayout->addLayout(editAreaLayout, 4);
+    mainLayout->addWidget(scroller, scrollerRatioValue);
+    mainLayout->addLayout(editAreaLayout, editorRatioValue);
 }
+/*
+//https://www.qtcentre.org/threads/59667-QMainWindow-Minimize
+void MainWindow::changeEvent(QEvent *event)
+{
+    QMainWindow::changeEvent(event);
+    if( event->type() == QEvent::WindowStateChange )
+    {
+        if( windowState() == Qt::WindowMaximized )
+        {
+            this->setWindowState(Qt::WindowMaximized);
+        }
+    }
+}
+*/
 
+QSize MainWindow::sizeHint() const {
+    //return this->maximumSize(); //!!! currently doesnt return fullscreen size
+    return QGuiApplication::primaryScreen()->size();
+}
 
 
 

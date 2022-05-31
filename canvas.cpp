@@ -41,7 +41,7 @@ void Canvas::mouseDown(QPoint point) {
         {
             case penMode:
             lastPoint = point;
-            addEllipse(point.x()-diameter/2, point.y()-diameter/2, diameter, diameter, pen);
+            addLine(lastPoint.x(), lastPoint.y(), point.x()-0.1, point.y()-0.1, pen);
             break;
 
             case eraseMode:

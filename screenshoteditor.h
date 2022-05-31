@@ -66,7 +66,7 @@ private:
     CollectionModel* model;
 
     Canvas* scene;
-    CanvasViewer* viewer;
+    CanvasViewer *viewer;
     QLayout* mainLayout;
     QHash<QStandardItem*, Canvas*> *itemToScene;
 

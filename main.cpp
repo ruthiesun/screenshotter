@@ -13,16 +13,9 @@ int main(int argc, char *argv[]) {
 /* NTS:
  * AESTHETIC
  * highlight selected node in tree
- * spaces between tree nodes
- * make nodes smaller
  * save location of camera
- * pen dots consistent with line width
  * save drawings outside original rect
  * implement highlighter
  * http://colormind.io/api-access/
- *
- * OPTIMIZATIONS
- * turn some fields from pointers to static
- *
  *
  */

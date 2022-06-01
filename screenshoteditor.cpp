@@ -100,8 +100,20 @@ void ScreenshotEditor::save() {
 
 QPixmap* ScreenshotEditor::getCurrScreenImg() {
     scene->clearSelection();
-    QPixmap *img = new QPixmap(scene->sceneRect().size().toSize());
+    QRectF itemsRect = scene->itemsBoundingRect();
+    QRectF originalRect = scene->sceneRect();
+
+    int newTopLeftX = std::min(itemsRect.topLeft().x(), originalRect.topLeft().x());
+    int newTopLeftY = std::min(itemsRect.topLeft().y(), originalRect.topLeft().y());
+    int newBotRightX = std::max(itemsRect.bottomRight().x(), originalRect.bottomRight().x());
+    int newBotRightY = std::max(itemsRect.bottomRight().y(), originalRect.bottomRight().y());
+    QPoint newTopLeft = QPoint(newTopLeftX, newTopLeftY);
+    QPoint newBotRight = QPoint(newBotRightX, newBotRightY);
+    QRect newRect = QRect(newTopLeft, newBotRight);
+
+    QPixmap *img = new QPixmap(QSize(newBotRightX-newTopLeftX, newBotRightY-newTopLeftY));
+    img->fill(Qt::transparent);
     QPainter painter(img);
-    scene->render(&painter, img->rect(), img->rect());
+    scene->render(&painter, img->rect(), newRect);
     return img;
 }

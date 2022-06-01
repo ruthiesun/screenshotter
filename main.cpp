@@ -13,7 +13,6 @@ int main(int argc, char *argv[]) {
 /* NTS:
  * AESTHETIC
  * highlight selected node in tree
- * save drawings outside original rect
  * implement highlighter
  * http://colormind.io/api-access/
  *

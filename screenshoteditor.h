@@ -76,7 +76,7 @@ private:
     void signalImgModified(QStandardItem* item);
 
     /*
-     * EFFECTS:     returns image that is currently displayed
+     * EFFECTS:     returns image that is currently displayed, bounded by either the original image or the user's drawings
      */
     QPixmap* getCurrScreenImg();
 };

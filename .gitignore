@@ -38,6 +38,7 @@ Thumbs.db
 # my secret stuff
 screenshotter_release_1/*
 mainwindow.ui
+CMakeLists.txt.user
 
 # qtcreator generated files
 *.pro.user*

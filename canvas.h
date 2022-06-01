@@ -71,7 +71,7 @@ private:
     /*
      * REQUIRES:    point is valid
      * MODIFIES:    this
-     * EFFECTS:     erases the top level item at the given point
+     * EFFECTS:     erases the items at the given point within a square that is twice as wide as the pen
      */
     void erase(QPoint point);
 };

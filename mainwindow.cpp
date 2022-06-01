@@ -74,6 +74,9 @@ void MainWindow::parseToolbarSignal(QAction* action) {
             model->deleteImg(item);
         }
     } else if (text == NEW_SCREENSHOT) {
+        if (camera->getPrevPos()) {
+            camera->move(*camera->getPrevPos());
+        }
         camera->show();
         this->setWindowState(Qt::WindowMinimized);
     }

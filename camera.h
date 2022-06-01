@@ -17,15 +17,27 @@ public:
      */
     explicit Camera(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
+    QPoint* getPrevPos();
+
 public slots:
+    /*
+     * EFFECTS:     eats some ice cream and starts going to the gym
+     *              also saves the current position of the dialog
+     */
+    void handleRejection();
 
 signals:
     void snapped(QPixmap* img);
 
 protected:
+    /*
+     * EFFECTS:     deletes the previous position; saves the current position of the dialog
+     */
+    void closeEvent(QCloseEvent *event);
 
 private:
     QPushButton *button;
+    QPoint *prevPos;
 
     /*
      * REQUIRES:    dialog is in focus

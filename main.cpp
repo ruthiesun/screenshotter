@@ -10,10 +10,3 @@ int main(int argc, char *argv[]) {
     return a.exec();
 }
 
-/* NTS:
- * AESTHETIC
- * highlight selected node in tree
- * implement highlighter
- * http://colormind.io/api-access/
- *
- */

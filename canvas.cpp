@@ -63,10 +63,11 @@ void Canvas::draw(QPoint point) {
 }
 
 void Canvas::erase(QPoint point) {
-    QGraphicsItem* item = itemAt(point, QTransform());
-    if (item) {
+    QRectF eraserArea = QRectF(QPointF(point.x()-diameter, point.y()-diameter), QPointF(point.x()+diameter, point.y()+diameter));
+    QList<QGraphicsItem*> itemsToErase = items(eraserArea);
+    for (QGraphicsItem *item : itemsToErase) {
         removeItem(item);
-        delete(item);
+        delete item;
     }
 }
 

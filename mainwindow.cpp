@@ -87,9 +87,11 @@ void MainWindow::setupToolbar() {
     toolbar->addAction(DRAW);
     toolbar->addAction(ERASE);
     toolbar->addSeparator();
-    toolbar->addAction(SAVE_TO_FILE, editor, &ScreenshotEditor::save);
     toolbar->addAction(NEW_COPY);
     toolbar->addAction(DELETE);
+    toolbar->addSeparator();
+    toolbar->addAction(SAVE_TO_FILE, editor, &ScreenshotEditor::save);
+    toolbar->addAction(COPY, editor, &ScreenshotEditor::toClipboard);
     toolbar->addSeparator();
     toolbar->addAction(NEW_SCREENSHOT);
 
@@ -107,23 +109,8 @@ void MainWindow::setup() {
     mainLayout->addWidget(scroller, scrollerRatioValue);
     mainLayout->addLayout(editAreaLayout, editorRatioValue);
 }
-/*
-//https://www.qtcentre.org/threads/59667-QMainWindow-Minimize
-void MainWindow::changeEvent(QEvent *event)
-{
-    QMainWindow::changeEvent(event);
-    if( event->type() == QEvent::WindowStateChange )
-    {
-        if( windowState() == Qt::WindowMaximized )
-        {
-            this->setWindowState(Qt::WindowMaximized);
-        }
-    }
-}
-*/
 
 QSize MainWindow::sizeHint() const {
-    //return this->maximumSize(); //!!! currently doesnt return fullscreen size
     return QGuiApplication::primaryScreen()->size();
 }
 

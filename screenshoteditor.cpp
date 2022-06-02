@@ -6,7 +6,9 @@
 #include "mainwindow.h"
 #include <iostream>
 #include <QFileDialog>
-
+#include <QClipboard>
+#include <QApplication>
+#include <QMimeData>
 
 ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidget(parent) {
     currImg = nullptr;
@@ -14,6 +16,7 @@ ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidge
     itemToScene = new QHash<QStandardItem*,Canvas*>();
     mainLayout = new QVBoxLayout(this);
     viewer = new CanvasViewer();
+    clipboard = QApplication::clipboard();
     this->layout()->addWidget(viewer);
 
     QObject::connect(this, &ScreenshotEditor::imgModified,
@@ -34,6 +37,18 @@ QStandardItem* ScreenshotEditor::getCurrItem() {
     return currImg;
 }
 
+
+void ScreenshotEditor::toClipboard() {
+    if (currImg) {
+        clipboard->clear();
+        QPixmap* img = getCurrScreenImg();
+        QMimeData* data = new QMimeData();
+        data->setImageData(*img);
+        clipboard->setMimeData(data);
+        delete img;
+    }
+}
+
 void ScreenshotEditor::itemWasDeleted(QStandardItem* item) {
     if (itemToScene->contains(item)) {
         delete itemToScene->take(item);
@@ -42,9 +57,6 @@ void ScreenshotEditor::itemWasDeleted(QStandardItem* item) {
 }
 
 void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex &previous) {
-    if (currImg) {
-        signalImgModified(model->itemFromIndex(previous));
-    }
     if (!current.isValid()) {
         viewer->setScene(nullptr);
     } else {
@@ -61,6 +73,8 @@ void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex 
             itemToScene->insert(currImg, scene);
             QObject::connect((MainWindow*) this->nativeParentWidget(), &MainWindow::canvasModeChanged,
                              scene, &Canvas::changeMode);
+            QObject::connect(scene, &Canvas::changed,
+                             this, &ScreenshotEditor::imgChanged);
         }
 
         viewer->setScene(scene);
@@ -73,10 +87,14 @@ void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex 
     }
 }
 
-void ScreenshotEditor::signalImgModified(QStandardItem* item) {
+void ScreenshotEditor::imgChanged(const QList<QRectF> &region) {
     QPixmap* img = getCurrScreenImg();
-    emit imgModified(img, item);
+    signalImgModified(img);
     delete img;
+}
+
+void ScreenshotEditor::signalImgModified(QPixmap* img) {
+    emit imgModified(img, currImg);
 }
 
 void ScreenshotEditor::save() {

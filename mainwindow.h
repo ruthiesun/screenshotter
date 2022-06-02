@@ -47,6 +47,7 @@ public slots:
      *              if save to file, opens a dialog that prompts user to save the image that is currently displayed
      *              if new copy, duplicates original version of the image that is currently displayed and stores the duplicate as a child
      *              if delete, deletes the image that is currently displayed and any children
+     *              if copy, copies image that is currently displayed to clipboard
      *              if new screenshot, opens camera dialog that allows user to take a screenshot
      */
     void parseToolbarSignal(QAction* action);
@@ -71,9 +72,10 @@ private:
     const QString DRAW = "Draw";
     const QString ERASE = "Erase";
     const QString CROP = "Crop";
-    const QString SAVE_TO_FILE = "Save to file";
-    const QString NEW_COPY = "New copy";
+    const QString NEW_COPY = "Duplicate original";
     const QString DELETE = "Delete";
+    const QString SAVE_TO_FILE = "Save to file";
+    const QString COPY = "Copy to clipboard";
     const QString NEW_SCREENSHOT = "Take new screenshot";
 
     QWidget* centralWidget;

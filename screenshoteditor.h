@@ -7,6 +7,7 @@
 #include "canvas.h"
 #include "canvasviewer.h"
 #include "collectionmodel.h"
+#include <QClipboard>
 
 /*
  * displays a single screenshot in a viewport and allows the user to manipulate it
@@ -30,6 +31,11 @@ public:
      */
     QStandardItem* getCurrItem();
 
+    /*
+     * EFFECTS:     copies currently-displayed image to clipboard
+     */
+    void toClipboard();
+
 public slots:
     /*
      * MODIFIES:    this
@@ -50,6 +56,11 @@ public slots:
      */
     void save();
 
+    /*
+     * EFFECTS:     emits an imgModified signal for the current image and copies the image to clipboard
+     */
+    void imgChanged(const QList<QRectF> &region);
+
 signals:
     void imgModified(QPixmap* img, QStandardItem* item);
 
@@ -69,11 +80,12 @@ private:
     CanvasViewer *viewer;
     QLayout* mainLayout;
     QHash<QStandardItem*, Canvas*> *itemToScene;
+    QClipboard* clipboard;
 
     /*
-     * EFFECTS:     emits imgModified signal with image that is currently displayed, with its modifications
+     * EFFECTS:     emits imgModified signal with img and the current QStandardItem being displayed
      */
-    void signalImgModified(QStandardItem* item);
+    void signalImgModified(QPixmap* img);
 
     /*
      * EFFECTS:     returns image that is currently displayed, bounded by either the original image or the user's drawings

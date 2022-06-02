@@ -68,9 +68,9 @@ protected:
 
 private:
     /*
-     * NOTE:        currImg is not deallocated with the ScreenshotEditor object
+     * NOTE:        currImgImg is not deallocated with the ScreenshotEditor object
      */
-    QStandardItem* currImg;
+    QStandardItem* currImgItem;
     /*
      * NOTE:        model is not deallocated with the ScreenshotEditor object
      */
@@ -81,6 +81,7 @@ private:
     QLayout* mainLayout;
     QHash<QStandardItem*, Canvas*> *itemToScene;
     QClipboard* clipboard;
+    QPixmap currImg;
 
     /*
      * EFFECTS:     emits imgModified signal with img and the current QStandardItem being displayed

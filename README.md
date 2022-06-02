@@ -7,6 +7,7 @@ User stories - basic features:
 - Select and save screenshots to the desired destination folder
 - Add and erase drawings that overlay a screenshot
 - Delete screenshots/edited screenshots
+- Screenshots can be copied to clipboard
 
 Future tasks:
 - Take a screenshot with a hotkey
@@ -16,7 +17,6 @@ Future tasks:
 - Add a colour picker
 - Add a highlighter
 - Allow user to zoom in/out in viewport
-- Add a copy button/automatically copy selected screenshot to clipboard
 
 Loftier goals:
 - Option to email screenshot/upload it somewhere

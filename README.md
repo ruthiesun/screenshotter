@@ -12,7 +12,6 @@ User stories - basic features:
 Future tasks:
 - Take a screenshot with a hotkey
 - Crop a screenshot
-- If the user tries to delete a parent screenshot, warn the user that all children will be deleted too
 - Highlight currently-selected screenshot in the treeview
 - Add a colour picker
 - Add a highlighter

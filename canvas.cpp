@@ -40,8 +40,8 @@ void Canvas::mouseDown(QPoint point) {
         switch(currMode)
         {
             case penMode:
+            addLine(point.x(), point.y(), point.x()-0.01, point.y()-0.01, pen);
             lastPoint = point;
-            addLine(lastPoint.x(), lastPoint.y(), point.x()-0.1, point.y()-0.1, pen);
             break;
 
             case eraseMode:

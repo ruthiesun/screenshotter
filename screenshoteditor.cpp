@@ -57,16 +57,14 @@ void ScreenshotEditor::itemWasDeleted(QStandardItem* item) {
 }
 
 void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex &previous) {
-    if (!current.isValid()) {
+    viewer->setScene(nullptr);
+    if (current.isValid()) {
+        viewer->disconnect();
         viewer->setScene(nullptr);
-    } else {
-        delete viewer;
-        viewer = new CanvasViewer();
         currImgItem = model->itemFromIndex(current);
 
         if (itemToScene->contains(currImgItem)) {
             scene = itemToScene->value(currImgItem);
-            viewer->setScene(scene);
         } else {
             QPixmap* img = new QPixmap(currImgItem->data(Qt::UserRole).value<QPixmap>()); //dealloced with Canvas destructor
             scene = new Canvas(img, this);
@@ -84,7 +82,7 @@ void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex 
                          scene, &Canvas::mouseDown);
 
         currImg = *getCurrScreenImg();
-        this->layout()->addWidget(viewer);
+        //this->layout()->addWidget(viewer);
     }
 }
 

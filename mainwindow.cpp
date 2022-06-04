@@ -44,26 +44,15 @@ MainWindow::~MainWindow() {
     delete model;
 }
 
+QSize MainWindow::sizeHint() const {
+    return QGuiApplication::primaryScreen()->size();
+}
+
 void MainWindow::addScreenshot(QPixmap* img) {
     model->addImg(img);
     delete img;
 }
 
-void MainWindow::makeNewCanvas() {
-    QStandardItem* item = editor->getCurrItem();
-    if (item) {
-        QPixmap* img;
-        try {
-            img = new QPixmap(item->data(Qt::UserRole).value<QPixmap>());
-        } catch (_exception& e) {
-            throw std::domain_error("MainWindow::ParseToolbarSignal - QVariant conversion failure");
-        }
-        QStandardItem* parent = model->findParent(editor->getCurrItem());
-        scroller->setCurrentIndex(model->addImg(img, parent)->index());
-
-        delete img;
-    }
-}
 
 void MainWindow::parseToolbarSignal(QAction* action) {
     QString text = action->iconText();
@@ -74,19 +63,9 @@ void MainWindow::parseToolbarSignal(QAction* action) {
     } else if (text == NEW_COPY) {
         makeNewCanvas();
     } else if (text == DELETE) {
-        QStandardItem* itemToDelete = editor->getCurrItem();
-        if (itemToDelete) {
-            QStandardItem* itemForViewport = model->deleteImg(itemToDelete);
-            if (itemForViewport) {
-                scroller->setCurrentIndex(itemForViewport->index());
-            }
-        }
+        deleteCanvas();
     } else if (text == NEW_SCREENSHOT) {
-        if (camera->getPrevPos()) {
-            camera->move(*camera->getPrevPos());
-        }
-        camera->show();
-        this->setWindowState(Qt::WindowMinimized);
+        openCamera();
     }
 }
 
@@ -118,9 +97,40 @@ void MainWindow::setup() {
     mainLayout->addLayout(editAreaLayout, editorRatioValue);
 }
 
-QSize MainWindow::sizeHint() const {
-    return QGuiApplication::primaryScreen()->size();
+void MainWindow::makeNewCanvas() {
+    QStandardItem* item = editor->getCurrItem();
+    if (item) {
+        QPixmap* img;
+        try {
+            img = new QPixmap(item->data(Qt::UserRole).value<QPixmap>());
+        } catch (_exception& e) {
+            throw std::domain_error("MainWindow::ParseToolbarSignal - QVariant conversion failure");
+        }
+        QStandardItem* parent = model->findParent(editor->getCurrItem());
+        scroller->setCurrentIndex(model->addImg(img, parent)->index());
+
+        delete img;
+    }
 }
+
+void MainWindow::deleteCanvas() {
+    QStandardItem* itemToDelete = editor->getCurrItem();
+    if (itemToDelete) {
+        QStandardItem* itemForViewport = model->deleteImg(itemToDelete);
+        if (itemForViewport) {
+            scroller->setCurrentIndex(itemForViewport->index());
+        }
+    }
+}
+
+void MainWindow::openCamera() {
+    if (camera->getPrevPos()) {
+        camera->move(*camera->getPrevPos());
+    }
+    camera->show();
+    this->setWindowState(Qt::WindowMinimized);
+}
+
 
 
 

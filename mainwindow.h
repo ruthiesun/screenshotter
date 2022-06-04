@@ -59,20 +59,10 @@ public slots:
      */
     void addScreenshot(QPixmap* img);
 
-    /*
-     * MODIFIES:    this
-     * EFFECTS:     if viewport is showing an image, duplicates the original version and changes the view to the new image
-     *              if viewport is empty, does nothing
-     */
-    void makeNewCanvas();
-
 signals:
     void canvasModeChanged(Canvas::Mode mode);
 
 protected:
-    /*
-     * EFFECTS:     sets size to full screen when screen is restored
-     */
 
 private:
     const QString DRAW = "Draw";
@@ -106,5 +96,25 @@ private:
      *              called by the constructor
      */
     void setup();
+
+    /*
+     * MODIFIES:    this
+     * EFFECTS:     if viewport is showing an image, duplicates the original version and changes the view to the new image
+     *              if viewport is empty, does nothing
+     */
+    void makeNewCanvas();
+
+    /*
+     * MODIFIES:    this
+     * EFFECTS:     if viewport is showing an image, deletes the image its drawing data
+     *              if viewport is empty, does nothing
+     */
+    void deleteCanvas();
+
+    /*
+     * MODIFIES:    this
+     * EFFECTS:     minimizes main window and opens camera dialog
+     */
+    void openCamera();
 };
 #endif // MAINWINDOW_H

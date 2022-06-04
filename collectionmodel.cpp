@@ -22,8 +22,6 @@ QStandardItem* CollectionModel::deleteImg(QStandardItem *item) {
     emit deleted(item);
     int itemRow = item->row();
 
-
-
     if (item->hasChildren()) {
         QStandardItem* oldParentItem = invisibleRootItem()->takeRow(item->row()).at(0);
         QStandardItem* newParentItem = oldParentItem->takeRow(0).at(0);

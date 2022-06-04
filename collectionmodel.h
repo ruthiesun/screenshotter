@@ -23,10 +23,11 @@ public:
      * REQUIRES:    item is in the model
      *              item is not null
      * MODIFIES:    this, item
-     * EFFECTS:     deletes item from the model and all its children
-     *              emits a Cleared signal for each deleted item/child
+     * EFFECTS:     deletes item from the model and emits a deleted signal for it
+     *              if item was a parent, makes first child adopt all the other children, sets that child as the new parent, and return a pointer to it
+     *              if item was a child, deletes the child and returns a pointer to its parent
      */
-    void deleteImg(QStandardItem* item);
+    QStandardItem* deleteImg(QStandardItem* item);
 
     /*
      * REQUIRES:    item is in the model
@@ -46,12 +47,7 @@ signals:
     void deleted(QStandardItem* item);
 
 private:
-    /*
-     * REQUIRES:    item is in the model
-     *              item is not null
-     * EFFECTS:     emits a deleted signal for item and all its children
-     */
-    void signalDeleted(QStandardItem* item);
+
 };
 
 #endif // COLLECTIONMODEL_H

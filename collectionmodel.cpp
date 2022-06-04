@@ -18,32 +18,29 @@ QStandardItem* CollectionModel::addImg(const QPixmap* img, QStandardItem* parent
     return newImg;
 }
 
-void CollectionModel::deleteImg(QStandardItem *item) {
-    signalDeleted(item);
+QStandardItem* CollectionModel::deleteImg(QStandardItem *item) {
+    emit deleted(item);
 
     QStandardItem* parent = this->findParent(item);
 
-    if (item == parent) {
-        for (int i=0; i<item->rowCount(); i++) {
-            delete item->child(i);
-            item->removeRow(i);
+    if (item->hasChildren()) {
+        int rowForInsert = item->row();
+        QStandardItem* oldParentItem = invisibleRootItem()->takeRow(item->row()).at(0);
+        QStandardItem* newParentItem = oldParentItem->takeRow(0).at(0);
+        while (oldParentItem->rowCount() > 0) {
+            QList<QStandardItem*> childRow = oldParentItem->takeRow(0);
+            newParentItem->appendRow(childRow.at(0));
         }
-        int row = item->row();
-        delete item;
-        invisibleRootItem()->removeRow(row);
+        QList<QStandardItem*> temp;
+        temp.append(newParentItem);
+        invisibleRootItem()->insertRow(rowForInsert, temp);
+        return newParentItem;
 
     } else {
         int row = item->row();
         delete item;
         removeRow(row, parent->index());
-    }
-
-}
-
-void CollectionModel::signalDeleted(QStandardItem* item) {
-    emit deleted(item);
-    for (int i=0; i<item->rowCount(); i++) {
-        signalDeleted(item->child(i));
+        return parent;
     }
 }
 

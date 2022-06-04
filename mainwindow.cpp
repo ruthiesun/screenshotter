@@ -77,7 +77,8 @@ void MainWindow::parseToolbarSignal(QAction* action) {
     } else if (text == DELETE) {
         QStandardItem* item = editor->getCurrItem();
         if (item != nullptr) {
-            model->deleteImg(item);
+            QModelIndex indexToView = model->deleteImg(item)->index();
+            scroller->setCurrentIndex(indexToView);
         }
     } else if (text == NEW_SCREENSHOT) {
         if (camera->getPrevPos()) {

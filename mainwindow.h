@@ -73,7 +73,6 @@ protected:
     /*
      * EFFECTS:     sets size to full screen when screen is restored
      */
-    //void changeEvent(QEvent *event) override;
 
 private:
     const QString DRAW = "Draw";

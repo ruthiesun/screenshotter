@@ -72,7 +72,7 @@ void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex 
             QObject::connect((MainWindow*) this->nativeParentWidget(), &MainWindow::canvasModeChanged,
                              scene, &Canvas::changeMode);
             QObject::connect(scene, &Canvas::changed,
-                             this, &ScreenshotEditor::imgChanged);
+                             this, &ScreenshotEditor::imgRegionsChanged);
         }
 
         viewer->setScene(scene);
@@ -82,11 +82,10 @@ void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex 
                          scene, &Canvas::mouseDown);
 
         currImg = *getCurrScreenImg();
-        //this->layout()->addWidget(viewer);
     }
 }
 
-void ScreenshotEditor::imgChanged(const QList<QRectF> &region) {
+void ScreenshotEditor::imgRegionsChanged(const QList<QRectF> &region) {
     for (QRectF modifiedArea : region) {
         QPainter painter(&currImg);
         scene->render(&painter, modifiedArea, modifiedArea);

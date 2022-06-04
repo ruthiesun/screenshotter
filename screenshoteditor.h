@@ -59,7 +59,7 @@ public slots:
     /*
      * EFFECTS:     emits an imgModified signal for the current image and copies the image to clipboard
      */
-    void imgChanged(const QList<QRectF> &region);
+    void imgRegionsChanged(const QList<QRectF> &region);
 
 signals:
     void imgModified(QPixmap* img, QStandardItem* item);

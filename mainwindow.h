@@ -46,7 +46,7 @@ public slots:
      *              if erase, switches editor mode to erasing
      *              if save to file, opens a dialog that prompts user to save the image that is currently displayed
      *              if new copy, duplicates original version of the image that is currently displayed and stores the duplicate as a child
-     *              if delete, deletes the image that is currently displayed and any children
+     *              if delete, deletes the image that is currently displayed
      *              if copy, copies image that is currently displayed to clipboard
      *              if new screenshot, opens camera dialog that allows user to take a screenshot
      */

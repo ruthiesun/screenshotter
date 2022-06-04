@@ -20,27 +20,31 @@ QStandardItem* CollectionModel::addImg(const QPixmap* img, QStandardItem* parent
 
 QStandardItem* CollectionModel::deleteImg(QStandardItem *item) {
     emit deleted(item);
+    int itemRow = item->row();
 
-    QStandardItem* parent = this->findParent(item);
+
 
     if (item->hasChildren()) {
-        int rowForInsert = item->row();
         QStandardItem* oldParentItem = invisibleRootItem()->takeRow(item->row()).at(0);
         QStandardItem* newParentItem = oldParentItem->takeRow(0).at(0);
         while (oldParentItem->rowCount() > 0) {
             QList<QStandardItem*> childRow = oldParentItem->takeRow(0);
             newParentItem->appendRow(childRow.at(0));
         }
-        QList<QStandardItem*> temp;
-        temp.append(newParentItem);
-        invisibleRootItem()->insertRow(rowForInsert, temp);
+        invisibleRootItem()->insertRow(itemRow, newParentItem);
+        delete item;
         return newParentItem;
 
     } else {
-        int row = item->row();
+        QStandardItem* parent = findParent(item);
         delete item;
-        removeRow(row, parent->index());
-        return parent;
+        if (item != parent) {
+            removeRow(itemRow, parent->index());
+            return parent;
+        } else {
+            removeRow(itemRow, invisibleRootItem()->index());
+            return nullptr;
+        }
     }
 }
 

@@ -24,8 +24,9 @@ public:
      *              item is not null
      * MODIFIES:    this, item
      * EFFECTS:     deletes item from the model and emits a deleted signal for it
-     *              if item was a parent, makes first child adopt all the other children, sets that child as the new parent, and return a pointer to it
-     *              if item was a child, deletes the child and returns a pointer to its parent
+     *              if item was a root with children, makes first child adopt all the other children, sets that child as the new root, and return a pointer to it
+     *              if item was a root without children, returns nullptr
+     *              if item was a child, deletes the child and returns a pointer to its root
      */
     QStandardItem* deleteImg(QStandardItem* item);
 

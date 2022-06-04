@@ -59,7 +59,6 @@ void MainWindow::makeNewCanvas() {
             throw std::domain_error("MainWindow::ParseToolbarSignal - QVariant conversion failure");
         }
         QStandardItem* parent = model->findParent(editor->getCurrItem());
-
         scroller->setCurrentIndex(model->addImg(img, parent)->index());
 
         delete img;
@@ -75,10 +74,12 @@ void MainWindow::parseToolbarSignal(QAction* action) {
     } else if (text == NEW_COPY) {
         makeNewCanvas();
     } else if (text == DELETE) {
-        QStandardItem* item = editor->getCurrItem();
-        if (item != nullptr) {
-            QModelIndex indexToView = model->deleteImg(item)->index();
-            scroller->setCurrentIndex(indexToView);
+        QStandardItem* itemToDelete = editor->getCurrItem();
+        if (itemToDelete) {
+            QStandardItem* itemForViewport = model->deleteImg(itemToDelete);
+            if (itemForViewport) {
+                scroller->setCurrentIndex(itemForViewport->index());
+            }
         }
     } else if (text == NEW_SCREENSHOT) {
         if (camera->getPrevPos()) {

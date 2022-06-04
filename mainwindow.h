@@ -60,9 +60,9 @@ public slots:
     void addScreenshot(QPixmap* img);
 
     /*
-     * REQUIRES:    !!!
      * MODIFIES:    this
-     * EFFECTS:     !!!
+     * EFFECTS:     if viewport is showing an image, duplicates the original version and changes the view to the new image
+     *              if viewport is empty, does nothing
      */
     void makeNewCanvas();
 

@@ -2,7 +2,7 @@
 #include <exception>
 #include <iostream>
 
-void CollectionModel::addImg(const QPixmap* img, QStandardItem* parent) {
+QStandardItem* CollectionModel::addImg(const QPixmap* img, QStandardItem* parent) {
     QStandardItem *rootNode;
     if (parent == nullptr) {
         rootNode = invisibleRootItem();
@@ -14,6 +14,8 @@ void CollectionModel::addImg(const QPixmap* img, QStandardItem* parent) {
     newImg->setData(*img, Qt::DecorationRole);
     newImg->setData(*img, Qt::UserRole);
     rootNode->appendRow(newImg);
+
+    return newImg;
 }
 
 void CollectionModel::deleteImg(QStandardItem *item) {

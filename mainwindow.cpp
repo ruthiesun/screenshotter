@@ -49,6 +49,23 @@ void MainWindow::addScreenshot(QPixmap* img) {
     delete img;
 }
 
+void MainWindow::makeNewCanvas() {
+    QStandardItem* item = editor->getCurrItem();
+    if (item) {
+        QPixmap* img;
+        try {
+            img = new QPixmap(item->data(Qt::UserRole).value<QPixmap>());
+        } catch (_exception& e) {
+            throw std::domain_error("MainWindow::ParseToolbarSignal - QVariant conversion failure");
+        }
+        QStandardItem* parent = model->findParent(editor->getCurrItem());
+
+        scroller->setCurrentIndex(model->addImg(img, parent)->index());
+
+        delete img;
+    }
+}
+
 void MainWindow::parseToolbarSignal(QAction* action) {
     QString text = action->iconText();
     if (text == DRAW) {
@@ -56,18 +73,7 @@ void MainWindow::parseToolbarSignal(QAction* action) {
     } else if (text == ERASE) {
         emit canvasModeChanged(Canvas::eraseMode);
     } else if (text == NEW_COPY) {
-        QStandardItem* item = editor->getCurrItem();
-        if (item) {
-            QPixmap* img;
-            try {
-                img = new QPixmap(item->data(Qt::UserRole).value<QPixmap>());
-            } catch (_exception& e) {
-                throw std::domain_error("MainWindow::ParseToolbarSignal - QVariant conversion failure");
-            }
-            QStandardItem* parent = model->findParent(editor->getCurrItem());
-            model->addImg(img, parent);
-            delete img;
-        }
+        makeNewCanvas();
     } else if (text == DELETE) {
         QStandardItem* item = editor->getCurrItem();
         if (item != nullptr) {

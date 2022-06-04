@@ -59,6 +59,13 @@ public slots:
      */
     void addScreenshot(QPixmap* img);
 
+    /*
+     * REQUIRES:    !!!
+     * MODIFIES:    this
+     * EFFECTS:     !!!
+     */
+    void makeNewCanvas();
+
 signals:
     void canvasModeChanged(Canvas::Mode mode);
 

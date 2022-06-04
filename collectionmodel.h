@@ -15,8 +15,9 @@ public:
      * MODIFIES:    this, parent
      * EFFECTS:     adds img to the model under the given parent
      *              img is added to a new row if parent == nullptr
+     *              returns a pointer to the new item
      */
-    void addImg(const QPixmap *img, QStandardItem* parent = nullptr);
+    QStandardItem* addImg(const QPixmap *img, QStandardItem* parent = nullptr);
 
     /*
      * REQUIRES:    item is in the model

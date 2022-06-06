@@ -2,8 +2,11 @@
 #include <QPainter>
 #include <QGraphicsItem>
 #include <iostream>
+#include "paletteretriever.h"
 
 Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
+    PaletteRetriever *p = new PaletteRetriever(img);
+    p->generatePalette();
     diameter = 5;
     currMode = penMode;
 

@@ -43,6 +43,8 @@ public slots:
      */
     void mouseDown(QPoint point);
 
+    void setPalette(QVector<QColor>);
+
 signals:
 
 protected:
@@ -60,6 +62,7 @@ private:
     qreal diameter;
     Mode currMode;
     QPoint lastPoint;
+    QVector<QColor> palette;
 
     /*
      * REQUIRES:    lastPoint and point are valid

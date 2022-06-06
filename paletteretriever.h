@@ -5,26 +5,34 @@
 #include <QColor>
 #include <QNetworkReply>
 #include <QEventLoop>
+#include <QJsonObject>
 
 class PaletteRetriever : public QObject {
     Q_OBJECT
 public:
     PaletteRetriever(QPixmap* img, QObject* parent = nullptr);
 
-    QColor* generatePalette();
+    void generatePalette();
 
 public slots:
-    void parseResponse();
+    void parseUploadResponse();
+    void parseGetResponse();
+    void getPaletteFromId();
+
+signals:
+    void uploadComplete();
+    void paletteReadyForUse(QVector<QColor>);
 
 private:
     QPixmap* img;
-    QColor palette [5];
+    QVector<QColor> palette;
     QNetworkAccessManager *manager;
     QNetworkReply *reply;
-    QByteArray *buffer;
     QEventLoop *loop;
-    QHttpMultiPart *multiPart;
+    QString uploadId;
+    QString auth;
 
+    void deleteImgRequest();
 };
 
 #endif // PALETTERETRIEVER_H

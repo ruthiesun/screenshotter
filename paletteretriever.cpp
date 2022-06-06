@@ -9,16 +9,16 @@
 #include <QHttpMultiPart>
 #include <QEventLoop>
 #include <QFile>
+#include <QJsonArray>
 
 PaletteRetriever::PaletteRetriever(QPixmap* img, QObject* parent) : QObject(parent) {
     this->img = img;
-    buffer = new QByteArray();
+    manager = new QNetworkAccessManager(this);
+    auth = "my secret auth";
 }
 
-QColor* PaletteRetriever::generatePalette() {
-    manager = new QNetworkAccessManager(this);
-
-    QBuffer buffer;
+void PaletteRetriever::generatePalette() {
+    QBuffer buffer(this);
     buffer.open(QIODevice::WriteOnly);
     img->save(&buffer, "PNG");
     auto const encoded = buffer.data().toBase64();
@@ -29,7 +29,6 @@ QColor* PaletteRetriever::generatePalette() {
     QUrl url("https://api.imagga.com/v2/uploads");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "multipart/form-data");
     request.setUrl(url);
-    QString auth("placeholder");
     request.setRawHeader("Authorization", auth.toLocal8Bit());
 
     /* The following code is modified from: https://stackoverflow.com/questions/35683785/qnetworkaccessmanager-how-to-send-multipart-patch-request
@@ -46,7 +45,7 @@ QColor* PaletteRetriever::generatePalette() {
     data.append("--" + boundary.toUtf8() + "--\r\n");
     /* Final boundary has extra -- at end */
 
-    QBuffer * pBuffer = new QBuffer(manager);
+    QBuffer *pBuffer = new QBuffer(manager);
     pBuffer->setData(data);
     /* END */
 
@@ -58,32 +57,70 @@ QColor* PaletteRetriever::generatePalette() {
 
     reply = manager->post(request, pBuffer);
 
-    std::cout << "request sent" << std::endl;
-
-    loop = new QEventLoop();
-
     QObject::connect(reply, &QNetworkReply::finished,
-                     this, &PaletteRetriever::parseResponse);
-
-    loop->exec();
-
+                     this, &PaletteRetriever::parseUploadResponse);
+    QObject::connect(this, &PaletteRetriever::uploadComplete,
+                     this, &PaletteRetriever::getPaletteFromId);
 
     /*
     connect(reply, &QNetworkReply::errorOccurred,
             this, &MyClass::slotError);
     connect(reply, &QNetworkReply::sslErrors,
             this, &MyClass::slotSslErrors);*/
-
-    return nullptr;
 }
 
-void PaletteRetriever::parseResponse() {
-    std::cout << "request finished" << std::endl;
+void PaletteRetriever::getPaletteFromId() {
+    std::cout << uploadId.toStdString() << std::endl;
+    QNetworkRequest request;
+    QUrl url("https://api.imagga.com/v2/colors");
+
+    QUrlQuery query;
+    query.addQueryItem("image_upload_id",uploadId);
+    query.addQueryItem("extract_object_colors","0");
+
+    url.setQuery(query);
+
+    request.setUrl(url);
+    request.setRawHeader("Authorization", auth.toLocal8Bit());
+
+    reply = manager->get(request);
+
+    QObject::connect(reply, &QNetworkReply::finished,
+                     this, &PaletteRetriever::parseGetResponse);
+}
+
+void PaletteRetriever::parseUploadResponse() {
     QByteArray result = reply->readAll();
-    std::string t = result.toStdString();
-   // QJsonObject jsonReply = QJsonDocument::fromJson(result).object();
-    //QString test = jsonReply.value("result").toString();
-    std::cout << t << std::endl;
-    delete multiPart;
-    loop->exit();
+    QJsonObject jsonReply = QJsonDocument::fromJson(result).object();
+    QJsonObject jsonResult = jsonReply["result"].toObject();
+    uploadId = jsonResult["upload_id"].toString();
+    emit uploadComplete();
+}
+
+void PaletteRetriever::parseGetResponse() {
+    QByteArray result = reply->readAll();
+    std::cout << result.toStdString() << std::endl;
+    QJsonObject jsonReply = QJsonDocument::fromJson(result).object();
+    QJsonObject jsonResult = jsonReply["result"].toObject();
+    QJsonObject jsonColors = jsonResult["colors"].toObject();
+    QJsonArray jsonImageColors = jsonColors["image_colors"].toArray();
+
+    for (QJsonArray::const_iterator j = jsonImageColors.constBegin(); j != jsonImageColors.constEnd(); j++) {
+
+        QJsonObject jsonCurrColor = j->toObject();
+        int r = jsonCurrColor.value("r").toInt();
+        int g = jsonCurrColor.value("g").toInt();
+        int b = jsonCurrColor.value("b").toInt();
+
+        palette.append(QColor(r,g,b));
+    }
+
+    emit paletteReadyForUse(palette);
+
+    deleteImgRequest();
+}
+
+void PaletteRetriever::deleteImgRequest() {
+    //delete img from imagga
+    //delete this
 }

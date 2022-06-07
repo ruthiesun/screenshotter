@@ -18,7 +18,6 @@ set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
-        mainwindow.ui
 
         collectionviewer.h collectionviewer.cpp
         screenshoteditor.h screenshoteditor.cpp
@@ -28,6 +27,7 @@ set(PROJECT_SOURCES
         canvasviewer.h canvasviewer.cpp
         camera.h camera.cpp
         paletteretriever.h paletteretriever.cpp
+        colourselector.h colourselector.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -14,7 +14,7 @@
 PaletteRetriever::PaletteRetriever(QPixmap* img, QObject* parent) : QObject(parent) {
     this->img = img;
     manager = new QNetworkAccessManager(this);
-    auth = "my secret auth";
+    auth = "my cool auth";
 }
 
 void PaletteRetriever::generatePalette() {

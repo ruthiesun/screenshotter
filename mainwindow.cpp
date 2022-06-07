@@ -12,6 +12,8 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     model = new CollectionModel(this);
+    colourMenu = new ColourSelector(this);
+
     camera = new Camera();
     camera->setAttribute(Qt::WA_QuitOnClose, false);
     QObject::connect(camera, &Camera::snapped,
@@ -27,6 +29,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
                      editor, &ScreenshotEditor::changeView);
     QObject::connect(model, &CollectionModel::deleted,
                      editor, &ScreenshotEditor::itemWasDeleted);
+    QObject::connect(editor, &ScreenshotEditor::changingToParentItem,
+                     colourMenu, &ColourSelector::extractColours);
+    QObject::connect(colourMenu, &ColourSelector::colourSelected,
+                     editor, &ScreenshotEditor::changePenColour);
 
     setupToolbar();
     setup();
@@ -90,7 +96,10 @@ void MainWindow::parseToolbarSignal(QAction* action) {
 
 void MainWindow::setupToolbar() {
     toolbar = new QToolBar(this);
-    toolbar->addAction(DRAW);
+    QAction* drawAction = toolbar->addAction(DRAW);
+    QToolButton *drawButton = dynamic_cast<QToolButton*>(toolbar->widgetForAction(drawAction));
+    drawButton->setPopupMode(QToolButton::MenuButtonPopup);
+    drawButton->setMenu(colourMenu);
     toolbar->addAction(ERASE);
     toolbar->addSeparator();
     toolbar->addAction(NEW_COPY);

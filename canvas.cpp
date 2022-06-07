@@ -2,14 +2,9 @@
 #include <QPainter>
 #include <QGraphicsItem>
 #include <iostream>
-#include "paletteretriever.h"
+
 
 Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
-    PaletteRetriever *p = new PaletteRetriever(img);
-    p->generatePalette();
-    QObject::connect(p, &PaletteRetriever::paletteReadyForUse,
-                     this, &Canvas::setPalette);
-
     diameter = 5;
     currMode = penMode;
 
@@ -20,6 +15,10 @@ Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
 
 Canvas::~Canvas() {
     delete img;
+}
+
+void Canvas::setPenColour(QColor c) {
+    pen.setColor(c);
 }
 
 void Canvas::changeMode(Canvas::Mode mode) {
@@ -55,16 +54,6 @@ void Canvas::mouseDown(QPoint point) {
             break;
         }
     }
-}
-
-void Canvas::setPalette(QVector<QColor> palette) {
-    for (QColor c : palette) {
-        std::cout << c.blue() << std::endl;
-        std::cout << c.green() << std::endl;
-        std::cout << c.red() << std::endl;
-    }
-    //calc contrasting colors
-    //then set this palette to those
 }
 
 void Canvas::drawBackground(QPainter *painter, const QRectF &rect) {

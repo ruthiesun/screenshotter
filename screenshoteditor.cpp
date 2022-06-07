@@ -63,6 +63,7 @@ void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex 
         delete viewer;
         viewer = new CanvasViewer();
         currImgItem = model->itemFromIndex(current);
+        emit changingToParentItem(model->findParent(currImgItem));
 
         if (itemToScene->contains(currImgItem)) {
             scene = itemToScene->value(currImgItem);
@@ -94,6 +95,12 @@ void ScreenshotEditor::imgChanged(const QList<QRectF> &region) {
         scene->render(&painter, modifiedArea, modifiedArea);
     }
     signalImgModified(&currImg);
+}
+
+void ScreenshotEditor::changePenColour(QColor c) {
+    if (currImgItem) {
+        scene->setPenColour(c);
+    }
 }
 
 void ScreenshotEditor::signalImgModified(QPixmap* img) {

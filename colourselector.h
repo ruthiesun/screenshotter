@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QMenu>
 #include <QStandardItem>
+#include "paletteretriever.h"
 
 /*
  * menu widget that displays a selection of pen colours
@@ -17,6 +18,11 @@ public:
      *              sets up colour menu with default colours
      */
     ColourSelector(QWidget *parent = nullptr);
+
+    /*
+     * EFFECTS:     destructor
+     */
+    ~ColourSelector();
 
 public slots:
     /*
@@ -47,6 +53,7 @@ private:
     QHash<QAction*, QColor> actionToColour;
     QHash<QStandardItem*, QVector<QColor>*> itemToPalette;
     QStandardItem* currImgItem;
+    PaletteRetriever* retriever;
 
     /*
      * MODIFIES:    this

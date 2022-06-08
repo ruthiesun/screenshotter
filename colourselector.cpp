@@ -4,10 +4,15 @@
 #include <QColor>
 
 ColourSelector::ColourSelector(QWidget *parent) : QMenu(parent) {
+    retriever = nullptr;
     setPalette(QVector<QColor>());
 
     QObject::connect(this, &QMenu::triggered,
                      this, &ColourSelector::emitColourChange);
+}
+
+ColourSelector::~ColourSelector() {
+    //!!!
 }
 
 void ColourSelector::emitColourChange(QAction *action) {
@@ -20,13 +25,12 @@ void ColourSelector::extractColours(QStandardItem* imgItem) {
     if (itemToPalette.contains(imgItem)) {
         updateMenu(*itemToPalette.value(imgItem));
     } else {
-        QPixmap* temp = new QPixmap(imgItem->data(Qt::UserRole).value<QPixmap>());
-        PaletteRetriever *p = new PaletteRetriever(temp);
-        p->generatePalette();
-        QObject::connect(p, &PaletteRetriever::paletteReadyForUse,
+        QPixmap* img = new QPixmap(imgItem->data(Qt::UserRole).value<QPixmap>());
+        delete retriever;
+        retriever = new PaletteRetriever(img);
+        retriever->generatePalette();
+        QObject::connect(retriever, &PaletteRetriever::paletteReadyForUse,
                          this, &ColourSelector::setPalette);
-        //!!!p leaks memory
-        //!!!temp leaks memory
     }
 }
 

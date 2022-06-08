@@ -18,6 +18,11 @@ public:
     PaletteRetriever(QPixmap* img, QObject* parent = nullptr);
 
     /*
+     * EFFECTS:     destructor
+     */
+    ~PaletteRetriever();
+
+    /*
      * EFFECTS:     makes upload request to Imagga with img
      */
     void generatePalette();

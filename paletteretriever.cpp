@@ -16,6 +16,10 @@ PaletteRetriever::PaletteRetriever(QPixmap* img, QObject* parent) : QObject(pare
     auth = "";
 }
 
+PaletteRetriever::~PaletteRetriever() {
+    //!!!
+}
+
 void PaletteRetriever::generatePalette() {
     QBuffer buffer(this);
     buffer.open(QIODevice::WriteOnly);
@@ -120,5 +124,11 @@ void PaletteRetriever::parseGetResponse() {
 }
 
 void PaletteRetriever::deleteImgRequest() {
-    //delete img from imagga
+    QNetworkRequest request;
+    QUrl url("https://api.imagga.com/v2/uploads/" + uploadId);
+
+    request.setUrl(url);
+    request.setRawHeader("Authorization", auth.toLocal8Bit());
+
+    reply = manager->deleteResource(request);
 }

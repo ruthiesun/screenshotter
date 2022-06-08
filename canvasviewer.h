@@ -12,8 +12,6 @@ class CanvasViewer : public QGraphicsView {
 public:
     using QGraphicsView::QGraphicsView;
 
-public slots:
-
 signals:
     void startStroke(QPoint point);
     void stroke(QPoint point);

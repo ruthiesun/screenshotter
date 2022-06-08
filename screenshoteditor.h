@@ -61,20 +61,22 @@ public slots:
      */
     void imgRegionsChanged(const QList<QRectF> &region);
 
-    //!!!
+    /*
+     * EFFECTS:     if there is an image in the viewport, change the pen colour to c
+     *              else, does nothing
+     */
     void changePenColour(QColor c);
 
 signals:
     void imgModified(QPixmap* img, QStandardItem* item);
     void changingToParentItem(QStandardItem* item);
 
-protected:
-
 private:
     /*
      * NOTE:        currImgImg is not deallocated with the ScreenshotEditor object
      */
     QStandardItem* currImgItem;
+
     /*
      * NOTE:        model is not deallocated with the ScreenshotEditor object
      */

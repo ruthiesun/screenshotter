@@ -63,8 +63,6 @@ public slots:
 signals:
     void canvasModeChanged(Canvas::Mode mode);
 
-protected:
-
 private:
     const QString DRAW = "Draw";
     const QString ERASE = "Erase";

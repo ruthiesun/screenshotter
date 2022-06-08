@@ -81,6 +81,7 @@ void MainWindow::setupToolbar() {
     QToolButton *drawButton = dynamic_cast<QToolButton*>(toolbar->widgetForAction(drawAction));
     drawButton->setPopupMode(QToolButton::MenuButtonPopup);
     drawButton->setMenu(colourMenu);
+    colourMenu->addAction(DRAW);
     toolbar->addAction(ERASE);
     toolbar->addSeparator();
     toolbar->addAction(NEW_COPY);

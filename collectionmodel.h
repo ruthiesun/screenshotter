@@ -47,8 +47,6 @@ public slots:
 signals:
     void deleted(QStandardItem* item);
 
-private:
-
 };
 
 #endif // COLLECTIONMODEL_H

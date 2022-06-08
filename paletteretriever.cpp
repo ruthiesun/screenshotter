@@ -7,14 +7,13 @@
 #include <QUrlQuery>
 #include <QBuffer>
 #include <QHttpMultiPart>
-#include <QEventLoop>
 #include <QFile>
 #include <QJsonArray>
 
 PaletteRetriever::PaletteRetriever(QPixmap* img, QObject* parent) : QObject(parent) {
     this->img = img;
     manager = new QNetworkAccessManager(this);
-    auth = "my cool auth";
+    auth = "";
 }
 
 void PaletteRetriever::generatePalette() {
@@ -122,5 +121,4 @@ void PaletteRetriever::parseGetResponse() {
 
 void PaletteRetriever::deleteImgRequest() {
     //delete img from imagga
-    //delete this
 }

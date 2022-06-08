@@ -9,7 +9,6 @@
 class TreeViewDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
-    //using QStyledItemDelegate::QStyledItemDelegate;
     explicit TreeViewDelegate(int viewWidth, QObject * parent = 0);
 
     /*

@@ -19,11 +19,10 @@ public:
      */
     explicit CollectionViewer(CollectionModel* m, QWidget* parent = nullptr);
 
+    /*
+     * EFFECTS:     sets up delegate for this
+     */
     void initDelegate();
-
-public slots:
-
-signals:
 
 private:
     /*

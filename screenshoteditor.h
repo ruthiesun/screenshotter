@@ -61,8 +61,12 @@ public slots:
      */
     void imgRegionsChanged(const QList<QRectF> &region);
 
+    //!!!
+    void changePenColour(QColor c);
+
 signals:
     void imgModified(QPixmap* img, QStandardItem* item);
+    void changingToParentItem(QStandardItem* item);
 
 protected:
 

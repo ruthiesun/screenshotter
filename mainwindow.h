@@ -12,6 +12,7 @@
 #include "camera.h"
 #include "collectionmodel.h"
 #include "canvas.h"
+#include "colourselector.h"
 
 /*
  * class representing the application's window
@@ -82,6 +83,7 @@ private:
     QGridLayout* editAreaLayout;
     CollectionModel* model;
     Camera *camera;
+    ColourSelector *colourMenu;
 
     /*
      * MODIFIES:    this

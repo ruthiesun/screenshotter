@@ -3,6 +3,7 @@
 #include <QGraphicsItem>
 #include <iostream>
 
+
 Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
     diameter = 5;
     currMode = penMode;
@@ -14,6 +15,10 @@ Canvas::Canvas(QPixmap* img, QObject *parent) : QGraphicsScene{parent} {
 
 Canvas::~Canvas() {
     delete img;
+}
+
+void Canvas::setPenColour(QColor c) {
+    pen.setColor(c);
 }
 
 void Canvas::changeMode(Canvas::Mode mode) {

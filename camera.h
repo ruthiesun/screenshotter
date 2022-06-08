@@ -17,6 +17,10 @@ public:
      */
     explicit Camera(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
+    /*
+     * EFFECTS:     returns most recent top-left position of this dialog in the current session
+     *              if this is the first time opening the dialog, returns nullptr
+     */
     QPoint* getPrevPos();
 
 public slots:

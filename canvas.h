@@ -22,6 +22,12 @@ public:
      */
     ~Canvas();
 
+    /*
+     * MODIFIES:    this
+     * EFFECTS:     sets the pen's colour to c
+     */
+    void setPenColour(QColor c);
+
 public slots:
     /*
      * MODIFIES:    this

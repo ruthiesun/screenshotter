@@ -62,6 +62,7 @@ void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex 
         viewer->disconnect();
         viewer->setScene(nullptr);
         currImgItem = model->itemFromIndex(current);
+        emit changingToParentItem(model->findParent(currImgItem));
 
         if (itemToScene->contains(currImgItem)) {
             scene = itemToScene->value(currImgItem);
@@ -91,6 +92,12 @@ void ScreenshotEditor::imgRegionsChanged(const QList<QRectF> &region) {
         scene->render(&painter, modifiedArea, modifiedArea);
     }
     signalImgModified(&currImg);
+}
+
+void ScreenshotEditor::changePenColour(QColor c) {
+    if (currImgItem) {
+        scene->setPenColour(c);
+    }
 }
 
 void ScreenshotEditor::signalImgModified(QPixmap* img) {

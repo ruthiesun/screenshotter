@@ -5,7 +5,7 @@
 #include <QStandardItem>
 
 /*
- * displays a screenshot in a background layer as well as the user's drawings in an upper layer
+ * displays a screenshot in a background layer as well as the user's drawings in an overlying layer
  */
 class Canvas : public QGraphicsScene {
         Q_OBJECT
@@ -68,14 +68,12 @@ private:
     QPoint lastPoint;
 
     /*
-     * REQUIRES:    lastPoint and point are valid
      * MODIFIES:    this
-     * EFFECTS:     draws a line from previous point to given point with the pen
+     * EFFECTS:     draws a line from previous point (lastPoint) to given point with the pen
      */
     void draw(QPoint point);
 
     /*
-     * REQUIRES:    point is valid
      * MODIFIES:    this
      * EFFECTS:     erases the items at the given point within a square that is twice as wide as the pen
      */

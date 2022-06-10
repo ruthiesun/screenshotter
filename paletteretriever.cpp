@@ -89,7 +89,7 @@ void PaletteRetriever::getPaletteFromId() {
     reply = manager->get(request);
 
     QObject::connect(reply, &QNetworkReply::finished,
-                     this, &PaletteRetriever::parseGetResponse);
+                     this, &PaletteRetriever::parseColoursResponse);
 }
 
 void PaletteRetriever::parseUploadResponse() {
@@ -100,7 +100,7 @@ void PaletteRetriever::parseUploadResponse() {
     emit uploadComplete();
 }
 
-void PaletteRetriever::parseGetResponse() {
+void PaletteRetriever::parseColoursResponse() {
     QByteArray result = reply->readAll();
     std::cout << result.toStdString() << std::endl;
     QJsonObject jsonReply = QJsonDocument::fromJson(result).object();

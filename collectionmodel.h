@@ -12,6 +12,7 @@ public:
     using QStandardItemModel::QStandardItemModel;
 
     /*
+     * REQUIRES:    img is not null
      * MODIFIES:    this, parent
      * EFFECTS:     adds img to the model under the given parent
      *              img is added to a new row if parent == nullptr
@@ -33,12 +34,15 @@ public:
     /*
      * REQUIRES:    item is in the model
      *              item is not null
-     * EFFECTS:     returns pointer to lowest level QStandardItem that is a parent of item
+     * EFFECTS:     returns pointer to lowest level QStandardItem that is a root of item
+     *              if item is a root itself, returns item
      */
     QStandardItem* findParent(QStandardItem* item);
 
 public slots:
     /*
+     * REQUIRES:    img is not null
+     *              item is not null
      * MODIFIES:    this, item
      * EFFECTS:     changes item's DecorationRole image to img
      */

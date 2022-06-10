@@ -62,7 +62,7 @@ void ScreenshotEditor::changeView(const QModelIndex &current, const QModelIndex 
         viewer->disconnect();
         viewer->setScene(nullptr);
         currImgItem = model->itemFromIndex(current);
-        emit changingToParentItem(model->findParent(currImgItem));
+        emit changingToParentItem(model->findParent(currImgItem)); //!!! just emit with currImgItem once disjoint set implemented in colourselector
 
         if (itemToScene->contains(currImgItem)) {
             scene = itemToScene->value(currImgItem);

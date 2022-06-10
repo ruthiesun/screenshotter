@@ -4,15 +4,19 @@
 #include <QStyledItemDelegate>
 
 /*
- * delegate for the tree view of the screenshot collection
+ * delegate for the tree view of the screenshot collection (SelectionViewer class)
  */
 class TreeViewDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
-    explicit TreeViewDelegate(int viewWidth, QObject * parent = 0);
+    /*
+     * EFFECTS:     constructor
+     *              sets this->viewWidth to viewWidth
+     */
+    explicit TreeViewDelegate(int viewWidth, QObject * parent = nullptr);
 
     /*
-     * EFFECTS:     scales the size of the image at the given index such that any dimension is at most 200 pixels and returns this size
+     * EFFECTS:     scales the size of the image at the given index such that it fits into viewWidth and returns this size
      */
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 

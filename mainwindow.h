@@ -16,6 +16,7 @@
 
 /*
  * class representing the application's window
+ * if this window is closed, the application is closed
  */
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -35,7 +36,7 @@ public:
     ~MainWindow();
 
     /*
-     * EFFECTS:     sets default size to full screen
+     * EFFECTS:     sets default size to maximized screen
      */
     QSize sizeHint() const override;
 
@@ -99,14 +100,14 @@ private:
 
     /*
      * MODIFIES:    this
-     * EFFECTS:     if viewport is showing an image, duplicates the original version and changes the view to the new image
+     * EFFECTS:     if viewport is showing an image, duplicates the original screenshot into a new Canvas object and changes the view to the new image
      *              if viewport is empty, does nothing
      */
     void makeNewCanvas();
 
     /*
      * MODIFIES:    this
-     * EFFECTS:     if viewport is showing an image, deletes the image its drawing data
+     * EFFECTS:     if viewport is showing an image, deletes the Canvas object and its drawing data
      *              if viewport is empty, does nothing
      */
     void deleteCanvas();

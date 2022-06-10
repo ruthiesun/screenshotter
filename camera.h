@@ -13,20 +13,20 @@ class Camera : public QDialog {
 public:
     /*
      * EFFECTS:     constructor
-     *              also sets up widget appearance
      */
     explicit Camera(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
     /*
-     * EFFECTS:     returns most recent top-left position of this dialog in the current session
+     * EFFECTS:     returns most recent top-left position (prevPos) of this dialog
      *              if this is the first time opening the dialog, returns nullptr
      */
     QPoint* getPrevPos();
 
 public slots:
     /*
-     * EFFECTS:     eats some ice cream and starts going to the gym
-     *              also saves the current position of the dialog
+     * REQUIRES:    called when user rejects (i.e. closes) the dialog
+     * MODIFIES:    this
+     * EFFECTS:     saves the current position of the dialog into prevPos
      */
     void handleRejection();
 
@@ -35,7 +35,9 @@ signals:
 
 protected:
     /*
-     * EFFECTS:     deletes the previous position; saves the current position of the dialog
+     * MODIFIES:    this
+     * EFFECTS:     saves the current position of the dialog into prevPos
+     *              if prevPos was not null before this was called, deletes the previous point object
      */
     void closeEvent(QCloseEvent *event);
 
@@ -44,15 +46,15 @@ private:
     QPoint *prevPos;
 
     /*
-     * REQUIRES:    dialog is in focus
-     * EFFECTS:     takes a picture of contents underneath dialog screen
-     *              emits a Snapped signal with that picture
+     * REQUIRES:    this dialog is in focus
+     * EFFECTS:     takes a screenshot of contents underneath dialog screen
+     *              emits a snapped signal with that screenshot
      */
     void takePic();
 
     /*
      * MODIFIES:    this
-     * EFFECTS:     sets up the ui
+     * EFFECTS:     sets up the UI
      *              called by the constructor
      */
     void setup();

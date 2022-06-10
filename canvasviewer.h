@@ -32,9 +32,6 @@ protected:
      */
     void resizeEvent(QResizeEvent *event) override;
 
-
-private:
-
 };
 
 #endif // CANVASVIEWER_H

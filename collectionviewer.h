@@ -14,6 +14,7 @@ class CollectionViewer : public QTreeView {
     Q_OBJECT
 public:
     /*
+     * REQUIRES:    m is not null
      * EFFECTS:     constructor
      *              initializes model to m
      */

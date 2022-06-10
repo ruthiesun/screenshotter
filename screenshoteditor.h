@@ -10,12 +10,13 @@
 #include <QClipboard>
 
 /*
- * displays a single screenshot in a viewport and allows the user to manipulate it
+ * displays a single screenshot in a viewport and allows the user to add drawings to it
  */
 class ScreenshotEditor : public QWidget {
     Q_OBJECT
 public:
     /*
+     * REQUIRES:    m is not null
      * EFFECTS:     constructor
      *              initializes the model to m
      */
@@ -27,12 +28,13 @@ public:
     ~ScreenshotEditor();
 
     /*
-     * EFFECTS:     returns model item of image that is currently displayed
+     * EFFECTS:     returns model item of image that is currently displayed (currImgItem)
      */
     QStandardItem* getCurrItem();
 
     /*
      * EFFECTS:     copies currently-displayed image to clipboard
+     *              if no image is displayed, does nothing
      */
     void toClipboard();
 
@@ -41,23 +43,24 @@ public slots:
      * MODIFIES:    this
      * EFFECTS:     switches display to the image at given index in the model
      *              if given index is invalid, displays a blank viewport
-     *              if previous index is valid, updates the tree view icon of the previous image to display any modifications that the user has made
      */
     void changeView(const QModelIndex &current, const QModelIndex &previous);
 
     /*
      * MODIFIES:    this
-     * EFFECTS:     removes references to item and deletes its associated canvas, if one exists
+     * EFFECTS:     if item is in the itemToScene hashmap, removes that entry
      */
     void itemWasDeleted(QStandardItem* item);
 
     /*
      * EFFECTS:     opens dialog that allows user to save image that is currently displayed
+     *              default file type is .png
      */
     void save();
 
     /*
-     * EFFECTS:     emits an imgModified signal for the current image and copies the image to clipboard
+     * EFFECTS:     repaints the areas of the current image listed in the given list of regions
+     *              emits an imgModified signal with the current model item and an image containing the current image with its drawings
      */
     void imgRegionsChanged(const QList<QRectF> &region);
 
@@ -69,11 +72,11 @@ public slots:
 
 signals:
     void imgModified(QPixmap* img, QStandardItem* item);
-    void changingToParentItem(QStandardItem* item);
+    void changingToParentItem(QStandardItem* item); //!!! change name once colourselector is refactored to use a disjoint set
 
 private:
     /*
-     * NOTE:        currImgImg is not deallocated with the ScreenshotEditor object
+     * NOTE:        currImgItem is not deallocated with the ScreenshotEditor object
      */
     QStandardItem* currImgItem;
 

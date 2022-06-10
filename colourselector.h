@@ -33,7 +33,7 @@ public slots:
     void setPalette(QVector<QColor> palette);
 
     /*
-     * REQUIRES:    imgItem is not nullptr
+     * REQUIRES:    imgItem is not null
      * MODIFIES:    this
      * EFFECTS:     takes the original screenshot from imgItem and sets the current colour menu to the inverse of the main colours of the screenshot
      *              adds a maximum of 5 colours to the default menu colour(s)

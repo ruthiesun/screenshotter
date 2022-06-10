@@ -7,12 +7,13 @@
 #include <QJsonObject>
 
 /*
- * menu widget that displays a selection of pen colours
+ * makes requests to the Imagga API to retrive a given image's colour scheme
  */
 class PaletteRetriever : public QObject {
     Q_OBJECT
 public:
     /*
+     * REQUIRES:    img is not null
      * EFFECTS:     constructor
      */
     PaletteRetriever(QPixmap* img, QObject* parent = nullptr);
@@ -23,14 +24,14 @@ public:
     ~PaletteRetriever();
 
     /*
-     * EFFECTS:     makes upload request to Imagga with img
+     * EFFECTS:     makes upload post request to Imagga with img
      */
     void generatePalette();
 
 public slots:
     /*
      * REQUIRES:    reply has received all data from an upload post request to Imagga
-     * MODIDFIES:   this
+     * MODIFIES:    this
      * EFFECTS:     parses JSON data in reply to obtain the image id and stores this into uploadId
      *              emits uploadComplete signal when done
      */
@@ -48,7 +49,7 @@ public slots:
      * EFFECTS:     parses JSON data in reply
      *              generates a list of QColors from the data, stores it in palette, and emits a paletteReadyForUse signal with this list
      */
-    void parseGetResponse();
+    void parseColoursResponse();
 
 signals:
     void uploadComplete();
@@ -63,7 +64,7 @@ private:
     QString auth;
 
     /*
-     * EFFECTS:     makes request to delete the image with uploadId off the Imagga servers
+     * EFFECTS:     makes delete request to delete the image with uploadId in the Imagga servers
      */
     void deleteImgRequest();
 };

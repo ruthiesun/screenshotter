@@ -19,7 +19,6 @@ PaletteRetriever::PaletteRetriever(QPixmap* img, QObject* parent) : QObject(pare
 PaletteRetriever::~PaletteRetriever() {
     delete img;
     delete manager;
-    delete reply;
 }
 
 void PaletteRetriever::generatePalette() {
@@ -96,6 +95,7 @@ void PaletteRetriever::getPaletteFromId() {
 
 void PaletteRetriever::parseUploadResponse() {
     QByteArray result = reply->readAll();
+    reply->deleteLater();
     QJsonObject jsonReply = QJsonDocument::fromJson(result).object();
     QJsonObject jsonResult = jsonReply["result"].toObject();
     uploadId = jsonResult["upload_id"].toString();
@@ -104,6 +104,7 @@ void PaletteRetriever::parseUploadResponse() {
 
 void PaletteRetriever::parseColoursResponse() {
     QByteArray result = reply->readAll();
+    reply->deleteLater();
     std::cout << result.toStdString() << std::endl;
     QJsonObject jsonReply = QJsonDocument::fromJson(result).object();
     QJsonObject jsonResult = jsonReply["result"].toObject();
@@ -133,4 +134,5 @@ void PaletteRetriever::deleteImgRequest() {
     request.setRawHeader("Authorization", auth.toLocal8Bit());
 
     reply = manager->deleteResource(request);
+    reply->deleteLater();
 }

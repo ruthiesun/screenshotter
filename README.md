@@ -5,7 +5,7 @@ User stories - basic features:
 - Take a screenshot 
 - Browse screenshots taken from the time the app was opened
 - Select and save screenshots to the desired destination folder
-- Add and erase drawings that overlay a screenshot
+- Add and erase drawings that overlay a screenshot with a colour palette that contrasts with the image
 - Delete screenshots/edited screenshots
 - Screenshots can be copied to clipboard
 

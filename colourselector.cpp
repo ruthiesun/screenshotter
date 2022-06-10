@@ -2,6 +2,7 @@
 #include <iostream>
 #include "paletteretriever.h"
 #include <QColor>
+#include <QHash>
 
 ColourSelector::ColourSelector(QWidget *parent) : QMenu(parent) {
     retriever = nullptr;
@@ -12,7 +13,15 @@ ColourSelector::ColourSelector(QWidget *parent) : QMenu(parent) {
 }
 
 ColourSelector::~ColourSelector() {
-    //!!!
+    for (QAction* action : actionToColour.keys()) {
+        delete action;
+    }
+
+    for (QVector<QColor>* colours : itemToPalette.values()) {
+        delete colours;
+    }
+
+    delete retriever;
 }
 
 void ColourSelector::emitColourChange(QAction *action) {

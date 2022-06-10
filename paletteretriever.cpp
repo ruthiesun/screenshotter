@@ -17,7 +17,9 @@ PaletteRetriever::PaletteRetriever(QPixmap* img, QObject* parent) : QObject(pare
 }
 
 PaletteRetriever::~PaletteRetriever() {
-    //!!!
+    delete img;
+    delete manager;
+    delete reply;
 }
 
 void PaletteRetriever::generatePalette() {

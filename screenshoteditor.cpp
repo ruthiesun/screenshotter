@@ -16,7 +16,7 @@ ScreenshotEditor::ScreenshotEditor(CollectionModel* m, QWidget* parent) : QWidge
     itemToScene = new QHash<QStandardItem*,Canvas*>();
     mainLayout = new QVBoxLayout(this);
     viewer = new CanvasViewer();
-    clipboard = QApplication::clipboard();
+
     this->layout()->addWidget(viewer);
 
     QObject::connect(this, &ScreenshotEditor::imgModified,
@@ -40,12 +40,7 @@ QStandardItem* ScreenshotEditor::getCurrItem() {
 
 void ScreenshotEditor::toClipboard() {
     if (currImgItem) {
-        clipboard->clear();
-        QPixmap* img = getCurrScreenImg();
-        QMimeData* data = new QMimeData();
-        data->setImageData(*img);
-        clipboard->setMimeData(data);
-        delete img;
+        saver.imgToClipboard(getCurrScreenImg());
     }
 }
 
@@ -106,39 +101,10 @@ void ScreenshotEditor::signalImgModified(QPixmap* img) {
 
 void ScreenshotEditor::save() {
     if (currImgItem) {
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
-                                   "/home/BeautifulNewScreenshot.png",
-                                   tr("Images (*.png *.bmp *.jpg *.jpeg"));
-        if (fileName.isEmpty()) {
-            return;
-        }
-        QFile file(fileName);
-        QPixmap* img = getCurrScreenImg();
-        file.open(QIODevice::WriteOnly);
-        if (!img->save(&file)) {
-            throw std::domain_error("ScreenshotEditor::UpdateView - failed to save image");
-        }
-        file.close();
-        delete img;
+        saver.saveImg(getCurrScreenImg());
     }
 }
 
 QPixmap* ScreenshotEditor::getCurrScreenImg() {
-    scene->clearSelection();
-    QRectF itemsRect = scene->itemsBoundingRect();
-    QRectF originalRect = scene->sceneRect();
-
-    int newTopLeftX = std::min(itemsRect.topLeft().x(), originalRect.topLeft().x());
-    int newTopLeftY = std::min(itemsRect.topLeft().y(), originalRect.topLeft().y());
-    int newBotRightX = std::max(itemsRect.bottomRight().x(), originalRect.bottomRight().x());
-    int newBotRightY = std::max(itemsRect.bottomRight().y(), originalRect.bottomRight().y());
-    QPoint newTopLeft = QPoint(newTopLeftX, newTopLeftY);
-    QPoint newBotRight = QPoint(newBotRightX, newBotRightY);
-    QRect newRect = QRect(newTopLeft, newBotRight);
-
-    QPixmap *img = new QPixmap(QSize(newBotRightX-newTopLeftX, newBotRightY-newTopLeftY));
-    img->fill(Qt::transparent);
-    QPainter painter(img);
-    scene->render(&painter, img->rect(), newRect);
-    return img;
+    return saver.getCanvasAsPixmap(scene);
 }

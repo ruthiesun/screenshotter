@@ -28,6 +28,7 @@ set(PROJECT_SOURCES
         camera.h camera.cpp
         paletteretriever.h paletteretriever.cpp
         colourselector.h colourselector.cpp
+        saver.h saver.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

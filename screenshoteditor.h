@@ -7,7 +7,7 @@
 #include "canvas.h"
 #include "canvasviewer.h"
 #include "collectionmodel.h"
-#include <QClipboard>
+#include "saver.h"
 
 /*
  * displays a single screenshot in a viewport and allows the user to add drawings to it
@@ -89,8 +89,8 @@ private:
     CanvasViewer *viewer;
     QLayout* mainLayout;
     QHash<QStandardItem*, Canvas*> *itemToScene;
-    QClipboard* clipboard;
     QPixmap currImg;
+    Saver saver;
 
     /*
      * EFFECTS:     emits imgModified signal with img and the current QStandardItem being displayed

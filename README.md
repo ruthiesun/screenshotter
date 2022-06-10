@@ -5,7 +5,8 @@ User stories - basic features:
 - Take a screenshot 
 - Browse screenshots taken from the time the app was opened
 - Select and save screenshots to the desired destination folder
-- Add and erase drawings that overlay a screenshot with a colour palette that contrasts with the image
+- Add and erase drawings that overlay a screenshot
+- Generates a colour palette that contrasts with the colours in the original screenshot (to have notes that stand out)
 - Delete screenshots/edited screenshots
 - Screenshots can be copied to clipboard
 
@@ -19,4 +20,3 @@ Future tasks:
 
 Loftier goals:
 - Option to email screenshot/upload it somewhere
-- Automatically suggest contrasting colours for drawing tools

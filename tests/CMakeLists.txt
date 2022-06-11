@@ -16,8 +16,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(tests tst_tests.cpp)
+add_executable(tests
+    mainwindowtest.cpp)
+
 add_test(NAME tests COMMAND tests)
 
 target_link_libraries(tests PRIVATE Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Test)
-

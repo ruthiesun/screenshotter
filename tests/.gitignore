@@ -35,12 +35,6 @@ Thumbs.db
 /.qmake.cache
 /.qmake.stash
 
-# my secret stuff
-screenshotter_release_1/*
-build-*
-mainwindow.ui
-CMakeLists.txt.user
-
 # qtcreator generated files
 *.pro.user*
 

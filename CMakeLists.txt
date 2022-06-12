@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(screenshotter VERSION 0.1 LANGUAGES CXX)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
@@ -16,5 +17,5 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Network)
 #qt_standard_project_setup()
 
-add_subdirectory(src/app)
-add_subdirectory(tests)
+add_subdirectory(src/app/)
+add_subdirectory(tests/)

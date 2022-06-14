@@ -28,13 +28,15 @@ void ColourSelector::emitColourChange(QAction *action) {
     emit colourSelected(actionToColour.value(action));
 }
 
-void ColourSelector::extractColours(QStandardItem* imgItem) {
+void ColourSelector::extractColours(QStandardItem* imgItem, QStandardItem* imgItemParent) {
     currImgItem = imgItem;
 
     if (itemToPalette.contains(imgItem)) {
-        //call with original item. then find parent here
-        //then map original item to palette to ensure that no api call is done for copies (children)
         updateMenu(*itemToPalette.value(imgItem));
+    } else if (itemToPalette.contains(imgItemParent)) {
+        QVector<QColor> *newPalette = new QVector<QColor>(*itemToPalette.value(imgItemParent));
+        itemToPalette.insert(imgItem,newPalette);
+        updateMenu(*newPalette);
     } else {
         QPixmap* img = new QPixmap(imgItem->data(Qt::UserRole).value<QPixmap>());
         delete retriever;

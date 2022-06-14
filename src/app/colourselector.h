@@ -38,7 +38,7 @@ public slots:
      * EFFECTS:     takes the original screenshot from imgItem and sets the current colour menu to the inverse of the main colours of the screenshot
      *              adds a maximum of 5 colours to the default menu colour(s)
      */
-    void extractColours(QStandardItem* imgItem);
+    void extractColours(QStandardItem* imgItem, QStandardItem* imgItemParent);
 
     /*
      * REQUIRES:    action is a key in actionToColour

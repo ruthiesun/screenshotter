@@ -13,7 +13,7 @@
 PaletteRetriever::PaletteRetriever(QPixmap* img, QObject* parent) : QObject(parent) {
     this->img = img;
     manager = new QNetworkAccessManager(this);
-    auth = "";
+    auth = "Basic YWNjXzcwMWU3N2Y4MTIwMjZhZjpjODA3MjE0OTllN2IzYTM1NWQxNGUwNmExNjIzMTEyNg==";
 }
 
 PaletteRetriever::~PaletteRetriever() {

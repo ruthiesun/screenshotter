@@ -25,7 +25,7 @@ private slots:
     void changeDecoration();
 
 private:
-    //CollectionModel* model;
+    //CollectionModel model;
     //const QPixmap* img;
 };
 
@@ -46,7 +46,7 @@ void CollectionModel_Test::cleanupTestCase() {
 }
 
 void CollectionModel_Test::init() {
-    //model = new CollectionModel();
+
 }
 
 void CollectionModel_Test::cleanup() {
@@ -56,6 +56,8 @@ void CollectionModel_Test::cleanup() {
 void CollectionModel_Test::addImgToInvisibleRootItem() {
     QVERIFY(1 != 2);
     QVERIFY(2 != 2);
+
+    CollectionModel m;
     /*
     QVERIFY(model->hasChildren(model->invisibleRootItem()->index()) == false);
 

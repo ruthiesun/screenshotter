@@ -18,4 +18,4 @@ find_package(Qt6 REQUIRED COMPONENTS Network)
 #qt_standard_project_setup()
 
 add_subdirectory(src/app/)
-add_subdirectory(tests/)
+#add_subdirectory(tests/)

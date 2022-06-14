@@ -32,6 +32,8 @@ void ColourSelector::extractColours(QStandardItem* imgItem) {
     currImgItem = imgItem;
 
     if (itemToPalette.contains(imgItem)) {
+        //call with original item. then find parent here
+        //then map original item to palette to ensure that no api call is done for copies (children)
         updateMenu(*itemToPalette.value(imgItem));
     } else {
         QPixmap* img = new QPixmap(imgItem->data(Qt::UserRole).value<QPixmap>());

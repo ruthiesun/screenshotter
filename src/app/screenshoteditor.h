@@ -72,7 +72,7 @@ public slots:
 
 signals:
     void imgModified(QPixmap* img, QStandardItem* item);
-    void changingToParentItem(QStandardItem* item); //!!! change name once colourselector is refactored to use a disjoint set
+    void changingToParentItem(QStandardItem* item, QStandardItem* itemParent); //!!! change name once colourselector is refactored to use a disjoint set
 
 private:
     /*

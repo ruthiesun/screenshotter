@@ -40,6 +40,7 @@ screenshotter_release_1/*
 build-*
 mainwindow.ui
 CMakeLists.txt.user
+tests/*
 
 # qtcreator generated files
 *.pro.user*

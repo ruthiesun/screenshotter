@@ -67,6 +67,16 @@ private:
      * EFFECTS:     makes delete request to delete the image with uploadId in the Imagga servers
      */
     void deleteImgRequest();
+
+    /*
+     * EFFECTS:     handles network errors
+     */
+    void slotError(QNetworkReply::NetworkError code);
+
+    /*
+     * EFFECTS:     handles SSL errors
+     */
+    void slotSslErrors(const QList<QSslError> &errors);
 };
 
 #endif // PALETTERETRIEVER_H

@@ -13,7 +13,7 @@
 PaletteRetriever::PaletteRetriever(QPixmap* img, QObject* parent) : QObject(parent) {
     this->img = img;
     manager = new QNetworkAccessManager(this);
-    auth = "";
+    auth = "x";
 }
 
 PaletteRetriever::~PaletteRetriever() {
@@ -66,11 +66,11 @@ void PaletteRetriever::generatePalette() {
     QObject::connect(this, &PaletteRetriever::uploadComplete,
                      this, &PaletteRetriever::getPaletteFromId);
 
-    /*
+
     connect(reply, &QNetworkReply::errorOccurred,
-            this, &MyClass::slotError);
+            this, &PaletteRetriever::slotError);
     connect(reply, &QNetworkReply::sslErrors,
-            this, &MyClass::slotSslErrors);*/
+            this, &PaletteRetriever::slotSslErrors);
 }
 
 void PaletteRetriever::getPaletteFromId() {
@@ -91,6 +91,11 @@ void PaletteRetriever::getPaletteFromId() {
 
     QObject::connect(reply, &QNetworkReply::finished,
                      this, &PaletteRetriever::parseColoursResponse);
+
+    connect(reply, &QNetworkReply::errorOccurred,
+            this, &PaletteRetriever::slotError);
+    connect(reply, &QNetworkReply::sslErrors,
+            this, &PaletteRetriever::slotSslErrors);
 }
 
 void PaletteRetriever::parseUploadResponse() {
@@ -134,5 +139,20 @@ void PaletteRetriever::deleteImgRequest() {
     request.setRawHeader("Authorization", auth.toLocal8Bit());
 
     reply = manager->deleteResource(request);
+
+    connect(reply, &QNetworkReply::errorOccurred,
+            this, &PaletteRetriever::slotError);
+    connect(reply, &QNetworkReply::sslErrors,
+            this, &PaletteRetriever::slotSslErrors);
+
     reply->deleteLater();
+}
+
+void PaletteRetriever::slotError(QNetworkReply::NetworkError code) {
+    QString errorCode = reply->errorString();
+    std::cout << errorCode.toStdString() << std::endl;
+}
+
+void PaletteRetriever::slotSslErrors(const QList<QSslError> &errors) {
+    std::cout << "SSL error" << std::endl;
 }

@@ -9,11 +9,12 @@
 #include <QHttpMultiPart>
 #include <QFile>
 #include <QJsonArray>
+#include "key.h"
 
 PaletteRetriever::PaletteRetriever(QPixmap* img, QObject* parent) : QObject(parent) {
     this->img = img;
     manager = new QNetworkAccessManager(this);
-    auth = "";
+    auth = QString::fromStdString(imaggaKey);
 }
 
 PaletteRetriever::~PaletteRetriever() {

@@ -35,12 +35,13 @@ Thumbs.db
 /.qmake.cache
 /.qmake.stash
 
-# my secret stuff
-screenshotter_release_1/*
+# MY SECRET STUFF
+screenshotter_release_*
 build-*
 mainwindow.ui
 CMakeLists.txt.user
 tests/*
+src/app/key.h
 
 # qtcreator generated files
 *.pro.user*
@@ -77,4 +78,3 @@ tests/*
 # --------
 *.dll
 *.exe
-

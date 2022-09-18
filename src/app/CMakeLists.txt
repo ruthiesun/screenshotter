@@ -13,6 +13,7 @@ set(PROJECT_SOURCES
         paletteretriever.h paletteretriever.cpp
         colourselector.h colourselector.cpp
         saver.h saver.cpp
+        key.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
